@@ -8,6 +8,7 @@
 - number of x across rows for each column is not necessarily K
 
 - Example (for N=20 and K=6 setup)
+```
 x,x,o,x,o,o,x,x,o,o,o,o,o,o,o,x,o,o,o,x
 x,x,o,o,o,x,x,x,o,o,x,o,o,o,o,x,o,o,o,o
 o,o,x,o,o,o,x,x,o,x,o,x,x,o,o,o,o,o,x,o
@@ -28,3 +29,4 @@ o,o,x,x,o,x,o,o,o,o,o,o,x,o,o,o,x,x,x,o
 o,x,x,x,o,o,o,o,x,x,o,o,o,o,o,o,o,x,o,x
 o,x,o,o,x,x,o,o,o,o,x,o,o,x,o,o,o,o,x,x
 x,o,o,o,o,o,x,o,x,o,o,o,x,x,o,o,o,x,o,x
+```
