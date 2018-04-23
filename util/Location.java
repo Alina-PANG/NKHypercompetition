@@ -8,6 +8,13 @@ public class Location {
 		System.arraycopy(loc, 0, location, 0, loc.length);
 	}
 
+	public Location(char[] loc) {
+		location = new String[Globals.N];
+		for (int i = 0; i < location.length; i++) {
+			location[i] = Character.toString(loc[i]);
+		}
+	}
+
 	public String[] getLocation() {
 		return location;
 	}
@@ -26,6 +33,16 @@ public class Location {
 			}
 		}
 		return retString;
+	}
+
+	public static Location getLocationFromInt(int num) {
+		String loc = Integer.toBinaryString(num);
+		int zeros = Globals.N - loc.length();
+		for (int j = 0; j < zeros; j++) {
+			loc = "0" + loc;
+		}
+		char[] locArray = loc.toCharArray();
+		return new Location(locArray);
 	}
 
 	public boolean isValidResource(int index) {

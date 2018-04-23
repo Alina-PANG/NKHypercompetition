@@ -11,7 +11,9 @@ public class Simulation {
 	private static String[] commonResourceConfig = new String[Globals.N];
 	
 	public static void main(String[] args) {
-		Globals.setInfMatFile(args[0]);
+		FileIO.loadParameters(args[0]);
+		// Globals.setInfMatFile(args[0]);
+		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.influenceMatrixFile));
 		firms = new Vector<Firm>();			
 		for (int i = 0; i < Globals.numFirms; i++) {
@@ -40,7 +42,7 @@ public class Simulation {
 			}
 			Collections.sort(firms);
 			for (Firm f : firms) {
-				System.out.println(i + "\t" + f.toStringWithFitness(landscape));
+				Globals.out.println(i + "\t" + f.toStringWithFitness(landscape));
 			}
 		}
 		// for (Firm f : firms) {

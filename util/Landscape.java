@@ -10,6 +10,7 @@ public class Landscape {
 	private double[] fitnessContribs;
 	private double[] fitness;
 	private double landscapeMaxFitness;
+	private double landscapeMinFitness;
 	private long landscapeID; 
 	private String[] commonResourceConfig = new String[Globals.N];
 	
@@ -26,7 +27,7 @@ public class Landscape {
 //			System.out.println(d);
 			fitnessContribs[i] = d;
  		}
-//		setFitnessLandscape(); // sets the fitness landscape and sets max fitness level
+		setFitnessLandscape(); // sets max and min fitness levels
 	}
 	public long getLandscapeID() {
 		return landscapeID;
@@ -52,6 +53,64 @@ public class Landscape {
 		return retString;
 	}
 
+	private void setFitnessLandscape() {
+		double maxFitness = 0d;
+		double minFitness = 1d;
+		double fitvalue;
+		fitness = new double[(int)(Math.pow(2, Globals.N))];
+		for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
+			Location l = Location.getLocationFromInt(i);
+			// fitvalue = getFitness(l);
+			// Globals.out.println(l.toString() + "\t" + fitvalue);
+			fitvalue = getFitness(Location.getLocationFromInt(i));
+			if (fitvalue > maxFitness) {
+				maxFitness = fitvalue;
+			}
+			if (fitvalue < minFitness) {
+				minFitness = fitvalue;
+			}
+		}
+		landscapeMinFitness = minFitness;
+		landscapeMaxFitness = maxFitness;
+		// System.out.println("Min: " + landscapeMinFitness);
+		// System.out.println("Max: " + landscapeMaxFitness);
+	}
+
+	// private void setFitnessLandscape() {
+	// 	// set min and max of landscape for normalized fitness
+	// 	double maxFitness = 0d;
+	// 	double minFitness = 1d;
+	// 	fitness = new double[(int)(Math.pow(2, Globals.N))];
+	// 	for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
+	// 		double fitvalue = getFitness(getConfigFromInt(i));
+	// 		if (fitvalue > maxFitness) {
+	// 			maxFitness = fitvalue;
+	// 		}
+	// 		if (fitvalue < minFitness) {
+	// 			minFitness = fitvalue;
+	// 		}
+	// 	}
+	// 	landscapeMaxFitness = maxFitness;
+	// 	landscapeMinFitness = minFitness;
+	// 	System.out.println("Min: " + landscapeMinFitness);
+	// 	System.out.println("Max: " + landscapeMaxFitness);
+
+	// }
+
+	private String[] getConfigFromInt(int num) {
+		String loc = Integer.toBinaryString(num);
+		String config[] = new String[Globals.N];
+		int zeros = Globals.N - loc.length();
+		for (int j = 0; j < zeros; j++) {
+			loc = "0" + loc;
+		}
+		char[] locArray = loc.toCharArray();
+		for (int i = 0; i < config.length; i++) {
+			config[i] = String.valueOf(locArray[i]);
+		}
+		return config;
+	}
+
 	/**
 	 * returns fitness for a position with cognitive simplification
 	 * @param l
@@ -59,11 +118,8 @@ public class Landscape {
 	 */
 	public double getFitness(Location l) {
 		double fitness = 0d;
-//		System.out.println(l.toString());
 		for (int i = 0; i < Globals.N; i++) {
 			String s = l.getLocationAt(i, im);
-//			System.out.println(i + "," + K + ":" + s);
-//			System.out.println(i + ":" + s);
 			double d = getFitnessContribution(s, i);
 			fitness += d;
 		}
@@ -92,7 +148,9 @@ public class Landscape {
 			fitness += d;
 		}
 		fitness = fitness / Globals.N;
-		return fitness;
+		// return fitness;
+		// Return Normalized fitness (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness)
+		return (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness);
 	}
 	
 	/**
@@ -195,7 +253,7 @@ public class Landscape {
 	
 	public void printFitnessContributions() {
 		for (int i = 0; i < fitnessContribs.length; i++) {
-			System.out.println(i + "\t" + fitnessContribs[i]);
+			Globals.out.println(i + "\t" + fitnessContribs[i]);
 		}
 	}
     /**

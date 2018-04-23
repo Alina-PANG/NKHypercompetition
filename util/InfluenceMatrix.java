@@ -29,7 +29,7 @@ public class InfluenceMatrix {
 			        String[] result = strLine.split(",");
 			        // check policy choice size (cols)
 			        if (result.length != Globals.N) {
-			        	System.err.println("incorrect number of policy choices (too many columns " + Globals.N + ")");
+			        	System.err.println("incorrect number of policy choices (too many columns " + Globals.N + "\t" + result.length + ")");
 			        	System.exit(0);
 			        } 
 			        
