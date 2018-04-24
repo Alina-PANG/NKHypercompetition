@@ -22,17 +22,15 @@ public class FileIO {
 			try {
 				p.load(new FileInputStream(configFile));
 				// simulation parameters
-				Globals.setN(Integer.parseInt(p.getProperty("N")));
-				Globals.setNumResources(Integer.parseInt(p.getProperty("numResources")));
-				Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile"));
-				Globals.setNumFirms(Integer.parseInt(p.getProperty("numFirms")));
-				Globals.setIterations(Integer.parseInt(p.getProperty("iterations")));
-				Globals.setAdaptation(p.getProperty("adaptation"));
-				if (p.getProperty("outfile") == null) {
-					Globals.setOutfile("");
-				} else {
-					Globals.setOutfile(p.getProperty("outfile"));
-				}
+				if (p.getProperty("N") != null) { Globals.setN(Integer.parseInt(p.getProperty("N"))); }
+				if (p.getProperty("numResources") != null) { Globals.setNumResources(Integer.parseInt(p.getProperty("numResources"))); }
+				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
+				if (p.getProperty("numFirms") != null) { Globals.setNumFirms(Integer.parseInt(p.getProperty("numFirms"))); }
+				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
+				if (p.getProperty("adaptation") != null) { Globals.setAdaptation(p.getProperty("adaptation")); }
+				if (p.getProperty("outfile") != null) { Globals.setOutfile(p.getProperty("outfile")); }
+					else { Globals.setOutfile(""); }
+					
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 				e.printStackTrace();

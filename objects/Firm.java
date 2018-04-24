@@ -71,68 +71,6 @@ public class Firm implements Comparable<Firm> {
 		return resources[idx];
 	}
 	
-	public void makeDecision() { 
-		// choices: 1. search (experiential); 2. acquire new resource
-		double searchUtility = 0.0d;
-		double addResourceUtility = 0.0d;
-		double currentFitness = 0.0d;
-		
-		int numResources = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) { numResources++; }
-		}
-		System.out.println("ResourceConfig: \n" + Globals.arrayToString(resourceConfig));
-		
-		String[] searchConfig = new String[Globals.N];
-		System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
-		int resourceToChange = Globals.rand.nextInt(numResources); 
-		int count = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) {
-				if (count == resourceToChange) {
-					if (resourceConfig[i].equals("0")) { 
-						searchConfig[i] = "1";
-						break;
-					} else {
-						searchConfig[i] = "0";
-						break;
-					}
-				}
-				count++;
-			}
-		}
-		System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
-		
-		String[] addResourceConfig = new String[Globals.N];
-		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
-		int resourceToAdd = Globals.rand.nextInt(Globals.N - numResources);
-		count = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (!resources[i]) {
-				if (count == resourceToAdd) {
-					addResourceConfig[i] = Integer.toString(Globals.rand.nextInt(2));
-					break;
-				}
-				count++;
-			}
-		}
-		System.out.println("AddResourceConfig: \n" + Globals.arrayToString(addResourceConfig));
-		
-		if (searchUtility > currentFitness) {
-			if (addResourceUtility > searchUtility) {
-				// add resource
-			} else {
-				// reconfigure 
-			}
-		} else {
-			if (addResourceUtility > currentFitness) {
-				// add resource
-			} else {
-				// do nothing
-			}
-		}
-	}
-
 	public void makeDecision(Landscape l) {
 		// choices: 1. search (experiential); 2. acquire new resource
 		
@@ -145,6 +83,7 @@ public class Firm implements Comparable<Firm> {
 		}
 		//System.out.println("ResourceConfig: \n" + Globals.arrayToString(resourceConfig));
 		
+		// search config
 		String[] searchConfig = new String[Globals.N];
 		System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
 		int resourceToChange = Globals.rand.nextInt(numResources); 
@@ -163,6 +102,8 @@ public class Firm implements Comparable<Firm> {
 				count++;
 			}
 		}
+
+		// add resource config
 		String[] addResourceConfig = new String[Globals.N];
 		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
 		int resourceToAdd = Globals.rand.nextInt(Globals.N - numResources);
@@ -181,27 +122,29 @@ public class Firm implements Comparable<Firm> {
 		double searchUtility = l.getFitness(searchConfig);
 		double addResourceUtility = l.getFitness(addResourceConfig);
 
-		// if (searchUtility > currentFitness) {
-		// 	System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-		// 	fitness = searchUtility;
-		// } else {
-		// 	fitness = currentFitness;
-		// }
-		
-		if (searchUtility > currentFitness) {
-			if (addResourceUtility > searchUtility) {
-				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-				fitness = addResourceUtility;
-			} else {
-				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-				fitness = searchUtility;
-			}
-		} else {
-			if (addResourceUtility > currentFitness) {
-				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-				fitness = addResourceUtility;
-			} else {
+		if (Globals.adaptation.equals("search")) {
+			if (searchUtility > currentFitness) {
+					System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
+					fitness = searchUtility;
+			}  else {
 				// do nothing
+			}
+		} else if (Globals.adaptation.equals("resources")) {
+			if (searchUtility > currentFitness) {
+				if (addResourceUtility > searchUtility) {
+					System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+					fitness = addResourceUtility;
+				} else {
+					System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
+					fitness = searchUtility;
+				}
+			} else {
+				if (addResourceUtility > currentFitness) {
+					System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+					fitness = addResourceUtility;
+				} else {
+					// do nothing
+				}
 			}
 		}
 	}
