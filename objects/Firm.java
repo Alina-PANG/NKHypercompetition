@@ -206,7 +206,7 @@ public class Firm implements Comparable<Firm> {
 	public static void main(String[] args) {
 		Firm f = new Firm();
 		System.out.println(f.toString());
-		f.makeDecision();
+		//f.makeDecision();
 
 	}
 }
