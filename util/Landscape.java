@@ -138,7 +138,7 @@ public class Landscape {
 			} else {
 				config[i] = resConfig[i];
 			}
-			//System.out.print(config[i]);
+			// System.out.print(config[i]);
 		}
 		//System.out.println();
 		Location loc = new Location(config);
@@ -245,11 +245,11 @@ public class Landscape {
     /**
      * Utility for printing all possible fitness values for given landscape   
      */
-//	public void printLandscapeFitness() {
-//		for (int i = 0; i < fitness.length; i++) {
-//			System.out.println(Location.getLocationStringFromInt(i) + "\t" + fitness[i]);
-//		}
-//	}
+	// public void printLandscapeFitness() {
+	// 	for (int i = 0; i < fitness.length; i++) {
+	// 		System.out.println(Location.getLocationStringFromInt(i) + "\t" + fitness[i]);
+	// 	}
+	// }
 	
 	public void printFitnessContributions() {
 		for (int i = 0; i < fitnessContribs.length; i++) {

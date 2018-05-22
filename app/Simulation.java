@@ -7,7 +7,7 @@ import util.*;
 public class Simulation {
 	private static Vector<Firm> firms; 
 //	private static Vector<Consumer> consumers; 
-	private static Landscape landscape;
+	public static Landscape landscape;
 	private static String[] commonResourceConfig = new String[Globals.N];
 	
 	public static void main(String[] args) {
@@ -15,15 +15,20 @@ public class Simulation {
 		// Globals.setInfMatFile(args[0]);
 		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.influenceMatrixFile));
+
+		// output fitness landscape
+		// for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
+		// 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
+		// }
+
+		// INITIALIZE FIRMS 
 		firms = new Vector<Firm>();			
 		for (int i = 0; i < Globals.numFirms; i++) {
 			firms.add(new Firm(i));
 		}
-		// System.out.println("INITIALIZE FIRMS");
-		// for (Firm f : firms) {
-		// 	System.out.println(f.toString());
-		// }
+
 		summarizeCommonResourceConfig();
+
 		//System.out.println("COMMON RES CONFIG:\t" + landscape.commonConfigToString());
 		//System.out.println(commonConfigToString());
 		// for (Firm f : firms) {
@@ -33,22 +38,40 @@ public class Simulation {
 		/**
 		 *  RUN ITERATIONS
 		 */
-		for (int i = 0; i < Globals.iterations; i++) {
-			// System.out.print("ITERATION:\t" + i);
-			summarizeCommonResourceConfig();
+		for (int t = 0; t < Globals.iterations; t++) {
+			// System.out.print("ITERATION:\t" + t);
+			
 			for (Firm f : firms) {
-				f.makeDecision(landscape);
+				f.makeDecision();
 				// System.out.println(f.toStringWithFitness(landscape));
 			}
+			summarizeCommonResourceConfig();
+
 			Collections.sort(firms);
+
+
+			// assign rankings
+			int currentRank = 1;
+			double currentFitness = 1.0d;
+			for (int i = 0; i < firms.size(); i++) {
+				Firm f = (Firm)firms.get(i);
+				double focalFitness = f.getFitness();
+				// System.out.println(focalFitness);
+				if (currentFitness == focalFitness) {
+					f.setRank(currentRank);
+				} else {
+					currentRank = i + 1; 
+					f.setRank(currentRank);
+					currentFitness = focalFitness;
+				}
+			}
+
+			// output results
 			for (Firm f : firms) {
-				Globals.out.println(i + "\t" + f.toStringWithFitness(landscape));
+				// Globals.out.println(t + "\t" + f.toStringWithFitness(landscape));
+				Globals.out.println(t + "\t" + f.toStringFull(landscape));
 			}
 		}
-		// for (Firm f : firms) {
-		// 	f.makeDecision(landscape);
-		// 	System.out.println(f.toStringWithFitness(landscape));
-		// }
 		
 	}
 	
@@ -89,7 +112,7 @@ public class Simulation {
 			}
 			landscape.setCommonResourceConfig(i, commonResourceConfig[i]);
 		}
-		//System.out.println("SUMMARIZING COMMON RESOURCE CONFIG:\t" + landscape.commonConfigToString());
+		// System.out.println("SUMMARIZING COMMON RESOURCE CONFIG:\t" + landscape.commonConfigToString());
 	}
 	
 	private static String commonConfigToString() {

@@ -3,6 +3,7 @@ package objects;
 import java.util.*;
 import util.Globals;
 import util.Landscape;
+import app.*;
 
 public class Firm implements Comparable<Firm> {
 
@@ -10,18 +11,21 @@ public class Firm implements Comparable<Firm> {
 	private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
 	private boolean[] resources; 
 	private String[] resourceConfig; // array of "0", "1" or " "
-	private double fitness;
+	// private double fitness;
+	private int rank;
 
 	// random firm with of Globals.numResources resources
 	public Firm() {
 		setResources(Globals.numResources);
 		setResourceConfig();
+		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
 	
 	public Firm(int id) {
 		firmID = id;
 		setResources(Globals.numResources);
 		setResourceConfig();
+		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
 
 	// new firm with n resources
@@ -29,6 +33,7 @@ public class Firm implements Comparable<Firm> {
 		firmID = id;
 		setResources(numResources);
 		setResourceConfig();
+		// Simulation.landscape.getFitness(resourceConfig);
 	}
 	
 	// new firm with specific resources
@@ -39,6 +44,7 @@ public class Firm implements Comparable<Firm> {
 			resources[indices[i]] = true;
 		}
 		setResourceConfig();
+		// Simulation.landscape.getFitness(resourceConfig);
 	}
 	
 	// initialize firm resources
@@ -54,6 +60,12 @@ public class Firm implements Comparable<Firm> {
 		}
 	}
 	
+	// NO NEED FITNESS IS ALWAYS CALCULATED ON THE FLY
+	// public void initFitness() {
+	// 	fitness = Simulation.landscape.getFitness(resourceConfig);
+	// 	System.out.println("init: " + firmID + "\t" + this.getResourceConfigString() + "\t" + fitness);
+	// }
+
 	// randomly set initial configuration of resources
 	private void setResourceConfig() {
 		resourceConfig = new String[Globals.N];
@@ -70,13 +82,13 @@ public class Firm implements Comparable<Firm> {
 	public boolean isValidResources(int idx) {
 		return resources[idx];
 	}
-	
-	public void makeDecision(Landscape l) {
+
+	public void makeDecision() {
 		// choices: 1. search (experiential); 2. acquire new resource
 		
 		//double addResourceUtility = 0.0d;
-		double currentFitness = l.getFitness(resourceConfig);
-
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
 		int numResources = 0;
 		for (int i = 0; i < resources.length; i++) {
 			if (resources[i]) { numResources++; }
@@ -119,13 +131,12 @@ public class Firm implements Comparable<Firm> {
 		}
 
 		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
-		double searchUtility = l.getFitness(searchConfig);
-		double addResourceUtility = l.getFitness(addResourceConfig);
+		double searchUtility = Simulation.landscape.getFitness(searchConfig);
+		double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
 
 		if (Globals.adaptation.equals("search")) {
 			if (searchUtility > currentFitness) {
 					System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-					fitness = searchUtility;
 			}  else {
 				// do nothing
 			}
@@ -133,21 +144,19 @@ public class Firm implements Comparable<Firm> {
 			if (searchUtility > currentFitness) {
 				if (addResourceUtility > searchUtility) {
 					System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-					fitness = addResourceUtility;
 				} else {
 					System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-					fitness = searchUtility;
 				}
 			} else {
 				if (addResourceUtility > currentFitness) {
 					System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-					fitness = addResourceUtility;
 				} else {
 					// do nothing
 				}
 			}
 		}
 	}
+
 
 
 	public String getResourceConfigAt(int idx) {
@@ -178,22 +187,34 @@ public class Firm implements Comparable<Firm> {
 		return retString;
 		
 	}
+
 	public double getFitness() {
-		return fitness;
+		return Simulation.landscape.getFitness(resourceConfig);
+	}
+
+	public void setRank(int aRank) {
+		rank = aRank;
+	}
+
+	public int getRank() {
+		return rank;
 	}
 
 	public int compareTo(Firm compareFirm) {
-		double compareFitness = ((Firm) compareFirm).getFitness(); 
-		if(this.fitness < compareFitness) 
+		double compareFitness = ((Firm)compareFirm).getFitness(); 
+		double thisFitness = this.getFitness();
+		if(thisFitness < compareFitness) {
 			return 1;
-		else if(compareFitness < this.fitness) 
+		} else if(compareFitness < thisFitness) {
 			return -1;
-		return 0;		
+		} else {
+			return 0;		
+		}
 	}	
 
 
 	public String toString() {
-		String retString = firmID + "\t" + getResourceConfigString();;
+		String retString = firmID + "\t" + getResourceConfigString();
 		return retString;
 	}
 
@@ -203,9 +224,15 @@ public class Firm implements Comparable<Firm> {
 		return retString;
 	}
 
+	public String toStringFull(Landscape l) {
+		//System.out.println(getResourceConfigString());
+		String retString = Globals.outfilename + "\t" + firmID + "\t" + rank + "\t" + getResourceConfigString() + "\t" + l.getFitness(resourceConfig);
+		return retString;
+	}
+
 	public static void main(String[] args) {
-		Firm f = new Firm();
-		System.out.println(f.toString());
+		// Firm f = new Firm();
+		// System.out.println(f.toString());
 		//f.makeDecision();
 
 	}

@@ -45,6 +45,15 @@ public class Location {
 		return new Location(locArray);
 	}
 
+	public static String getLocationStringFromInt(int num) {
+		String loc = Integer.toBinaryString(num);
+		int zeros = Globals.N - loc.length();
+		for (int j = 0; j < zeros; j++) {
+			loc = "0" + loc;
+		}
+		return loc;
+	}
+
 	public boolean isValidResource(int index) {
 		if (location[index].equals(" ")) { 
 			return false;
