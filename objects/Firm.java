@@ -188,6 +188,28 @@ public class Firm implements Comparable<Firm> {
 		
 	}
 
+	private String getResourceConfigTabDelimited() {
+		String retString = "";
+		for (int i = 0; i < resourceConfig.length; i++) {
+			if (resourceConfig[i].equals(" ")) {
+				if (i == 0) {
+					retString += "-";					
+				} else {
+					retString += "\t-";
+				}
+
+			} else {
+				if (i == 0) {
+					retString += resourceConfig[i];
+				} else {
+					retString += "\t" + resourceConfig[i];
+				}
+			}
+		}		
+		return retString;
+		
+	}
+
 	public double getFitness() {
 		return Simulation.landscape.getFitness(resourceConfig);
 	}
@@ -226,7 +248,7 @@ public class Firm implements Comparable<Firm> {
 
 	public String toStringFull(Landscape l) {
 		//System.out.println(getResourceConfigString());
-		String retString = Globals.outfilename + "\t" + firmID + "\t" + rank + "\t" + getResourceConfigString() + "\t" + l.getFitness(resourceConfig);
+		String retString = Globals.outfilename + "\t" + firmID + "\t" + rank + "\t" + getResourceConfigTabDelimited() + "\t" + l.getFitness(resourceConfig);
 		return retString;
 	}
 
