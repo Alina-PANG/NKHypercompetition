@@ -10,7 +10,7 @@ public class Globals {
 	 * Default values 
 	 */
 	public static int N = 20;
-	public static long runID = 0l; //System.currentTimeMillis(); // need?
+	public static long runID = System.currentTimeMillis(); // need?
 	public static MersenneTwisterFast rand = new MersenneTwisterFast(runID);
 	public static int numResources = 4;
 	public static int numNeeds = 10;
