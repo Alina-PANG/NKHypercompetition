@@ -9,19 +9,24 @@ public class Globals {
 	/*
 	 * Default values 
 	 */
-	public static int N = 20;
+	public static PrintWriter out;
 	public static long runID = System.currentTimeMillis(); // need?
 	public static MersenneTwisterFast rand = new MersenneTwisterFast(runID);
-	public static int numResources = 4;
-	public static int numNeeds = 10;
-	public static int numFirms = 100;
-	public static int numConsumers = 10;
-	public static String influenceMatrixFile = "inf/matrix12.txt";
-	public static int iterations = 100;
-	public static String adaptation = "resources";
-	public static String outfilename = "output.txt";
 
-	public static PrintWriter out;
+	private static int N = 20;
+	private static int initResources = 4;
+	private static int numFirms = 100;
+	private static int numNeeds = 10;
+	private static int numConsumers = 10;
+	private static String influenceMatrixFile = "inf/matrix12.txt";
+	private static int iterations = 100;
+	//public static String adaptation = "resources";
+	private static double digitization = 0.0d;
+	private static int resourcesIncrement = 1;
+	private static String search = "experiential";
+	private static int searchScope = 1;
+	private static String outfilename = "output.txt";
+
 
 	/* setters */
 
@@ -29,12 +34,20 @@ public class Globals {
 		N = n;
 	}
 
-	public static void setNumResources(int n) {
-		numResources = n;
+	public static void setInitResources(int n) {
+		initResources = n;
 	}
 
 	public static void setNumFirms(int n) {
 		numFirms = n;
+	}
+
+	public static void setNumNeeds(int n) {
+		numNeeds = n;
+	}
+
+	public static void setNumConsumers(int n) {
+		numConsumers = n;
 	}
 
 	public static void setInfluenceMatrix(String matrix) {
@@ -45,8 +58,24 @@ public class Globals {
 		iterations = n;
 	}
 
-	public static void setAdaptation(String adapt) {
-		adaptation = adapt;
+	// public static void setAdaptation(String adapt) {
+	// 	adaptation = adapt;
+	// }
+
+	public static void setDigitization(double d) {
+		digitization = d;
+	}
+
+	public static void setResourcesIncrement(int n) {
+		resourcesIncrement = n;
+	}
+
+	public static void setSearch(String s) {
+		search = s;
+	}
+
+	public static void setSearchScope(int n) {
+		searchScope = n;
 	}
 
 	public static void setOutfile(String file) {
@@ -71,12 +100,20 @@ public class Globals {
 		return N;
 	}
 
-	public static int getNumResources() {
-		return numResources;
+	public static int getInitResources() {
+		return initResources;
 	}
 
 	public static int getNumFirms() {
 		return numFirms;
+	}
+
+	public static int getNumNeeds() {
+		return numNeeds;
+	}
+
+	public static int getNumConsumers() {
+		return numConsumers;
 	}
 
 	public static String getInfluenceMatrix() {
@@ -87,8 +124,24 @@ public class Globals {
 		return iterations;
 	}
 
-	public static String getAdaptation() {
-		return adaptation;
+	// public static String getAdaptation() {
+	// 	return adaptation;
+	// }
+
+	public static double getDigitization() {
+		return digitization;
+	}
+
+	public static int getResourcesIncrement() {
+		return resourcesIncrement;
+	}
+
+	public static String getSearch() {
+		return search;
+	}
+
+	public static int getSearchScope() {
+		return searchScope;
 	}
 
 	public static String getOutfilename() {

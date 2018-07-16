@@ -12,7 +12,7 @@ public class Landscape {
 	private double landscapeMaxFitness;
 	private double landscapeMinFitness;
 	private long landscapeID; 
-	private String[] commonResourceConfig = new String[Globals.N];
+	private String[] commonResourceConfig = new String[Globals.getN()];
 	
 	public Landscape(int lndscpID, InfluenceMatrix inf) {
 		landscapeID = (long)lndscpID;
@@ -57,8 +57,8 @@ public class Landscape {
 		double maxFitness = 0d;
 		double minFitness = 1d;
 		double fitvalue;
-		fitness = new double[(int)(Math.pow(2, Globals.N))];
-		for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
+		fitness = new double[(int)(Math.pow(2, Globals.getN()))];
+		for (int i = 0; i < (int)(Math.pow(2, Globals.getN())); i++) {
 			Location l = Location.getLocationFromInt(i);
 			// fitvalue = getFitness(l);
 			// Globals.out.println(l.toString() + "\t" + fitvalue);
@@ -99,8 +99,8 @@ public class Landscape {
 
 	private String[] getConfigFromInt(int num) {
 		String loc = Integer.toBinaryString(num);
-		String config[] = new String[Globals.N];
-		int zeros = Globals.N - loc.length();
+		String config[] = new String[Globals.getN()];
+		int zeros = Globals.getN() - loc.length();
 		for (int j = 0; j < zeros; j++) {
 			loc = "0" + loc;
 		}
@@ -118,19 +118,19 @@ public class Landscape {
 	 */
 	public double getFitness(Location l) {
 		double fitness = 0d;
-		for (int i = 0; i < Globals.N; i++) {
+		for (int i = 0; i < Globals.getN(); i++) {
 			String s = l.getLocationAt(i, im);
 			double d = getFitnessContribution(s, i);
 			fitness += d;
 		}
-		fitness = fitness / Globals.N;
+		fitness = fitness / Globals.getN();
 		return fitness;
 	}
 	
 	public double getFitness(String[] resConfig) {
 		double fitness = 0.0d;
 		//CALCULATE FITNESS
-		String[] config = new String[Globals.N];
+		String[] config = new String[Globals.getN()];
 		// replace empty settings with commonResourceConfig
 		for (int i = 0; i < resConfig.length; i++) {
 			if (resConfig[i].equals(" ")) {
@@ -142,12 +142,12 @@ public class Landscape {
 		}
 		//System.out.println();
 		Location loc = new Location(config);
-		for (int i = 0; i < Globals.N; i++) {
+		for (int i = 0; i < Globals.getN(); i++) {
 			String s = loc.getLocationAt(i, im);
 			double d = getFitnessContribution(s, i);
 			fitness += d;
 		}
-		fitness = fitness / Globals.N;
+		fitness = fitness / Globals.getN();
 		// return fitness;
 		// Return Normalized fitness (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness)
 		return (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness);
@@ -161,14 +161,14 @@ public class Landscape {
 	 */
 	public double getFitness(Location l, boolean[] know) {
 		double fitness = 0d;
-		for (int i = 0; i < Globals.N; i++) {
+		for (int i = 0; i < Globals.getN(); i++) {
 			if (know[i]) {
 				String s = l.getLocationAt(i, im);
 				double d = getFitnessContribution(s, i);
 				fitness += d;
 			}
 		}
-		fitness = fitness / Globals.N;
+		fitness = fitness / Globals.getN();
 		return fitness;
 	}
 

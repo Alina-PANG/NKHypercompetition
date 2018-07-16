@@ -9,10 +9,10 @@ public class Consumer {
 	
 	public Consumer() {
 		// initialize need
-		needs = new boolean[Globals.N];
+		needs = new boolean[Globals.getN()];
 		int needSet = 0;
-		while (needSet < Globals.numNeeds) {
-			int r = Globals.rand.nextInt(Globals.N);
+		while (needSet < Globals.getNumNeeds()) {
+			int r = Globals.rand.nextInt(Globals.getN());
 			if (!needs[r]) {
 				needSet++;
 				needs[r] = true;

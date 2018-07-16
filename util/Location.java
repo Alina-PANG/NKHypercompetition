@@ -4,12 +4,12 @@ public class Location {
 	String[] location; // N bit location with either ' ', '0' or '1'; ' ' (empty space) means that this resource is not a part of the firm or consumer
 	
 	public Location(String[] loc) {
-		location = new String[Globals.N];
+		location = new String[Globals.getN()];
 		System.arraycopy(loc, 0, location, 0, loc.length);
 	}
 
 	public Location(char[] loc) {
-		location = new String[Globals.N];
+		location = new String[Globals.getN()];
 		for (int i = 0; i < location.length; i++) {
 			location[i] = Character.toString(loc[i]);
 		}
@@ -27,9 +27,9 @@ public class Location {
 		String retString = "";
 		Interdependence intdep = im.getDependenceAt(index);
 		
-		for (int i = index; i < index + Globals.N; i++){
-			if (intdep.isDependent(i % Globals.N)) {
-				retString += location[i % Globals.N];
+		for (int i = index; i < index + Globals.getN(); i++){
+			if (intdep.isDependent(i % Globals.getN())) {
+				retString += location[i % Globals.getN()];
 			}
 		}
 		return retString;
@@ -37,7 +37,7 @@ public class Location {
 
 	public static Location getLocationFromInt(int num) {
 		String loc = Integer.toBinaryString(num);
-		int zeros = Globals.N - loc.length();
+		int zeros = Globals.getN() - loc.length();
 		for (int j = 0; j < zeros; j++) {
 			loc = "0" + loc;
 		}
@@ -47,7 +47,7 @@ public class Location {
 
 	public static String getLocationStringFromInt(int num) {
 		String loc = Integer.toBinaryString(num);
-		int zeros = Globals.N - loc.length();
+		int zeros = Globals.getN() - loc.length();
 		for (int j = 0; j < zeros; j++) {
 			loc = "0" + loc;
 		}

@@ -28,13 +28,13 @@ public class InfluenceMatrix {
 		    	if (!strLine.equals("")) { // in case there is an extra empty line at the end
 			        String[] result = strLine.split(",");
 			        // check policy choice size (cols)
-			        if (result.length != Globals.N) {
-			        	System.err.println("incorrect number of policy choices (too many columns " + Globals.N + "\t" + result.length + ")");
+			        if (result.length != Globals.getN()) {
+			        	System.err.println("incorrect number of policy choices (too many columns " + Globals.getN() + "\t" + result.length + ")");
 			        	System.exit(0);
 			        } 
 			        
 			        // check policy choice size (rows)
-			        if (line >= Globals.N) {
+			        if (line >= Globals.getN()) {
 			        	System.err.println("incorrect number of policy choices (too many rows)");
 			        	System.exit(0);
 			        }
@@ -50,7 +50,7 @@ public class InfluenceMatrix {
 			        	//System.out.println(result[x]);
 			        }
 			        //interdependencies.add(new Interdependence(line, temp));
-			        interdependencies.add(new Interdependence(line, Globals.N, temp));
+			        interdependencies.add(new Interdependence(line, Globals.getN(), temp));
 		    	}
 		    	line++;
 		    }

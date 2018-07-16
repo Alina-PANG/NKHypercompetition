@@ -8,13 +8,13 @@ public class Simulation {
 	private static Vector<Firm> firms; 
 //	private static Vector<Consumer> consumers; 
 	public static Landscape landscape;
-	private static String[] commonResourceConfig = new String[Globals.N];
+	private static String[] commonResourceConfig = new String[Globals.getN()];
 	
 	public static void main(String[] args) {
 		FileIO.loadParameters(args[0]);
 		// Globals.setInfMatFile(args[0]);
 		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
-		landscape  = new Landscape(0, new InfluenceMatrix(Globals.influenceMatrixFile));
+		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
 
 		// output fitness landscape
 		// for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
@@ -23,7 +23,7 @@ public class Simulation {
 
 		// INITIALIZE FIRMS 
 		firms = new Vector<Firm>();			
-		for (int i = 0; i < Globals.numFirms; i++) {
+		for (int i = 0; i < Globals.getNumFirms(); i++) {
 			firms.add(new Firm(i));
 		}
 
@@ -38,7 +38,7 @@ public class Simulation {
 		/**
 		 *  RUN ITERATIONS
 		 */
-		for (int t = 0; t < Globals.iterations; t++) {
+		for (int t = 0; t < Globals.getIterations(); t++) {
 			// System.out.print("ITERATION:\t" + t);
 			
 			for (Firm f : firms) {
@@ -83,9 +83,9 @@ public class Simulation {
 	}
 
 	private static void summarizeCommonResourceConfig() {
-		int[] configCounts = new int[Globals.N];
+		int[] configCounts = new int[Globals.getN()];
 		for (Firm f : firms) {
-			for (int i = 0; i < Globals.N; i++) {
+			for (int i = 0; i < Globals.getN(); i++) {
 		        switch (f.getResourceConfigAt(i)) {
 		        	case "0" : 
 		        		configCounts[i]--;
@@ -101,7 +101,7 @@ public class Simulation {
 		// configCounts[i] < 0 if 0 is most common,
 		// 				   > 0 if 1 is most common, 
 		//				   = 0 if 0 and 1 are equally likely
-		for (int i = 0; i < Globals.N; i++) {
+		for (int i = 0; i < Globals.getN(); i++) {
 			if (configCounts[i] < 0) {
 				commonResourceConfig[i] = "0";
 				

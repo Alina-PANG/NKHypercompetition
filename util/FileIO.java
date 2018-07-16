@@ -23,11 +23,13 @@ public class FileIO {
 				p.load(new FileInputStream(configFile));
 				// simulation parameters
 				if (p.getProperty("N") != null) { Globals.setN(Integer.parseInt(p.getProperty("N"))); }
-				if (p.getProperty("numResources") != null) { Globals.setNumResources(Integer.parseInt(p.getProperty("numResources"))); }
+				if (p.getProperty("initResources") != null) { Globals.setInitResources(Integer.parseInt(p.getProperty("initResources"))); }
 				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
 				if (p.getProperty("numFirms") != null) { Globals.setNumFirms(Integer.parseInt(p.getProperty("numFirms"))); }
 				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
-				if (p.getProperty("adaptation") != null) { Globals.setAdaptation(p.getProperty("adaptation")); }
+				// if (p.getProperty("adaptation") != null) { Globals.setAdaptation(p.getProperty("adaptation")); }
+				if (p.getProperty("digitization") != null) { Globals.setDigitization(Double.parseDouble(p.getProperty("digitization"))); }
+				if (p.getProperty("resourcesIncrement") != null) { Globals.setResourcesIncrement(Integer.parseInt(p.getProperty("resourcesIncrement"))); }
 				if (p.getProperty("outfile") != null) { Globals.setOutfile(p.getProperty("outfile")); }
 					else { Globals.setOutfile(""); }
 					
@@ -40,10 +42,12 @@ public class FileIO {
 	
 	public static void printParameters() {
 		System.out.println("N: " + Globals.getN());
-		System.out.println("numResources: " + Globals.getNumResources());
+		System.out.println("initResources: " + Globals.getInitResources());
 		System.out.println("numFirms: " + Globals.getNumFirms());
 		System.out.println("iterations: " + Globals.getIterations());
-		System.out.println("adaptation: " + Globals.getAdaptation());
+		System.out.println("digitization: " + Globals.getDigitization());
+		System.out.println("resourcesIncrement: " + Globals.getResourcesIncrement());
+		// System.out.println("adaptation: " + Globals.getAdaptation());
 		System.out.println("outfile: " + Globals.getOutfilename());
 	}
 

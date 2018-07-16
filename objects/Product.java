@@ -13,10 +13,10 @@ public class Product {
 	
 	// generate random product
 	public Product() {
-		resources = new boolean[Globals.N];
+		resources = new boolean[Globals.getN()];
 		int resourcesSet = 0;
-		while (resourcesSet < Globals.numResources) {
-			int r = Globals.rand.nextInt(Globals.N);
+		while (resourcesSet < Globals.getInitResources()) {
+			int r = Globals.rand.nextInt(Globals.getN());
 			if (!resources[r]) {
 				resourcesSet++;
 				resources[r] = true;
@@ -26,11 +26,11 @@ public class Product {
 
 	// generate random product of size numResources
 	public Product(int numResources) { 
-		resources = new boolean[Globals.N];
+		resources = new boolean[Globals.getN()];
 		
 		int resourcesSet = 0;
 		while (resourcesSet < numResources) {
-			int r = Globals.rand.nextInt(Globals.N);
+			int r = Globals.rand.nextInt(Globals.getN());
 			if (!resources[r]) {
 				resourcesSet++;
 				resources[r] = true;
@@ -40,7 +40,7 @@ public class Product {
 	}
 
 	public Product(int[] indices) {
-		resources = new boolean[Globals.N];
+		resources = new boolean[Globals.getN()];
 		for (int i = 0; i < indices.length; i++) {
 			resources[indices[i]] = true;
 		}
