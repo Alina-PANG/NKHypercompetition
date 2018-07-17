@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+# Temp test code
+Test.java
+
 # Log file
 *.log
 
