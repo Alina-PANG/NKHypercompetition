@@ -32,6 +32,7 @@ public class Location {
 				retString += location[i % Globals.getN()];
 			}
 		}
+		// System.out.println(index + "\t" + retString);
 		return retString;
 	}
 

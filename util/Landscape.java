@@ -140,17 +140,36 @@ public class Landscape {
 			}
 			// System.out.print(config[i]);
 		}
-		//System.out.println();
+
 		Location loc = new Location(config);
+
+		/* 
+		 * the case where all resources (even those that aren't used by the firm) contribute to fitness
+		 */
+		// for (int i = 0; i < Globals.getN(); i++) {
+		// 	String s = loc.getLocationAt(i, im);
+		// 	fitness += getFitnessContribution(s, i);
+		// }
+		// fitness = fitness / Globals.getN();
+
+		/* 
+		 * the case where only resources used by the firm contribute to fitness
+		 */
+
 		for (int i = 0; i < Globals.getN(); i++) {
 			String s = loc.getLocationAt(i, im);
-			double d = getFitnessContribution(s, i);
-			fitness += d;
+			if (!resConfig[i].equals(" ")) {
+				fitness += getFitnessContribution(s, i);
+			} 
 		}
 		fitness = fitness / Globals.getN();
+		System.out.println(fitness);
+
+
 		// return fitness;
 		// Return Normalized fitness (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness)
-		return (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness);
+		// return (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness);
+		return (fitness / landscapeMaxFitness);
 	}
 	
 	/**

@@ -13,20 +13,21 @@ public class Globals {
 	public static long runID = System.currentTimeMillis(); // need?
 	public static MersenneTwisterFast rand = new MersenneTwisterFast(runID);
 
-	private static int N = 20;
-	private static int initResources = 4;
-	private static int numFirms = 100;
+	private static int N = 16;
+	private static int initResources = 3;
+	private static int numFirms = 1;
 	private static int numNeeds = 10;
 	private static int numConsumers = 10;
-	private static String influenceMatrixFile = "inf/matrix12.txt";
-	private static int iterations = 100;
+	private static String influenceMatrixFile = "inf/matrix16-3.txt";
+	private static int iterations = 3;
 	//public static String adaptation = "resources";
-	private static double digitization = 0.0d;
+	private static double innovation = 0.0d;
 	private static int resourcesIncrement = 1;
 	private static String search = "experiential";
+	private static String resourceDecision = "absolute";
+	private static double resourceThreshold = 0.0d;
 	private static int searchScope = 1;
-	private static String outfilename = "output.txt";
-
+	private static String outfilename = "testing.txt";
 
 	/* setters */
 
@@ -62,8 +63,33 @@ public class Globals {
 	// 	adaptation = adapt;
 	// }
 
-	public static void setDigitization(double d) {
-		digitization = d;
+	public static void setResourceDecision(String decision) {
+	    if (decision.equals("abs") || decision.equals("absolute") ) {
+	    	resourceDecision = "absolute";
+	    } else if (decision.equals("rel") || decision.equals("relative") ) {
+	    	resourceDecision = "relative";
+	    } else {
+	    	System.err.println("INCORRECT PARAMETER ERROR: resourceDecision (" + decision + ")must either be \"abs\" (absolute) or \"rel\" (relative)");
+	    	System.exit(0);
+	    } 
+	}
+
+	public static void setInnovation(double d) {
+		if ((d < 0.0d) || (d > 1.0d)) {
+	    	System.err.println("INCORRECT PARAMETER ERROR: innovation (" + d + ") must either be between 0 and 1 (inclusive)");
+	    	System.exit(0);
+	} else {
+			innovation = d;
+		}
+	}
+
+	public static void setResourceThreshold(double d) {
+		if ((d < 0.0d) || (d > 1.0d)) {
+	    	System.err.println("INCORRECT PARAMETER ERROR: resourceThreshold (" + d + ") must either be between 0 and 1 (inclusive)");
+	    	System.exit(0);
+	} else {
+			resourceThreshold = d;
+		}
 	}
 
 	public static void setResourcesIncrement(int n) {
@@ -71,7 +97,12 @@ public class Globals {
 	}
 
 	public static void setSearch(String s) {
-		search = s;
+	    if (s.equals("experiential") || s.equals("exhaustive") ) {
+	    	search = s;
+	    } else {
+	    	System.err.println("INCORRECT PARAMETER ERROR: search must either be \"experiential\" or \"rel\" (relative)");
+	    	System.exit(0);
+	    } 
 	}
 
 	public static void setSearchScope(int n) {
@@ -128,8 +159,8 @@ public class Globals {
 	// 	return adaptation;
 	// }
 
-	public static double getDigitization() {
-		return digitization;
+	public static double getInnovation() {
+		return innovation;
 	}
 
 	public static int getResourcesIncrement() {
@@ -142,6 +173,14 @@ public class Globals {
 
 	public static int getSearchScope() {
 		return searchScope;
+	}
+
+	public static String getResourceDecision() {
+		return resourceDecision;
+	}
+
+	public static double getResourceThreshold() {
+		return resourceThreshold;
 	}
 
 	public static String getOutfilename() {

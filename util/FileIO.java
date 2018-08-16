@@ -28,8 +28,11 @@ public class FileIO {
 				if (p.getProperty("numFirms") != null) { Globals.setNumFirms(Integer.parseInt(p.getProperty("numFirms"))); }
 				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
 				// if (p.getProperty("adaptation") != null) { Globals.setAdaptation(p.getProperty("adaptation")); }
-				if (p.getProperty("digitization") != null) { Globals.setDigitization(Double.parseDouble(p.getProperty("digitization"))); }
+				if (p.getProperty("innovation") != null) { Globals.setInnovation(Double.parseDouble(p.getProperty("innovation"))); }
 				if (p.getProperty("resourcesIncrement") != null) { Globals.setResourcesIncrement(Integer.parseInt(p.getProperty("resourcesIncrement"))); }
+				if (p.getProperty("searchScope") != null) { Globals.setSearchScope(Integer.parseInt(p.getProperty("searchScope"))); }
+				if (p.getProperty("resourceDecision") != null) { Globals.setResourceDecision(p.getProperty("resourceDecision")); }
+				if (p.getProperty("resourceThreshold") != null) { Globals.setResourceThreshold(Double.parseDouble(p.getProperty("resourceThreshold"))); }
 				if (p.getProperty("outfile") != null) { Globals.setOutfile(p.getProperty("outfile")); }
 					else { Globals.setOutfile(""); }
 					
@@ -45,9 +48,12 @@ public class FileIO {
 		System.out.println("initResources: " + Globals.getInitResources());
 		System.out.println("numFirms: " + Globals.getNumFirms());
 		System.out.println("iterations: " + Globals.getIterations());
-		System.out.println("digitization: " + Globals.getDigitization());
+		System.out.println("innovation: " + Globals.getInnovation());
 		System.out.println("resourcesIncrement: " + Globals.getResourcesIncrement());
+		System.out.println("searchScope: " + Globals.getSearchScope());
 		// System.out.println("adaptation: " + Globals.getAdaptation());
+		System.out.println("resourceDecision: " + Globals.getResourceDecision());
+		System.out.println("resourceThreshold: " + Globals.getResourceThreshold());
 		System.out.println("outfile: " + Globals.getOutfilename());
 	}
 

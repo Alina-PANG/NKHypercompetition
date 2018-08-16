@@ -15,6 +15,7 @@ public class Interdependence {
 			if (dependencies[i] == true) { count++; }
 		}
 		k = count - 1;
+		// System.out.println(toString());
 	}
 
 	public boolean isDependent(int idx) {

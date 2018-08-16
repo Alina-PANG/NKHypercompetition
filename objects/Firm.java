@@ -13,6 +13,7 @@ public class Firm implements Comparable<Firm> {
 	private String[] resourceConfig; // array of "0", "1" or " "
 	// private double fitness;
 	private int rank;
+	// NEED? dictionary of resource connections
 
 	// random firm with of Globals.numResources resources
 	public Firm() {
@@ -84,12 +85,14 @@ public class Firm implements Comparable<Firm> {
 	}
 
 
-	public void makeDecision() { // with digitization
+	public void makeDecision() { // with innovation
 		// addResource with prob then search -- i.e., search always happends 
-		if (Globals.getDigitization() >= Globals.rand.nextDouble()) {
-			for (int i = 0; i < Globals.getResourcesIncrement(); i++) {
-				addResource();
-			}
+		// how about drop resources?  -- for now, use the same probability (but independently drawn) to also drop
+		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+			dropResource();
+		} 
+		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+			addResource();
 		} 
 		if (Globals.getSearch().equals("experiential")) {
 			searchExperiential();
@@ -98,50 +101,118 @@ public class Firm implements Comparable<Firm> {
 		}
 	}
 
-	public void addResource() {
+	private void addResource() {
 		//double addResourceUtility = 0.0d;
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
 		
 		// get current number of resources available to the firm
-		int numResources = 0;
+		int numCurrentResources = 0;
 		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) { numResources++; }
+			if (resources[i]) { 
+				numCurrentResources++; 
+			}
 		}
-		//System.out.println("ResourceConfig: \n" + Globals.arrayToString(resourceConfig));
 
-		// add resource config
+		// add resource config: create copy of current resourceConfig
 		String[] addResourceConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
 
-		try {
-			int resourceToAdd = Globals.rand.nextInt(Globals.getN() - numResources);
-			int count = 0;
-			for (int i = 0; i < resources.length; i++) {
-				if (!resources[i]) {
-					if (count == resourceToAdd) {
-						// ADD RESOURCE WITH RANDOM SETTING 
-						// !! change to setting with higher utility?
-						addResourceConfig[i] = Integer.toString(Globals.rand.nextInt(2)); 
-						break;
+		// need to pick 
+		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources, Globals.getResourcesIncrement())) + 1;
+
+		// create copy of resources so that we can update 
+		boolean[] resourcesCopy = new boolean[Globals.getN()];
+		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
+
+		for (int j = 0; j < numResourcesToAdd; j++) {
+			try {
+				int resourceToAdd = Globals.rand.nextInt(Globals.getN() - numCurrentResources - j);
+				int count = 0;
+				for (int i = 0; i < resourcesCopy.length; i++) {
+					if (!resourcesCopy[i]) {
+						if (count == resourceToAdd) {
+							// ADD RESOURCE WITH RANDOM SETTING 
+							// !! change to setting with higher utility?
+							addResourceConfig[i] = Integer.toString(Globals.rand.nextInt(2)); 
+							resourcesCopy[i] = true;
+							break;
+						}
+						count++;
 					}
-					count++;
 				}
+			} catch (java.lang.IllegalArgumentException ex) {
+				// do nothing
 			}
+		}
 
-			//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
-			double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
+		double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
 
-			if (addResourceUtility > currentFitness) {
+		// ABSOLUTE VS. NORMALIZED DECISION MAKING
+		if (Globals.getResourceDecision().equals("absolute")) {
+			if (addResourceUtility > currentFitness + Globals.getResourceThreshold()) {
+				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+			} // else do nothing
+		} else {
+			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+			if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources)) {
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
-
-		} catch (java.lang.IllegalArgumentException ex) {
-			// do nothing
 		}
+		syncResources(); // resets bool resources[] 
 	}
 
-	public void searchExperiential() { // search one-off changes in existing resources
+	/* TODO */
+	private void dropResource() {
+		// FOR NOW WE'LL ONLY CONSIDER DROPPING 1 RESOURCE AT A TIME AND ONLY WHEN numCurrentResources > 2
+		//double addResourceUtility = 0.0d;
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
+		
+		// get current number of resources available to the firm
+		int numCurrentResources = 0;
+		for (int i = 0; i < resources.length; i++) {
+			if (resources[i]) { 
+				numCurrentResources++; 
+			}
+		}
+
+		// drop resource config: copy of current resourceConfig
+		String[] dropResourceConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
+
+		int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
+		int count = 0;
+		for (int i = 0; i < resources.length; i++) {
+			if (resources[i]) {
+				if (count == resourceToDrop) {
+					// ADD RESOURCE WITH RANDOM SETTING 
+					// !! change to setting with higher utility?
+					dropResourceConfig[i] = " ";
+					break;
+				}
+				count++;
+			}
+		}
+		
+		double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
+
+		// ABSOLUTE VS. NORMALIZED DECISION MAKING
+		if (Globals.getResourceDecision().equals("absolute")) {
+			if (dropResourceUtility < currentFitness - Globals.getResourceThreshold()) {
+				System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+			} // else do nothing
+		} else {
+			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+			if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources)) {
+				System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+			} // else  do nothing
+		}
+
+		syncResources(); // resets bool resources[] 
+	}
+
+	private void searchExperiential() { // search one-off changes in existing resources
 		//double addResourceUtility = 0.0d;
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
@@ -156,21 +227,35 @@ public class Firm implements Comparable<Firm> {
 		// search config
 		String[] searchConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
-		int resourceToChange = Globals.rand.nextInt(numResources); 
-		int count = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) {
-				if (count == resourceToChange) {
-					if (resourceConfig[i].equals("0")) { 
-						searchConfig[i] = "1";
-						break;
-					} else {
-						searchConfig[i] = "0";
-						break;
+		
+		// shouldn't always be long jumps, so can consider UP TO searchScope changes
+
+		// create copy of resources so that we can update 
+		boolean[] resourcesCopy = new boolean[Globals.getN()];
+		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
+
+		int numResourcesToChange = Globals.rand.nextInt(Globals.getSearchScope()) + 1;
+
+		for (int j = 0; j < numResourcesToChange; j++) {
+			int resourceToChange = Globals.rand.nextInt(numResources); 
+			int count = 0;
+			for (int i = 0; i < resources.length; i++) {
+				if (resourcesCopy[i]) {
+					if (count == resourceToChange) {
+						resourcesCopy[i] = false; // this way we know the current resource has been changed and won't be changed again
+						numResources--;
+						if (resourceConfig[i].equals("0")) { 
+							searchConfig[i] = "1";
+							break;
+						} else {
+							searchConfig[i] = "0";
+							break;
+						}
 					}
+					count++;
 				}
-				count++;
 			}
+
 		}
 
 		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
@@ -183,7 +268,11 @@ public class Firm implements Comparable<Firm> {
 		}
 	}
 
-	public void searchExhaustive() { // search one-off changes in existing resources
+	/* TODO
+		- implement searchScope so that long jumps are possible.  
+		- For now, we'll implement searchScope = 1 or 2 but if we need >3 then we'll likely need a more general approach with recursion
+	 */
+	private void searchExhaustive() { // search one-off changes in existing resources
 		//double addResourceUtility = 0.0d;
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
@@ -194,27 +283,61 @@ public class Firm implements Comparable<Firm> {
 			if (resources[i]) { numResources++; }
 		}
 		//System.out.println("ResourceConfig: \n" + Globals.arrayToString(resourceConfig));
-		
+
 		// search config
 		String[] bestSearchConfig = new String[Globals.getN()];
 		double bestAlternative = 0.0d;
-		for (int i = 0; i < resources.length; i++) {
-			String[] searchConfig = new String[Globals.getN()];
-			System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
+		
+		if (Globals.getSearchScope() == 1) {
+			for (int i = 0; i < resources.length; i++) {
+				String[] searchConfig = new String[Globals.getN()];
+				System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
 
-			if (resources[i]) {
-				if (resourceConfig[i].equals("0")) { 
-					searchConfig[i] = "1";
-				} else {
-					searchConfig[i] = "0";
-				}
-				if (Simulation.landscape.getFitness(searchConfig) > bestAlternative) {
-					System.arraycopy(searchConfig, 0, bestSearchConfig, 0, searchConfig.length);
-					bestAlternative = Simulation.landscape.getFitness(searchConfig);
+				if (resources[i]) {
+					if (resourceConfig[i].equals("0")) { 
+						searchConfig[i] = "1";
+					} else {
+						searchConfig[i] = "0";
+					}
+					if (Simulation.landscape.getFitness(searchConfig) > bestAlternative) {
+						System.arraycopy(searchConfig, 0, bestSearchConfig, 0, searchConfig.length);
+						bestAlternative = Simulation.landscape.getFitness(searchConfig);
+					}
 				}
 			}
+		} else if (Globals.getSearchScope() == 2) {
+			for (int i = 0; i > resources.length; i++) {
+				String[] searchConfig = new String[Globals.getN()];
+				System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
+				if (resources[i]) {
+					if (resourceConfig[i].equals("0")) { 
+						searchConfig[i] = "1";
+					} else {
+						searchConfig[i] = "0";
+					}
+					for (int j = 0; j > resources.length; j++) {
+						if (resources[j]) {
+							if (resourceConfig[j].equals("0")) { 
+								searchConfig[j] = "1";
+							} else {
+								searchConfig[j] = "0";
+							}
+						}
+						if (Simulation.landscape.getFitness(searchConfig) > bestAlternative) {
+							System.arraycopy(searchConfig, 0, bestSearchConfig, 0, searchConfig.length);
+							bestAlternative = Simulation.landscape.getFitness(searchConfig);
+						}
+					}
+				} 
+			}
+
+		} else {
+			// this shouldn't happen 
+	    	System.err.println("INCORRECT PARAMETER ERROR: searchScope must either be 1 or 2 (for now)");
+	    	System.exit(0);
 		}
 
+	
 		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
 		double bestSearchUtility = Simulation.landscape.getFitness(bestSearchConfig);
 
@@ -281,6 +404,10 @@ public class Firm implements Comparable<Firm> {
 		return Simulation.landscape.getFitness(resourceConfig);
 	}
 
+	public double getFitness(Landscape l) {
+		return l.getFitness(resourceConfig);
+	}
+
 	public void setRank(int aRank) {
 		rank = aRank;
 	}
@@ -301,6 +428,15 @@ public class Firm implements Comparable<Firm> {
 		}
 	}	
 
+	private void syncResources() {
+		for (int i = 0; i < resourceConfig.length; i++) {
+			if (resourceConfig[i].equals(" ")) {
+				resources[i] = false;
+			} else {
+				resources[i] = true;
+			}
+		}
+	}
 
 	public String toString() {
 		String retString = firmID + "\t" + getResourceConfigString();
