@@ -61,7 +61,7 @@ public class Firm implements Comparable<Firm> {
 		}
 	}
 	
-	// NO NEED FITNESS IS ALWAYS CALCULATED ON THE FLY
+	// NO NEED; FITNESS IS ALWAYS CALCULATED ON THE FLY
 	// public void initFitness() {
 	// 	fitness = Simulation.landscape.getFitness(resourceConfig);
 	// 	System.out.println("init: " + firmID + "\t" + this.getResourceConfigString() + "\t" + fitness);
@@ -119,7 +119,7 @@ public class Firm implements Comparable<Firm> {
 		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
 
 		// need to pick 
-		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources, Globals.getResourcesIncrement())) + 1;
+		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, Globals.getResourcesIncrement())) + 1;
 
 		// create copy of resources so that we can update 
 		boolean[] resourcesCopy = new boolean[Globals.getN()];
@@ -455,10 +455,10 @@ public class Firm implements Comparable<Firm> {
 		return retString;
 	}
 
+	/* for testing only */
 	public static void main(String[] args) {
 		// Firm f = new Firm();
 		// System.out.println(f.toString());
 		//f.makeDecision();
-
 	}
 }

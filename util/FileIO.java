@@ -44,6 +44,7 @@ public class FileIO {
 	}
 	
 	public static void printParameters() {
+		
 		System.out.println("N: " + Globals.getN());
 		System.out.println("initResources: " + Globals.getInitResources());
 		System.out.println("numFirms: " + Globals.getNumFirms());
