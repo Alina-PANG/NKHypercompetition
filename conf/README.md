@@ -46,5 +46,7 @@ innovation=0.0
 resourcesIncrement=1
 search=experiential
 searchScope=1
+resourceDecision=abs
+resourceThreshold=0.0
 outfile=testing.txt
 ```
