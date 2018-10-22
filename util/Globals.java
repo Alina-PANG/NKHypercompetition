@@ -25,7 +25,7 @@ public class Globals {
 	private static int resourcesIncrement = 1;
 	private static String search = "experiential";
 	private static String resourceDecision = "absolute";
-	private static double resourceThreshold = 0.0d;
+	private static double resourceThreshold = 0.05d;
 	private static int searchScope = 1;
 	private static String outfilename = "testing.txt";
 

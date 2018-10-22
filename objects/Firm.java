@@ -155,7 +155,7 @@ public class Firm implements Comparable<Firm> {
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-			if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources)) {
+			if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
 		}
@@ -204,7 +204,7 @@ public class Firm implements Comparable<Firm> {
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-			if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources)) {
+			if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
 				System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 			} // else  do nothing
 		}
