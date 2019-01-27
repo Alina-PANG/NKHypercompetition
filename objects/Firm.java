@@ -94,11 +94,15 @@ public class Firm implements Comparable<Firm> {
 		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
 			addResource();
 		} 
+		/* Jan 17 2019: searchExhaustive no longer implemented */
+		/*
 		if (Globals.getSearch().equals("experiential")) {
 			searchExperiential();
 		} else {
 			searchExhaustive();
 		}
+		*/
+		searchExperiential();
 	}
 
 	private void addResource() {
@@ -155,7 +159,8 @@ public class Firm implements Comparable<Firm> {
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-			if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
+			// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
+			if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {	
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
 		}
@@ -181,6 +186,7 @@ public class Firm implements Comparable<Firm> {
 		String[] dropResourceConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
 
+		// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
 		int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
 		int count = 0;
 		for (int i = 0; i < resources.length; i++) {
@@ -228,12 +234,11 @@ public class Firm implements Comparable<Firm> {
 		String[] searchConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
 		
-		// shouldn't always be long jumps, so can consider UP TO searchScope changes
-
 		// create copy of resources so that we can update 
 		boolean[] resourcesCopy = new boolean[Globals.getN()];
 		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
 
+		// shouldn't always be long jumps, so can consider UP TO searchScope changes
 		int numResourcesToChange = Globals.rand.nextInt(Globals.getSearchScope()) + 1;
 
 		for (int j = 0; j < numResourcesToChange; j++) {
@@ -261,17 +266,36 @@ public class Firm implements Comparable<Firm> {
 		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
 		double searchUtility = Simulation.landscape.getFitness(searchConfig);
 
-		if (searchUtility > currentFitness) {
+		// if (searchUtility > currentFitness) {
+		// 		System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
+		// }  else {
+		// 	// do nothing
+		// }
+
+		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
+		// [TODO] but how do we make it more costly for long jumps???
+		if (Globals.getResourceDecision().equals("absolute")) {
+			if (searchUtility > currentFitness + Globals.getResourceThreshold()) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-		}  else {
-			// do nothing
+			} // else do nothing
+		} else {
+			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+			// [NOTE] this is the same as ABSOLUTE except for multiplying of numResourcesToChange but the cost scale is a bit off
+			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*Globals.getResourceThreshold()) {
+				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
+			} // else  do nothing
 		}
+		// syncResources(); // resets bool resources[] -- NO NEED FOR SEARCH AS RESOURCECONFIG DOES NOT CHANGE
+
+
 	}
 
 	/* TODO
 		- implement searchScope so that long jumps are possible.  
 		- For now, we'll implement searchScope = 1 or 2 but if we need >3 then we'll likely need a more general approach with recursion
+		- Jan 17, 2019: We'll not implement searchExhaustive --> unrealistic
 	 */
+	/*
 	private void searchExhaustive() { // search one-off changes in existing resources
 		//double addResourceUtility = 0.0d;
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
@@ -347,7 +371,7 @@ public class Firm implements Comparable<Firm> {
 			// do nothing
 		}
 	}
-
+	*/
 
 	public String getResourceConfigAt(int idx) {
 		return resourceConfig[idx];
