@@ -275,13 +275,13 @@ public class Firm implements Comparable<Firm> {
 		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
 		// [TODO] but how do we make it more costly for long jumps???
 		if (Globals.getResourceDecision().equals("absolute")) {
-			if (searchUtility > currentFitness + Globals.getResourceThreshold()) {
+			if (searchUtility > currentFitness + Globals.getSearchThreshold()) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 			// [NOTE] this is the same as ABSOLUTE except for multiplying of numResourcesToChange but the cost scale is a bit off
-			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*Globals.getResourceThreshold()) {
+			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*Globals.getSearchThreshold()) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
 			} // else  do nothing
 		}

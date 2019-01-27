@@ -16,7 +16,8 @@ resourcesIncrement=<number of resources to add; integer greater or equal to 1>
 (defunct)search={experiential, exhaustive}
 searchScope=[1..2] NOT YET IMPLEMENTED
 resourceDecision={abs, rel}
-resourceThreshold=<minimum absolute increment in fitness required to adopt new resources>
+resourceThreshold=<minimum absolute increment in fitness required to adopt new resources or drop existing resources>
+searchThreshold=<minimum absolute increment in fitness required to adopt new configuration through search>
 outfile=<name of output file; if omitted, STDOUT will be used>
 (defunct)adaptation={search resources}
 ```
@@ -33,6 +34,7 @@ resourcesIncrement : number of new resources (up to) to adopt
 searchScope : max number of permutations of resource configurations to consider in search -- e.g., 1: incremental; >1: possibility of long jump
 resourceDecision : whether resource add/drop decisions follow an absolute threshold or a relative threshold.  If absolute, then increase/decrease in fitness must be greater/less than resourceThreshold (parameter) in order for the firm to adopt/drop the resource
 resourceThreshold : minimum / maximum increase / decrease in fitness required for firms to adopt / drop a new resource
+searchThreshold : minimum increase in fitness required for firms to adopt a new configuration through search
 ```
 
 # Default Values
@@ -46,6 +48,7 @@ innovation=0.0
 resourcesIncrement=1
 searchScope=1
 resourceDecision=abs
-resourceThreshold=0.0
+resourceThreshold=0.5
+searchThreshold=0.1
 outfile=testing.txt
 ```

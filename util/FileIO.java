@@ -33,6 +33,7 @@ public class FileIO {
 				if (p.getProperty("searchScope") != null) { Globals.setSearchScope(Integer.parseInt(p.getProperty("searchScope"))); }
 				if (p.getProperty("resourceDecision") != null) { Globals.setResourceDecision(p.getProperty("resourceDecision")); }
 				if (p.getProperty("resourceThreshold") != null) { Globals.setResourceThreshold(Double.parseDouble(p.getProperty("resourceThreshold"))); }
+				if (p.getProperty("searchThreshold") != null) { Globals.setSearchThreshold(Double.parseDouble(p.getProperty("searchThreshold"))); }
 				if (p.getProperty("outfile") != null) { Globals.setOutfile(p.getProperty("outfile")); }
 					else { Globals.setOutfile(""); }
 					

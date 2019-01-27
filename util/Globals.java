@@ -26,6 +26,7 @@ public class Globals {
 	private static String search = "experiential";
 	private static String resourceDecision = "absolute";
 	private static double resourceThreshold = 0.05d;
+	private static double searchThreshold = 0.02d;
 	private static int searchScope = 1;
 	private static String outfilename = "testing.txt";
 
@@ -89,6 +90,15 @@ public class Globals {
 	    	System.exit(0);
 	} else {
 			resourceThreshold = d;
+		}
+	}
+
+	public static void setSearchThreshold(double d) {
+		if ((d < 0.0d) || (d > 1.0d)) {
+	    	System.err.println("INCORRECT PARAMETER ERROR: searchThreshold (" + d + ") must either be between 0 and 1 (inclusive)");
+	    	System.exit(0);
+	} else {
+			searchThreshold = d;
 		}
 	}
 
@@ -181,6 +191,10 @@ public class Globals {
 
 	public static double getResourceThreshold() {
 		return resourceThreshold;
+	}
+
+	public static double getSearchThreshold() {
+		return searchThreshold;
 	}
 
 	public static String getOutfilename() {
