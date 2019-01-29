@@ -8,12 +8,14 @@ public class Simulation {
 	private static Vector<Firm> firms; 
 //	private static Vector<Consumer> consumers; 
 	public static Landscape landscape;
-	private static String[] commonResourceConfig = new String[Globals.getN()];
+	private static String[] commonResourceConfig;
 	
 	public static void main(String[] args) {
 		FileIO.loadParameters(args[0]);
 		// Globals.setInfMatFile(args[0]);
 		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
+		// Globals.printParameters();
+		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
 
 		// output fitness landscape
@@ -29,8 +31,8 @@ public class Simulation {
 
 		summarizeCommonResourceConfig();
 
-		//System.out.println("COMMON RES CONFIG:\t" + landscape.commonConfigToString());
-		//System.out.println(commonConfigToString());
+		// System.out.println("COMMON RES CONFIG:\t" + landscape.commonConfigToString());
+		// System.out.println(commonConfigToString());
 		// for (Firm f : firms) {
 		// 	System.out.println(f.toStringWithFitness(landscape));
 		// }
@@ -104,7 +106,6 @@ public class Simulation {
 		for (int i = 0; i < Globals.getN(); i++) {
 			if (configCounts[i] < 0) {
 				commonResourceConfig[i] = "0";
-				
 			} else if (configCounts[i] > 0) {
 				commonResourceConfig[i] = "1";
 			} else {

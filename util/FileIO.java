@@ -45,7 +45,6 @@ public class FileIO {
 	}
 	
 	public static void printParameters() {
-		
 		System.out.println("N: " + Globals.getN());
 		System.out.println("initResources: " + Globals.getInitResources());
 		System.out.println("numFirms: " + Globals.getNumFirms());
@@ -53,7 +52,7 @@ public class FileIO {
 		System.out.println("innovation: " + Globals.getInnovation());
 		System.out.println("resourcesIncrement: " + Globals.getResourcesIncrement());
 		System.out.println("searchScope: " + Globals.getSearchScope());
-		// System.out.println("adaptation: " + Globals.getAdaptation());
+		System.out.println("adaptation: " + Globals.getAdaptation());
 		System.out.println("resourceDecision: " + Globals.getResourceDecision());
 		System.out.println("resourceThreshold: " + Globals.getResourceThreshold());
 		System.out.println("outfile: " + Globals.getOutfilename());
