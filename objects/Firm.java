@@ -239,7 +239,8 @@ public class Firm implements Comparable<Firm> {
 		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
 
 		// shouldn't always be long jumps, so can consider UP TO searchScope changes
-		int numResourcesToChange = Globals.rand.nextInt(Globals.getSearchScope()) + 1;
+		// int numResourcesToChange = Globals.rand.nextInt(Globals.getSearchScope()) + 1;
+		int numResourcesToChange = Globals.getSearchScope() + 1;
 
 		for (int j = 0; j < numResourcesToChange; j++) {
 			int resourceToChange = Globals.rand.nextInt(numResources); 
