@@ -18,7 +18,7 @@ public class Landscape {
 		landscapeID = (long)lndscpID;
 		MersenneTwisterFast rnd = new MersenneTwisterFast(landscapeID);
 		im = inf;
-		//im.print();
+		// im.print();
 		cases = im.numCases(); // NEED?
 //		System.out.println("cases: " + cases);
 		fitnessContribs = new double[cases];
