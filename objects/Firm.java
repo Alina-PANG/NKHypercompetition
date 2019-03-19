@@ -181,41 +181,45 @@ public class Firm implements Comparable<Firm> {
 				numCurrentResources++; 
 			}
 		}
+		// System.out.println("numCurrentResources:" + numCurrentResources);
+		// if a firm has only 1 (last) resource, it cannot drop it.  
+		if (numCurrentResources > 1) {
+			// drop resource config: copy of current resourceConfig
+			String[] dropResourceConfig = new String[Globals.getN()];
+			System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
 
-		// drop resource config: copy of current resourceConfig
-		String[] dropResourceConfig = new String[Globals.getN()];
-		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
-
-		// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
-		int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
-		int count = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) {
-				if (count == resourceToDrop) {
-					// ADD RESOURCE WITH RANDOM SETTING 
-					// !! change to setting with higher utility?
-					dropResourceConfig[i] = " ";
-					break;
+			// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
+			int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
+			int count = 0;
+			for (int i = 0; i < resources.length; i++) {
+				if (resources[i]) {
+					if (count == resourceToDrop) {
+						// ADD RESOURCE WITH RANDOM SETTING 
+						// !! change to setting with higher utility?
+						dropResourceConfig[i] = " ";
+						break;
+					}
+					count++;
 				}
-				count++;
 			}
-		}
-		
-		double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
+			
+			double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
 
-		// ABSOLUTE VS. NORMALIZED DECISION MAKING
-		if (Globals.getResourceDecision().equals("absolute")) {
-			if (dropResourceUtility < currentFitness - Globals.getResourceThreshold()) {
-				System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
-			} // else do nothing
-		} else {
-			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-			if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
-				System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
-			} // else  do nothing
+			// ABSOLUTE VS. NORMALIZED DECISION MAKING
+			if (Globals.getResourceDecision().equals("absolute")) {
+				if (dropResourceUtility < currentFitness - Globals.getResourceThreshold()) {
+					System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+				} // else do nothing
+			} else {
+				// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+				if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
+					System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+				} // else  do nothing
+			}
+
+			syncResources(); // resets bool resources[] 
 		}
 
-		syncResources(); // resets bool resources[] 
 	}
 
 	private void searchExperiential() { // search one-off changes in existing resources
