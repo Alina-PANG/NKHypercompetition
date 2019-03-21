@@ -86,14 +86,9 @@ public class Firm implements Comparable<Firm> {
 
 
 	public void makeDecision() { // with innovation
-		// addResource with prob then search -- i.e., search always happends 
+		// addResource with prob then search -- i.e., search always happens 
 		// how about drop resources?  -- for now, use the same probability (but independently drawn) to also drop
-		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
-			dropResource();
-		} 
-		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
-			addResource();
-		} 
+
 		/* Jan 17 2019: searchExhaustive no longer implemented */
 		/*
 		if (Globals.getSearch().equals("experiential")) {
@@ -102,7 +97,84 @@ public class Firm implements Comparable<Firm> {
 			searchExhaustive();
 		}
 		*/
+
+		// [TODO] search first then consider add OR drop depending on which is better
 		searchExperiential();
+
+		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+		// 	dropResource();
+		// } 
+		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+		// 	addResource();
+		// } 
+		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+			String[] addResourceConfig = new String[Globals.getN()];
+			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
+			String[] dropResourceConfig = new String[Globals.getN()];
+			System.arraycopy(considerDropResource(), 0, dropResourceConfig, 0, dropResourceConfig.length);
+
+			double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+			double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
+			double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
+
+			int numCurrentResources = 0;
+			for (int i = 0; i < resources.length; i++) {
+				if (resources[i]) { 
+					numCurrentResources++; 
+				}
+			}
+
+			int numResourcesToAdd = 0; 
+			for (int i = 0; i < addResourceConfig.length; i++) {
+				if (!addResourceConfig[i].equals(" ")) { 
+					numResourcesToAdd++; 
+				}
+			}
+			numResourcesToAdd = numResourcesToAdd - numCurrentResources;
+
+			int numResourcesToDrop = 0; 
+			for (int i = 0; i < dropResourceConfig.length; i++) {
+				if (!dropResourceConfig[i].equals(" ")) { 
+					numResourcesToDrop++; 
+				}
+			}
+			numResourcesToDrop = numCurrentResources - numResourcesToDrop;
+
+
+
+			// ABSOLUTE VS. NORMALIZED DECISION MAKING
+			if (Globals.getResourceDecision().equals("absolute")) {
+				if (addResourceUtility - Globals.getResourceThreshold() > dropResourceUtility + Globals.getResourceThreshold()) {
+					// add is better
+					if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
+						// AND it's a good move
+						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+					}
+				} else {
+					// drop is better
+					if (dropResourceUtility - currentFitness + Globals.getResourceThreshold() > 0) {
+						// AND it's a good move
+						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+					}
+				}
+			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
+				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - Globals.getResourceThreshold() > (dropResourceUtility/(numCurrentResources - 1)) + Globals.getResourceThreshold()) {
+					// add is better 
+					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+					// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
+					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {	
+						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+					} // else  do nothing
+				} else {
+					// drop is better
+					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
+					if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
+						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+					} // else  do nothing
+				}
+			}
+			syncResources(); // resets bool resources[] 
+		} 
 	}
 
 	private void addResource() {
@@ -167,6 +239,53 @@ public class Firm implements Comparable<Firm> {
 		syncResources(); // resets bool resources[] 
 	}
 
+	private String[] considerAddResource() {
+		//double addResourceUtility = 0.0d;
+		// double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
+		
+		// get current number of resources available to the firm
+		int numCurrentResources = 0;
+		for (int i = 0; i < resources.length; i++) {
+			if (resources[i]) { 
+				numCurrentResources++; 
+			}
+		}
+
+		// add resource config: create copy of current resourceConfig
+		String[] addResourceConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
+
+		// need to pick 
+		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, Globals.getResourcesIncrement())) + 1;
+
+		// create copy of resources so that we can update 
+		boolean[] resourcesCopy = new boolean[Globals.getN()];
+		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
+
+		for (int j = 0; j < numResourcesToAdd; j++) {
+			try {
+				int resourceToAdd = Globals.rand.nextInt(Globals.getN() - numCurrentResources - j);
+				int count = 0;
+				for (int i = 0; i < resourcesCopy.length; i++) {
+					if (!resourcesCopy[i]) {
+						if (count == resourceToAdd) {
+							// ADD RESOURCE WITH RANDOM SETTING 
+							// !! change to setting with higher utility?
+							addResourceConfig[i] = Integer.toString(Globals.rand.nextInt(2)); 
+							resourcesCopy[i] = true;
+							break;
+						}
+						count++;
+					}
+				}
+			} catch (java.lang.IllegalArgumentException ex) {
+				// do nothing
+			}
+		}
+		return addResourceConfig;
+	}
+
 	/* TODO */
 	private void dropResource() {
 		// FOR NOW WE'LL ONLY CONSIDER DROPPING 1 RESOURCE AT A TIME AND ONLY WHEN numCurrentResources > 2
@@ -181,12 +300,13 @@ public class Firm implements Comparable<Firm> {
 				numCurrentResources++; 
 			}
 		}
+		// drop resource config: copy of current resourceConfig
+		String[] dropResourceConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
+
 		// System.out.println("numCurrentResources:" + numCurrentResources);
 		// if a firm has only 1 (last) resource, it cannot drop it.  
 		if (numCurrentResources > 1) {
-			// drop resource config: copy of current resourceConfig
-			String[] dropResourceConfig = new String[Globals.getN()];
-			System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
 
 			// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
 			int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
@@ -220,6 +340,45 @@ public class Firm implements Comparable<Firm> {
 			syncResources(); // resets bool resources[] 
 		}
 
+	}
+
+	private String[] considerDropResource() {
+		// FOR NOW WE'LL ONLY CONSIDER DROPPING 1 RESOURCE AT A TIME AND ONLY WHEN numCurrentResources > 2
+		//double addResourceUtility = 0.0d;
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
+		
+		// get current number of resources available to the firm
+		int numCurrentResources = 0;
+		for (int i = 0; i < resources.length; i++) {
+			if (resources[i]) { 
+				numCurrentResources++; 
+			}
+		}
+		// drop resource config: copy of current resourceConfig
+		String[] dropResourceConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
+
+		// System.out.println("numCurrentResources:" + numCurrentResources);
+		// if a firm has only 1 (last) resource, it cannot drop it.  
+		if (numCurrentResources > 1) {
+
+			// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
+			int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
+			int count = 0;
+			for (int i = 0; i < resources.length; i++) {
+				if (resources[i]) {
+					if (count == resourceToDrop) {
+						// ADD RESOURCE WITH RANDOM SETTING 
+						// !! change to setting with higher utility?
+						dropResourceConfig[i] = " ";
+						break;
+					}
+					count++;
+				}
+			}			
+		}
+		return dropResourceConfig;
 	}
 
 	private void searchExperiential() { // search one-off changes in existing resources
