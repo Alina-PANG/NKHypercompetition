@@ -107,6 +107,7 @@ public class Firm implements Comparable<Firm> {
 		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
 		// 	addResource();
 		// } 
+
 		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
 			String[] addResourceConfig = new String[Globals.getN()];
 			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
@@ -144,7 +145,7 @@ public class Firm implements Comparable<Firm> {
 
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
 			if (Globals.getResourceDecision().equals("absolute")) {
-				if (addResourceUtility - Globals.getResourceThreshold() > dropResourceUtility + Globals.getResourceThreshold()) {
+				if (addResourceUtility > dropResourceUtility) {
 					// add is better
 					if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
 						// AND it's a good move
@@ -152,7 +153,7 @@ public class Firm implements Comparable<Firm> {
 					}
 				} else {
 					// drop is better
-					if (dropResourceUtility - currentFitness + Globals.getResourceThreshold() > 0) {
+					if (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
 						// AND it's a good move
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					}
