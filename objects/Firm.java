@@ -145,19 +145,32 @@ public class Firm implements Comparable<Firm> {
 
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
 			if (Globals.getResourceDecision().equals("absolute")) {
-				if (addResourceUtility > dropResourceUtility) {
-					// add is better
-					if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
-						// AND it's a good move
+				// if (addResourceUtility > dropResourceUtility) {
+				// 	// add is better
+				// 	if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
+				// 		// AND it's a good move
+				// 		System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+				// 	}
+				// } else {
+				// 	// drop is better
+				// 	if (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
+				// 		// AND it's a good move
+				// 		System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+				// 	}
+				// }
+				// first consider if threshold has been met	by either add or drop
+				if ((addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) || (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0)) {
+					if (addResourceUtility > dropResourceUtility) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-					}
-				} else {
-					// drop is better
-					if (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
-						// AND it's a good move
+					} else {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					}
+				} else { // now consider if dropResourceUtility is performance enhancing
+					if (dropResourceUtility - currentFitness > 0) {
+						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);	
+					}
 				}
+				
 			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
 				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - Globals.getResourceThreshold() > (dropResourceUtility/(numCurrentResources - 1)) + Globals.getResourceThreshold()) {
 					// add is better 
