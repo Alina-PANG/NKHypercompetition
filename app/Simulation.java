@@ -24,7 +24,7 @@ public class Simulation {
 		// }
 
 		// INITIALIZE FIRMS 
-		firms = new Vector<Firm>();			
+		firms = new Vector<Firm>();	
 		for (int i = 0; i < Globals.getNumFirms(); i++) {
 			firms.add(new Firm(i));
 		}

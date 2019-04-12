@@ -22,3 +22,4 @@ This package implements a hypercompetition model using the NK Fitness Landscapes
 	- data analytics capabilities should make firms more likely to make better innovation (search) decisions
 	- OR, it could be competitive intelligence -- i.e., better knowledge of the market (understanding the market's resource usage) or better innovation performance (knowledge of higher utility producing search -- i.e., exhaustive search rather than experiential; or change multiple resources at one time instead of one at a time -- i.e., long jump) 
 - For equal 0s and 1s, don't adopt value randomly but the configuration that is owned by higher performing side 
+- 2019.04.12 - change config file format to allow heterogeneous firms in terms of number of initial resources 
