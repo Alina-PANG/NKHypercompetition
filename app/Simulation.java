@@ -22,11 +22,22 @@ public class Simulation {
 		// for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
 		// 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
 		// }
-
+		int firmID = 0; 
 		// INITIALIZE FIRMS 
 		firms = new Vector<Firm>();	
-		for (int i = 0; i < Globals.getNumFirms(); i++) {
-			firms.add(new Firm(i));
+		// for (int i = 0; i < Globals.getNumFirms(); i++) {
+		// 	firms.add(new Firm(i));
+		// }
+
+		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
+			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
+				firms.add(new Firm(firmID, Globals.getInitResourcesForType(i), 
+					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i), 
+					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i), 
+					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i), 
+					Globals.getResourceThresholdForType(i)));
+			}
+			firmID++;
 		}
 
 		summarizeCommonResourceConfig();

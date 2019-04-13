@@ -8,7 +8,18 @@ import app.*;
 public class Firm implements Comparable<Firm> {
 
 	private int firmID;
-	private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
+
+	// firm parameters
+	private int initResources;
+	private double innovation;
+	private int resourcesIncrement;
+	private int searchScope;
+	private double searchThreshold;
+	private String search;
+	private String resourceDecision;
+	private double resourceThreshold;
+
+	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
 	private boolean[] resources; 
 	private String[] resourceConfig; // array of "0", "1" or " "
 	// private double fitness;
@@ -17,14 +28,31 @@ public class Firm implements Comparable<Firm> {
 
 	// random firm with of Globals.numResources resources
 	public Firm() {
-		setResources(Globals.getInitResources());
+		setResources(Globals.getInitResourcesForType(0));
 		setResourceConfig();
 		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
 	
+	public Firm(int id, int anInitResources, double anInnovation, 
+		int anResourcesIncrement, int aSearchScope, double aSearchThreshold, 
+		String aSearch, String aResourceDecision, double aResourceThreshold) {
+		firmID = id;
+		initResources = anInitResources;
+		innovation = anInnovation;
+		resourcesIncrement = anResourcesIncrement;
+		searchScope = aSearchScope;
+		searchThreshold = aSearchThreshold;
+		search = aSearch;
+		resourceDecision = aResourceDecision;
+		resourceThreshold = aResourceThreshold;
+
+		setResources(initResources);
+		setResourceConfig();
+	}
+
 	public Firm(int id) {
 		firmID = id;
-		setResources(Globals.getInitResources());
+		setResources(Globals.getInitResourcesForType(0));
 		setResourceConfig();
 		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
@@ -108,7 +136,7 @@ public class Firm implements Comparable<Firm> {
 		// 	addResource();
 		// } 
 
-		if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
+		if (innovation >= Globals.rand.nextDouble()) {
 			String[] addResourceConfig = new String[Globals.getN()];
 			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
 			String[] dropResourceConfig = new String[Globals.getN()];
@@ -144,7 +172,7 @@ public class Firm implements Comparable<Firm> {
 
 
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
-			if (Globals.getResourceDecision().equals("absolute")) {
+			if (resourceDecision.equals("absolute")) {
 				// if (addResourceUtility > dropResourceUtility) {
 				// 	// add is better
 				// 	if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
@@ -159,7 +187,7 @@ public class Firm implements Comparable<Firm> {
 				// 	}
 				// }
 				// first consider if threshold has been met	by either add or drop
-				if ((addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) || (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0)) {
+				if ((addResourceUtility - currentFitness - resourceThreshold > 0) || (dropResourceUtility - currentFitness - resourceThreshold > 0)) {
 					if (addResourceUtility > dropResourceUtility) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 					} else {
@@ -172,17 +200,17 @@ public class Firm implements Comparable<Firm> {
 				}
 				
 			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
-				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - Globals.getResourceThreshold() > (dropResourceUtility/(numCurrentResources - 1)) + Globals.getResourceThreshold()) {
+				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - resourceThreshold > (dropResourceUtility/(numCurrentResources - 1)) + resourceThreshold) {
 					// add is better 
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 					// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
-					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {	
+					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + resourceThreshold) {	
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 					} // else  do nothing
 				} else {
 					// drop is better
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-					if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
+					if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - resourceThreshold) {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					} // else  do nothing
 				}
@@ -209,7 +237,7 @@ public class Firm implements Comparable<Firm> {
 		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
 
 		// need to pick 
-		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, Globals.getResourcesIncrement())) + 1;
+		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, resourcesIncrement)) + 1;
 
 		// create copy of resources so that we can update 
 		boolean[] resourcesCopy = new boolean[Globals.getN()];
@@ -239,14 +267,14 @@ public class Firm implements Comparable<Firm> {
 		double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
 
 		// ABSOLUTE VS. NORMALIZED DECISION MAKING
-		if (Globals.getResourceDecision().equals("absolute")) {
-			if (addResourceUtility > currentFitness + Globals.getResourceThreshold()) {
+		if (resourceDecision.equals("absolute")) {
+			if (addResourceUtility > currentFitness + resourceThreshold) {
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 			// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
-			if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {	
+			if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + resourceThreshold) {	
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
 		}
@@ -271,7 +299,7 @@ public class Firm implements Comparable<Firm> {
 		System.arraycopy(resourceConfig, 0, addResourceConfig, 0, resourceConfig.length);
 
 		// need to pick 
-		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, Globals.getResourcesIncrement())) + 1;
+		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, resourcesIncrement)) + 1;
 
 		// create copy of resources so that we can update 
 		boolean[] resourcesCopy = new boolean[Globals.getN()];
@@ -340,13 +368,13 @@ public class Firm implements Comparable<Firm> {
 			double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
 
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
-			if (Globals.getResourceDecision().equals("absolute")) {
-				if (dropResourceUtility < currentFitness - Globals.getResourceThreshold()) {
+			if (resourceDecision.equals("absolute")) {
+				if (dropResourceUtility < currentFitness - resourceThreshold) {
 					System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 				} // else do nothing
 			} else {
 				// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-				if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - Globals.getResourceThreshold()) {
+				if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - resourceThreshold) {
 					System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 				} // else  do nothing
 			}
@@ -416,7 +444,7 @@ public class Firm implements Comparable<Firm> {
 		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
 
 		// determine how many resrouces to change.
-		int numResourcesToChange = Globals.rand.nextInt(Globals.getSearchScope()) + 1;
+		int numResourcesToChange = Globals.rand.nextInt(searchScope) + 1;
 		// shouldn't always be long jumps, so can consider UP TO searchScope changes
 		// int numResourcesToChange = Globals.getSearchScope() + 1;
 		
@@ -454,14 +482,14 @@ public class Firm implements Comparable<Firm> {
 
 		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
 		// [TODO] but how do we make it more costly for long jumps???
-		if (Globals.getResourceDecision().equals("absolute")) {
-			if (searchUtility > currentFitness + Globals.getSearchThreshold()) {
+		if (resourceDecision.equals("absolute")) {
+			if (searchUtility > currentFitness + searchThreshold) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
 			} // else do nothing
 		} else {
 			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 			// [NOTE] this is the same as ABSOLUTE except for multiplying of numResourcesToChange but the cost scale is a bit off
-			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*Globals.getSearchThreshold()) {
+			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*searchThreshold) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
 			} // else  do nothing
 		}

@@ -109,7 +109,6 @@ public class Globals {
 			}
 			firmTypeNum++;
 		}
-
 	}
 	
 
@@ -214,6 +213,10 @@ public class Globals {
 			totalFirms += numFirms[i];
 		}
 		return totalFirms;
+	}
+
+	public static int getNumFirmTypes() {
+		return numFirmTypes;
 	}
 
 	public static int getNumFirmsForType(int i) {

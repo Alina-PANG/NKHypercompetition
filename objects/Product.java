@@ -15,7 +15,7 @@ public class Product {
 	public Product() {
 		resources = new boolean[Globals.getN()];
 		int resourcesSet = 0;
-		while (resourcesSet < Globals.getInitResources()) {
+		while (resourcesSet < Globals.getInitResourcesForType(0)) {
 			int r = Globals.rand.nextInt(Globals.getN());
 			if (!resources[r]) {
 				resourcesSet++;
