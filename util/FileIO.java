@@ -42,8 +42,8 @@ public class FileIO {
 				// if (p.getProperty("searchThreshold") != null) { Globals.setSearchThreshold(Double.parseDouble(p.getProperty("searchThreshold"))); }
 				
 				// FORMAT 2: firm parameters by type -- ecosystem == "heterogeneous" or "hetero"
-				if (p.getProperty("firms") != null) { Globals.setParameters(p.getProperty("firms")); }
-
+				if (p.getProperty("firms") != null) { Globals.setParameters(p.getProperty("firms")); } 
+					else { Globals.setParameters("1,3,0.0,1,1,0.1,abs,0.5"); } // defalut values for test
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 				e.printStackTrace();

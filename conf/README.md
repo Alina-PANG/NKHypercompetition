@@ -7,19 +7,20 @@
 # File Format
 ```
 N=<value of N>
-initResources=<number of resources to endow each firm at init>
-numFirms=<number of firms in ecosystem>
 influenceMatrixFile=<name of the influence matrix file; in the inf folder>
 iterations=<number of simulated time ticks to run>
-innovation=<extent of innovation; [0..1]>
-resourcesIncrement=<number of resources to add; integer greater or equal to 1>
-(defunct)search={experiential, exhaustive}
-searchScope=[1..2] NOT YET IMPLEMENTED
-resourceDecision={abs, rel}
-resourceThreshold=<minimum absolute increment in fitness required to adopt new resources or drop existing resources>
-searchThreshold=<minimum absolute increment in fitness required to adopt new configuration through search>
 outfile=<name of output file; if omitted, STDOUT will be used>
-(defunct)adaptation={search resources}
+firms=<semi-colon (;) separated list of firm types; each firm type is characterized as a comma-separated list consisting of numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold>
+~~initResources=<number of resources to endow each firm at init>~~
+~~numFirms=<number of firms in ecosystem>~~
+~~innovation=<extent of innovation; [0..1]>~~
+~~resourcesIncrement=<number of resources to add; integer greater or equal to 1>~~
+~~(defunct)search={experiential, exhaustive}~~
+~~searchScope=[1..]~~
+~~resourceDecision={abs, rel}~~
+~~resourceThreshold=<minimum absolute increment in fitness required to adopt new resources or drop existing resources>~~
+~~searchThreshold=<minimum absolute increment in fitness required to adopt new configuration through search>~~
+~~(defunct)adaptation={search resources}~~
 ```
 
 # Parameter explanation
@@ -40,15 +41,28 @@ searchThreshold : minimum increase in fitness required for firms to adopt a new 
 # Default Values
 ```
 N=16
-initResources=3
-numFirms=1
 influenceMatrixFile=matrix16-3
-iterations=3
-innovation=0.0
-resourcesIncrement=1
-searchScope=1
-resourceDecision=abs
-resourceThreshold=0.5
-searchThreshold=0.1
 outfile=testing.txt
+iterations=3
+firms=1,3,0.0,1,1,0.1,abs,0.5;1,10,0.0,1,5,0.1,abs,0.5
+
+i.e.,: 
+firm type 1:
+	numFirms=1
+	initResources=3
+	innovation=0.0
+	resourcesIncrement=1
+	searchScope=1
+	searchThreshold=0.1
+	resourceDecision=abs
+	resourceThreshold=0.5
+firm type 2:
+	numFirms=1
+	initResources=10
+	innovation=0.0
+	resourcesIncrement=1
+	searchScope=5
+	searchThreshold=0.1
+	resourceDecision=abs
+	resourceThreshold=0.5
 ```

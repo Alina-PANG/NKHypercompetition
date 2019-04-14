@@ -10,6 +10,7 @@ public class Firm implements Comparable<Firm> {
 	private int firmID;
 
 	// firm parameters
+	private int firmType;
 	private int initResources;
 	private double innovation;
 	private int resourcesIncrement;
@@ -33,9 +34,10 @@ public class Firm implements Comparable<Firm> {
 		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
 	
-	public Firm(int id, int anInitResources, double anInnovation, 
+	public Firm(int aType, int id, int anInitResources, double anInnovation, 
 		int anResourcesIncrement, int aSearchScope, double aSearchThreshold, 
 		String aSearch, String aResourceDecision, double aResourceThreshold) {
+		firmType = aType;
 		firmID = id;
 		initResources = anInitResources;
 		innovation = anInnovation;
@@ -671,7 +673,15 @@ public class Firm implements Comparable<Firm> {
 	}
 
 	public String toString() {
-		String retString = firmID + "\t" + getResourceConfigString();
+		String retString = "firmType (" + firmType + ")\t";
+		retString += "firmID (" + firmID + ")\t";
+		retString += "initResources (" + initResources + ")\t";
+		retString += "innovation (" + innovation + ")\t";
+		retString += "resourcesIncrement (" + resourcesIncrement + ")\t";
+		retString += "searchScope (" + searchScope + ")\t";
+		retString += "searchThreshold (" + searchThreshold + ")\t";
+		retString += "resourceDecision (" + resourceDecision + ")\t";
+		retString += "resourceThreshold (" + resourceThreshold + ")\t" + getResourceConfigString();
 		return retString;
 	}
 

@@ -31,13 +31,13 @@ public class Simulation {
 
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
-				firms.add(new Firm(firmID, Globals.getInitResourcesForType(i), 
+				firms.add(new Firm(i, firmID, Globals.getInitResourcesForType(i), 
 					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i), 
 					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i), 
 					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i), 
 					Globals.getResourceThresholdForType(i)));
+				firmID++;
 			}
-			firmID++;
 		}
 
 		summarizeCommonResourceConfig();
@@ -45,7 +45,7 @@ public class Simulation {
 		// System.out.println("COMMON RES CONFIG:\t" + landscape.commonConfigToString());
 		// System.out.println(commonConfigToString());
 		// for (Firm f : firms) {
-		// 	System.out.println(f.toStringWithFitness(landscape));
+		// 	System.out.println(f.toString());
 		// }
 
 		/**
