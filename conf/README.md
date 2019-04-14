@@ -11,16 +11,16 @@ influenceMatrixFile=<name of the influence matrix file; in the inf folder>
 iterations=<number of simulated time ticks to run>
 outfile=<name of output file; if omitted, STDOUT will be used>
 firms=<semi-colon (;) separated list of firm types; each firm type is characterized as a comma-separated list consisting of numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold>
-~~initResources=<number of resources to endow each firm at init>~~
-~~numFirms=<number of firms in ecosystem>~~
-~~innovation=<extent of innovation; [0..1]>~~
-~~resourcesIncrement=<number of resources to add; integer greater or equal to 1>~~
-~~(defunct)search={experiential, exhaustive}~~
-~~searchScope=[1..]~~
-~~resourceDecision={abs, rel}~~
-~~resourceThreshold=<minimum absolute increment in fitness required to adopt new resources or drop existing resources>~~
-~~searchThreshold=<minimum absolute increment in fitness required to adopt new configuration through search>~~
-~~(defunct)adaptation={search resources}~~
+(defunct)initResources=<number of resources to endow each firm at init>
+(defunct)numFirms=<number of firms in ecosystem>
+(defunct)innovation=<extent of innovation; [0..1]>
+(defunct)resourcesIncrement=<number of resources to add; integer greater or equal to 1>
+(defunct)(defunct)search={experiential, exhaustive}
+(defunct)searchScope=[1..]
+(defunct)resourceDecision={abs, rel}
+(defunct)resourceThreshold=<minimum absolute increment in fitness required to adopt new resources or drop existing resources>
+(defunct)searchThreshold=<minimum absolute increment in fitness required to adopt new configuration through search>
+(defunct)adaptation={search resources}
 ```
 
 # Parameter explanation
