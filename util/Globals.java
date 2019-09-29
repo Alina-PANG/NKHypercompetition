@@ -1,6 +1,8 @@
 package util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Globals {
@@ -17,6 +19,7 @@ public class Globals {
 	private static String influenceMatrixFile = "inf/matrix16-3.txt";
 	private static int iterations = 3;
 	private static int numFirmTypes;
+	private static List<String[]> sharedResources;
 
 	// not used
 	private static int numNeeds = 10;
@@ -35,6 +38,21 @@ public class Globals {
 	private static double[] resourceThreshold; // = 0.05d;
 	private static double[] searchThreshold; // = 0.02d;
 	private static int[] searchScope; // = 1;
+
+	// [EDITED] manage shared resources from all firms
+	public Globals() {
+		sharedResources = new ArrayList<String[]>();
+	}
+	public static void addSharedResources(String[] resources){
+		sharedResources.add(resources);
+	}
+	public static String[] getSharedResources(int index){
+		return sharedResources.get(index);
+	}
+	public static int getSharedResourcesSize(){
+		return sharedResources.size();
+	}
+	// FINISHED
 
 	/* setters */
 	/** SIMULATION PARAMETERS */

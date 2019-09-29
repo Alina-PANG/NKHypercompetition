@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import util.Globals;
 import util.Landscape;
 import app.*;
+import util.MersenneTwisterFast;
 
 public class Firm implements Comparable<Firm> {
 
@@ -23,8 +24,15 @@ public class Firm implements Comparable<Firm> {
 	private String resourceDecision;
 	private double resourceThreshold;
 
+	// [EDITED] shared resources firm attributes declaration
+	private boolean isSharingOwnRes;
+	private int[] sharedResIndexToUse;
+	private Set<Integer> nonControllableIndex;
+	private int[][] sharedOwnResIndex;
+	private static final int MAX_SHARED_INDEX = 2;
+
 	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
-	protected Boolean[] resources;
+	private Boolean[] resources;
 	private String[] resourceConfig; // array of "0", "1" or " "
 	// private double fitness;
 	private int rank;
@@ -36,6 +44,34 @@ public class Firm implements Comparable<Firm> {
 		setResourceConfig();
 		// fitness = Simulation.landscape.getFitness(resourceConfig);
 	}
+
+	// [EDITED] constructor
+	// assume one company only use the shared resource from another companies
+	// those resources will be at the beginning of their own resource array
+	public Firm(int aType, int id, int anInitResources, int[] sharedResIndexToUse,int[][] sharedOwnResIndex, boolean isSharingOwnRes, double anInnovation,
+				int anResourcesIncrement, int aSearchScope, double aSearchThreshold,
+				String aSearch, String aResourceDecision, double aResourceThreshold) {
+		firmType = aType;
+		firmID = id;
+		initResources = anInitResources;
+		innovation = anInnovation;
+		resourcesIncrement = anResourcesIncrement;
+		searchScope = aSearchScope;
+		searchThreshold = aSearchThreshold;
+		search = aSearch;
+		resourceDecision = aResourceDecision;
+		resourceThreshold = aResourceThreshold;
+
+		this.sharedResIndexToUse = sharedResIndexToUse;
+		this.nonControllableIndex = new HashSet<Integer>();
+		this.sharedOwnResIndex = sharedOwnResIndex;
+
+		setResources(initResources);
+		setResourceConfig(initResources, sharedResIndexToUse);
+		if(isSharingOwnRes)
+			shareOwnRes();
+	}
+	// FINISHED
 	
 	public Firm(int aType, int id, int anInitResources, double anInnovation, 
 		int anResourcesIncrement, int aSearchScope, double aSearchThreshold, 
@@ -93,6 +129,70 @@ public class Firm implements Comparable<Firm> {
 			}
 		}
 	}
+
+
+	// [EDITED] assign shared resources to use: by default only use one set of shared resources
+	private void assignSharedResToUse(int[] sharedResIndexToUse){
+		MersenneTwisterFast rnd = new MersenneTwisterFast(Globals.getSharedResourcesSize());
+		int d = rnd.nextInt();
+		sharedResIndexToUse = new int[]{d};
+	}
+
+	private void setResourceConfig(int size, int[] sharedResIndexToUse){
+		if(sharedResIndexToUse == null){
+			assignSharedResToUse(sharedResIndexToUse);
+		}
+		setResourceConfig();
+		int j = 0;
+		for(int i: sharedResIndexToUse){
+			if(i >= Globals.getSharedResourcesSize()) continue;
+			String[] temp = Globals.getSharedResources(i);
+			for(String t: temp){
+				if(temp.equals(" ")) continue;
+				nonControllableIndex.add(i);
+				resourceConfig[j] = t;
+				resources[j] = true;
+				j ++;
+			}
+		}
+	}
+
+	private void initializeSharedOwnResIndex(){
+		// maximum share 3 bundles
+		MersenneTwisterFast rnd = new MersenneTwisterFast(MAX_SHARED_INDEX);
+		int numOfSharedBundles = rnd.nextInt() + 1;
+		sharedOwnResIndex = new int[numOfSharedBundles][2];
+
+		MersenneTwisterFast rnd2 = new MersenneTwisterFast(resources.length);
+		// allow overlaps in each bundle group
+		for(int i = 0; i < numOfSharedBundles; i ++){
+			int s = rnd2.nextInt();
+			int e = rnd2.nextInt();
+			while(e == s){e = rnd2.nextInt();}
+			sharedOwnResIndex[i] = new int[]{Math.min(s, e), Math.max(s, e)};
+		}
+	}
+
+	private void shareOwnRes(){
+		if(sharedOwnResIndex == null){
+			initializeSharedOwnResIndex();
+		}
+
+		if(isSharingOwnRes){
+			for(int[] i: sharedOwnResIndex){
+				// i[1]: end index; i[0]: start index
+				String[] sharedBundle = new String[i[1]];
+				for(int j = 0; j <  i[0]; j ++){
+					sharedBundle[j] = " ";
+				}
+				for(int j = i[0]; j < i[1]; j++){
+					sharedBundle[j] = resourceConfig[j];
+				}
+				Globals.addSharedResources(sharedBundle);
+			}
+		}
+	}
+	// FINISHED
 	
 	// NO NEED; FITNESS IS ALWAYS CALCULATED ON THE FLY
 	// public void initFitness() {
@@ -116,6 +216,33 @@ public class Firm implements Comparable<Firm> {
 	public boolean isValidResources(int idx) {
 		return resources[idx];
 	}
+
+	// EDITED: make decision - whether to use or not to use resources (NEED? whether to share or not to share the resources)
+	public void makeResDecision(){
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		int optionSize = Globals.getSharedResourcesSize();
+		String[] maxConf = resourceConfig;
+		double maxFitness = 0;
+		for(int i = 0; i < optionSize; i ++){
+			String[] resConf = Globals.getSharedResources(i);
+			String[] tempConf = new String[resourceConfig.length];
+			System.arraycopy(tempConf, 0, resourceConfig, 0, resourceConfig.length);
+			for(int t = 0; t < resConf.length; t ++){
+				if(resConf[t].equals(" ")) continue;
+				tempConf[t] = resConf[t];
+			}
+			double tempFitness = Simulation.landscape.getFitness(tempConf);
+			if(tempFitness > maxFitness){
+				maxFitness = tempFitness;
+				maxConf = tempConf;
+			}
+		}
+		if(maxFitness > currentFitness){
+			resourceConfig = maxConf;
+		}
+		syncResources();
+	}
+	// FINISHED
 
 
 	public void makeDecision() { // with innovation
@@ -143,6 +270,7 @@ public class Firm implements Comparable<Firm> {
 		// } 
 
 		System.out.println("\n\nInnovation: "+innovation);
+		// Innovate by adding/removing resources, then decision making (absolute/normalize) to decide whether to adopt the changes
 		if (innovation >= Globals.rand.nextDouble()) {
 			String[] addResourceConfig = new String[Globals.getN()];
 			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
