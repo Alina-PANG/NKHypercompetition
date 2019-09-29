@@ -35,18 +35,31 @@ public class Simulation {
 
 
 		System.out.println(">>>>>>>>> Firm Lists:");
+
+		//EDITED
+		int[] sharedResIndexToUse = null;
+		int[][] sharedOwnResIndex = null;
+		boolean isSharingOwnRes = true;
+
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
+//				Firm f = new Firm(i, firmID, Globals.getInitResourcesForType(i),
+//					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i),
+//					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i),
+//					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i),
+//					Globals.getResourceThresholdForType(i));
 				Firm f = new Firm(i, firmID, Globals.getInitResourcesForType(i),
-					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i), 
-					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i), 
-					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i), 
-					Globals.getResourceThresholdForType(i));
+						sharedResIndexToUse, sharedOwnResIndex, isSharingOwnRes,
+						Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i),
+						Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i),
+						Globals.getSearchForType(i), Globals.getResourceDecisionForType(i),
+						Globals.getResourceThresholdForType(i));
 				firms.add(f);
 				firmID++;
 				System.out.println(f);
 			}
 		}
+		//FINISHED
 
 		summarizeCommonResourceConfig();
 
@@ -64,7 +77,8 @@ public class Simulation {
 			// System.out.print("ITERATION:\t" + t);
 
 			for (Firm f : firms) {
-				f.makeDecision();
+//				f.makeDecision();
+				f.makeResDecision();
 				 System.out.println(f.toStringWithFitness(landscape));
 			}
 			summarizeCommonResourceConfig();

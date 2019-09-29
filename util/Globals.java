@@ -40,19 +40,29 @@ public class Globals {
 	private static int[] searchScope; // = 1;
 
 	// [EDITED] manage shared resources from all firms
-	public Globals() {
-		sharedResources = new ArrayList<String[]>();
-	}
 	public static void addSharedResources(String[] resources){
+		if(sharedResources == null) sharedResources = new ArrayList<String[]>();
 		sharedResources.add(resources);
 	}
 	public static String[] getSharedResources(int index){
+		if(sharedResources == null) sharedResources = new ArrayList<String[]>();
 		return sharedResources.get(index);
 	}
 	public static int getSharedResourcesSize(){
+		if(sharedResources == null) sharedResources = new ArrayList<String[]>();
 		return sharedResources.size();
 	}
 	// FINISHED
+
+	public static List<String[]> getSharedResources() {
+		return sharedResources;
+	}
+
+	public static void setSharedResources(List<String[]> sharedResources) {
+		Globals.sharedResources = sharedResources;
+	}
+
+
 
 	/* setters */
 	/** SIMULATION PARAMETERS */
