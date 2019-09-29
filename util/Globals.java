@@ -1,9 +1,6 @@
 package util;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Globals {
@@ -53,13 +50,13 @@ public class Globals {
 		iterations = n;
 	}
 
-	public static void setOutfile(String file) {
-		outfilename = "out/" + file;
+	public static void setOutfile(String outfilename) {
 		try {
 			if (outfilename.equals("")) {
 				// System.out.println("setting STDOUT");
 				out = new PrintWriter(System.out, true);
 			} else {
+				File f = new File(outfilename);
 				out = new PrintWriter(new FileOutputStream(outfilename, true), true);
 			}
 		} catch (IOException io) {

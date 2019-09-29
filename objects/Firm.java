@@ -1,6 +1,9 @@
 package objects;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import util.Globals;
 import util.Landscape;
 import app.*;
@@ -21,7 +24,7 @@ public class Firm implements Comparable<Firm> {
 	private double resourceThreshold;
 
 	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
-	private boolean[] resources; 
+	protected Boolean[] resources;
 	private String[] resourceConfig; // array of "0", "1" or " "
 	// private double fitness;
 	private int rank;
@@ -70,7 +73,7 @@ public class Firm implements Comparable<Firm> {
 	// new firm with specific resources
 	public Firm(int id, int[] indices) {
 		firmID = id;
-		resources = new boolean[Globals.getN()];
+		resources = new Boolean[Globals.getN()];
 		for (int i = 0; i < indices.length; i++) {
 			resources[indices[i]] = true;
 		}
@@ -80,7 +83,7 @@ public class Firm implements Comparable<Firm> {
 	
 	// initialize firm resources
 	private void setResources(int size) {
-		resources = new boolean[Globals.getN()];
+		resources = new Boolean[Globals.getN()];
 		int resourcesSet = 0;
 		while (resourcesSet < size) {
 			int r = Globals.rand.nextInt(Globals.getN());
@@ -129,6 +132,7 @@ public class Firm implements Comparable<Firm> {
 		*/
 
 		// [TODO] search first then consider add OR drop depending on which is better
+		System.out.println("\n\nSearch Experiencial: ");
 		searchExperiential();
 
 		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
@@ -138,6 +142,7 @@ public class Firm implements Comparable<Firm> {
 		// 	addResource();
 		// } 
 
+		System.out.println("\n\nInnovation: "+innovation);
 		if (innovation >= Globals.rand.nextDouble()) {
 			String[] addResourceConfig = new String[Globals.getN()];
 			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
@@ -148,6 +153,7 @@ public class Firm implements Comparable<Firm> {
 			double addResourceUtility = Simulation.landscape.getFitness(addResourceConfig);
 			double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
 
+			System.out.println("current: "+currentFitness+", add: "+addResourceUtility+", drop: "+dropResourceUtility );
 			int numCurrentResources = 0;
 			for (int i = 0; i < resources.length; i++) {
 				if (resources[i]) { 
@@ -449,7 +455,9 @@ public class Firm implements Comparable<Firm> {
 		int numResourcesToChange = Globals.rand.nextInt(searchScope) + 1;
 		// shouldn't always be long jumps, so can consider UP TO searchScope changes
 		// int numResourcesToChange = Globals.getSearchScope() + 1;
-		
+		for(int i =0; i < searchConfig.length; i ++){
+			System.out.print(searchConfig[i]+", ");
+		}
 		// numResources could be smaller than numResourcesToChange so we need to cap it at numResources
 		for (int j = 0; j < Math.min(numResourcesToChange, numResources); j++) {
 			int resourceToChange = Globals.rand.nextInt(numResources); 
@@ -473,9 +481,14 @@ public class Firm implements Comparable<Firm> {
 
 		}
 
+		System.out.println("\n\nSearch Config: ");
+		for(int i =0; i < searchConfig.length; i ++){
+			System.out.print(searchConfig[i]+", ");
+		}
+
 		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
 		double searchUtility = Simulation.landscape.getFitness(searchConfig);
-
+		System.out.println("searchUtility:"+searchUtility);
 		// if (searchUtility > currentFitness) {
 		// 		System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
 		// }  else {
@@ -484,6 +497,7 @@ public class Firm implements Comparable<Firm> {
 
 		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
 		// [TODO] but how do we make it more costly for long jumps???
+		System.out.printf("currentFitness:%.0f, searchUtility: %.0f, searchThreshold:%.0f", currentFitness, searchUtility, searchThreshold);
 		if (resourceDecision.equals("absolute")) {
 			if (searchUtility > currentFitness + searchThreshold) {
 				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);

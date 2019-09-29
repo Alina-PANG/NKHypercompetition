@@ -1,6 +1,9 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import util.Globals;
 import util.MersenneTwisterFast;
 
@@ -221,7 +224,6 @@ public class Landscape {
 		// i.e., if space exists, remove entry and replace with combinations of 0/1 replacing the space
 		ArrayList<String> list = new ArrayList<String>(); 
 		list.add(locationString);
-		
 		boolean done = false;
 		while (!done) {
 			boolean found = false;
@@ -241,6 +243,7 @@ public class Landscape {
 						}
 					}
 					list.add(s0); list.add(s1);
+					System.out.printf("s0: %s, s1: %s \n ", s0, s1 );
 					break;
 				} 
 			} 

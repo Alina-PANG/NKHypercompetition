@@ -1,6 +1,9 @@
 package app;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import objects.*;
 import util.*;
 
@@ -11,7 +14,8 @@ public class Simulation {
 	private static String[] commonResourceConfig;
 	
 	public static void main(String[] args) {
-		FileIO.loadParameters(args[0]);
+		String filename = "conf/test1.conf";
+		FileIO.loadParameters(filename);
 		// Globals.setInfMatFile(args[0]);
 		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
 		// Globals.printParameters();
@@ -29,14 +33,18 @@ public class Simulation {
 		// 	firms.add(new Firm(i));
 		// }
 
+
+		System.out.println(">>>>>>>>> Firm Lists:");
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
-				firms.add(new Firm(i, firmID, Globals.getInitResourcesForType(i), 
+				Firm f = new Firm(i, firmID, Globals.getInitResourcesForType(i),
 					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i), 
 					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i), 
 					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i), 
-					Globals.getResourceThresholdForType(i)));
+					Globals.getResourceThresholdForType(i));
+				firms.add(f);
 				firmID++;
+				System.out.println(f);
 			}
 		}
 
@@ -51,25 +59,25 @@ public class Simulation {
 		/**
 		 *  RUN ITERATIONS
 		 */
+		System.out.println(">>>>>>>>> firm make decisions");
 		for (int t = 0; t < Globals.getIterations(); t++) {
 			// System.out.print("ITERATION:\t" + t);
-			
+
 			for (Firm f : firms) {
 				f.makeDecision();
-				// System.out.println(f.toStringWithFitness(landscape));
+				 System.out.println(f.toStringWithFitness(landscape));
 			}
 			summarizeCommonResourceConfig();
 
 			Collections.sort(firms);
-
-
+			System.out.println(">>>>>>>>> assign rankings: ");
 			// assign rankings
 			int currentRank = 1;
 			double currentFitness = 1.0d;
 			for (int i = 0; i < firms.size(); i++) {
 				Firm f = (Firm)firms.get(i);
 				double focalFitness = f.getFitness();
-				// System.out.println(focalFitness);
+				System.out.println( "focalFitness:"+ focalFitness);
 				if (currentFitness == focalFitness) {
 					f.setRank(currentRank);
 				} else {
@@ -79,11 +87,13 @@ public class Simulation {
 				}
 			}
 
+			System.out.println(">>>>>>>>> results: ");
 			// output results
 			for (Firm f : firms) {
 				// Globals.out.println(t + "\t" + f.toStringWithFitness(landscape));
 				Globals.out.println(t + "\t" + f.toStringFull(landscape));
 			}
+			System.out.println(">>>>>>>>> end ");
 		}
 		
 	}
