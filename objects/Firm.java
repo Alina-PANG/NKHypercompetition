@@ -25,6 +25,7 @@ public class Firm implements Comparable<Firm> {
 	private double resourceThreshold;
 
 	// [EDITED] shared resources firm attributes declaration
+	private HashSet<Integer> sharedRscComponents;
 	private boolean isSharingOwnRes;
 	private int[] sharedResIndexToUse;
 	private Set<Integer> nonControllableIndex;
@@ -48,6 +49,30 @@ public class Firm implements Comparable<Firm> {
 	// [EDITED] constructor
 	// assume one company only use the shared resource from another companies
 	// those resources will be at the beginning of their own resource array
+	public Firm(int aType, int id, int anInitResources, boolean isSharingOwnRes, double anInnovation,
+				int anResourcesIncrement, int aSearchScope, double aSearchThreshold,
+				String aSearch, String aResourceDecision, double aResourceThreshold) {
+		System.out.println(anInitResources);
+		firmType = aType;
+		firmID = id;
+		initResources = anInitResources;
+		innovation = anInnovation;
+		resourcesIncrement = anResourcesIncrement;
+		searchScope = aSearchScope;
+		searchThreshold = aSearchThreshold;
+		search = aSearch;
+		resourceDecision = aResourceDecision;
+		resourceThreshold = aResourceThreshold;
+		sharedRscComponents = new HashSet<>();
+
+		this.nonControllableIndex = new HashSet<Integer>();
+
+		setResources(initResources);
+		setResourceConfig();
+		if(isSharingOwnRes)
+			shareRes();
+	}
+	// ==========
 	public Firm(int aType, int id, int anInitResources, int[] sharedResIndexToUse,int[][] sharedOwnResIndex, boolean isSharingOwnRes, double anInnovation,
 				int anResourcesIncrement, int aSearchScope, double aSearchThreshold,
 				String aSearch, String aResourceDecision, double aResourceThreshold) {
@@ -134,6 +159,24 @@ public class Firm implements Comparable<Firm> {
 
 
 	// [EDITED] assign shared resources to use: by default only use one set of shared resources
+	private void shareRes(){
+		int[] globalRsc = Globals.getRscComponents();
+		for(int i = 0; i < globalRsc.length - 1; i ++){
+			int s = globalRsc[i];
+			int e = globalRsc[i + 1];
+			boolean haveAll = true;
+			for(int j = s; j < e; j ++){
+				if(!resources[j]) {
+					haveAll = false;
+					break;
+				}
+			}
+			if(haveAll){
+				this.sharedRscComponents.add(globalRsc[i]);
+			}
+		}
+	}
+	// =======
 	private void assignSharedResToUse(){
 		MersenneTwisterFast rnd = new MersenneTwisterFast();
 		if(Globals.getSharedResourcesSize() == 0) return;
@@ -185,7 +228,6 @@ public class Firm implements Comparable<Firm> {
 		if(sharedOwnResIndex == null){
 			initializeSharedOwnResIndex();
 		}
-
 		if(isSharingOwnRes){
 			for(int[] i: sharedOwnResIndex){
 				// i[1]: end index; i[0]: start index
@@ -226,6 +268,38 @@ public class Firm implements Comparable<Firm> {
 	}
 
 	// EDITED: make decision - whether to use or not to use resources (NEED? whether to share or not to share the resources)
+	public void makeResComponentDecision(){
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		Firm[] firms = Globals.getFirms();
+		for(Firm f: firms){
+			// [QUESTION] how to write this? using how many resources from other firms, and how to combine them?
+			HashSet<Integer> sharedC = f.getSharedRscComponents();
+			for(int i = 0; i < Globals.getRscComponents().length - 1; i ++){
+				int r = Globals.getRscComponents()[i];
+				if(sharedC.contains(r)){
+					int nextR = Globals.getRscComponents()[i + 1];
+					String[] rscConfig = new String[nextR - r];
+					for(int j = 0; j < nextR; j ++){
+								
+					}
+				}
+			}
+		}
+		syncResources();
+		shareRes();
+	}
+
+
+
+	public HashSet<Integer> getSharedRscComponents() {
+		return sharedRscComponents;
+	}
+
+	public void setSharedRscComponents(HashSet<Integer> sharedRscComponents) {
+		this.sharedRscComponents = sharedRscComponents;
+	}
+
+	// ====
 	public void makeResDecision(){
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		int optionSize = Globals.getSharedResourcesSize();

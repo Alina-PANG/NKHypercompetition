@@ -8,7 +8,8 @@ import objects.*;
 import util.*;
 
 public class Simulation {
-	private static Vector<Firm> firms; 
+	private static Vector<Firm> firms;
+	private static Firm[] allFirms;
 //	private static Vector<Consumer> consumers; 
 	public static Landscape landscape;
 	private static String[] commonResourceConfig;
@@ -36,10 +37,11 @@ public class Simulation {
 
 		System.out.println(">>>>>>>>> Firm Lists:");
 
-		//EDITED
+		//EDITED Initialize Dummy Data
 		int[] sharedResIndexToUse = null;
 		int[][] sharedOwnResIndex = null;
 		boolean isSharingOwnRes = true;
+		allFirms = new Firm[Globals.getNumFirms()];
 
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
@@ -59,6 +61,7 @@ public class Simulation {
 				System.out.println(f);
 			}
 		}
+		Globals.setFirms(allFirms);
 		//FINISHED
 
 		summarizeCommonResourceConfig();

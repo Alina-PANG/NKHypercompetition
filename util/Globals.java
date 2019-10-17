@@ -1,5 +1,7 @@
 package util;
 
+import objects.Firm;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,64 @@ public class Globals {
 	private static double[] searchThreshold; // = 0.02d;
 	private static int[] searchScope; // = 1;
 
-	// [EDITED] manage shared resources from all firms
+//	// [EDITED] manage shared resources from all firms
+	private static int[] rscComponents;
+	private static int numRscComponent;
+	private static Firm[] firms;
+
+
+	private static void generateNumRscComponent(){
+//		initResources = new int[]{1,2,12,1,1,1,2,1,1,1};
+		MersenneTwisterFast rnd = new MersenneTwisterFast();
+		numRscComponent = Math.abs(rnd.nextInt()) % (initResources.length/2); // [QUESTION] should I set min - max? randomize or user input?
+	}
+
+	public static void generateRscComponents(){
+		generateNumRscComponent();
+		if(numRscComponent == 0) return;
+		System.out.println("##### Number of Components: " + numRscComponent);
+		rscComponents = new int[numRscComponent + 1];
+		rscComponents[0] = 0;
+		MersenneTwisterFast rnd = new MersenneTwisterFast();
+		int left = initResources.length;
+		for(int i = 1; i < rscComponents.length - 1; i ++){
+			int t = Math.abs(rnd.nextInt());
+			t  = t % (left - (numRscComponent + 1 - i)) + 1;
+			left -= t;
+			rscComponents[i] = t;
+		}
+		rscComponents[rscComponents.length - 1] = left;
+		// calculate the cumulative sum
+		for(int i = 1; i < rscComponents.length; i ++){
+			rscComponents[i] += rscComponents[i - 1];
+		}
+		printRscComponent();
+	}
+
+	private static void printRscComponent(){
+		for(int c: rscComponents){
+			System.out.print(c+", ");
+		}
+		System.out.println();
+	}
+
+	public static int[] getRscComponents() {
+		return rscComponents;
+	}
+
+	public static void setRscComponents(int[] rscComponents) {
+		Globals.rscComponents = rscComponents;
+	}
+
+	public static Firm[] getFirms() {
+		return firms;
+	}
+
+	public static void setFirms(Firm[] firms) {
+		Globals.firms = firms;
+	}
+
+	// ======
 	public static void addSharedResources(String[] resources){
 		if(sharedResources == null) sharedResources = new ArrayList<String[]>();
 		sharedResources.add(resources);
@@ -52,6 +111,7 @@ public class Globals {
 		if(sharedResources == null) sharedResources = new ArrayList<String[]>();
 		return sharedResources.size();
 	}
+
 	// FINISHED
 
 	public static List<String[]> getSharedResources() {
