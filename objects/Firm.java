@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.util.Pair;
 import util.Globals;
 import util.Landscape;
 import app.*;
@@ -20,6 +21,7 @@ public class Firm implements Comparable<Firm> {
 	private int resourcesIncrement;
 	private int searchScope;
 	private double searchThreshold;
+	private double borrowOrSwitchingThreshold;
 	private String search;
 	private String resourceDecision;
 	private double resourceThreshold;
@@ -31,6 +33,8 @@ public class Firm implements Comparable<Firm> {
 	private Set<Integer> nonControllableIndex;
 	private int[][] sharedOwnResIndex;
 	private static final int MAX_SHARED_INDEX = 2;
+
+	private List<Pair<Firm, List<Integer>>> borrowedRsc;
 
 	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
 	private Boolean[] resources;
@@ -159,23 +163,6 @@ public class Firm implements Comparable<Firm> {
 
 
 	// [EDITED] assign shared resources to use: by default only use one set of shared resources
-	private void shareRes(){
-		int[] globalRsc = Globals.getRscComponents();
-		for(int i = 0; i < globalRsc.length - 1; i ++){
-			int s = globalRsc[i];
-			int e = globalRsc[i + 1];
-			boolean haveAll = true;
-			for(int j = s; j < e; j ++){
-				if(!resources[j]) {
-					haveAll = false;
-					break;
-				}
-			}
-			if(haveAll){
-				this.sharedRscComponents.add(globalRsc[i]);
-			}
-		}
-	}
 	// =======
 	private void assignSharedResToUse(){
 		MersenneTwisterFast rnd = new MersenneTwisterFast();
@@ -269,24 +256,24 @@ public class Firm implements Comparable<Firm> {
 
 	// EDITED: make decision - whether to use or not to use resources (NEED? whether to share or not to share the resources)
 	public void makeResComponentDecision(){
-		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
-		Firm[] firms = Globals.getFirms();
-		for(Firm f: firms){
-			// [QUESTION] how to write this? using how many resources from other firms, and how to combine them?
-			HashSet<Integer> sharedC = f.getSharedRscComponents();
-			for(int i = 0; i < Globals.getRscComponents().length - 1; i ++){
-				int r = Globals.getRscComponents()[i];
-				if(sharedC.contains(r)){
-					int nextR = Globals.getRscComponents()[i + 1];
-					String[] rscConfig = new String[nextR - r];
-					for(int j = 0; j < nextR; j ++){
-								
-					}
-				}
-			}
-		}
-		syncResources();
-		shareRes();
+//		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+//		Firm[] firms = Globals.getFirms();
+//		for(Firm f: firms){
+//			// [QUESTION] how to write this? using how many resources from other firms, and how to combine them?
+//			HashSet<Integer> sharedC = f.getSharedRscComponents();
+//			for(int i = 0; i < Globals.getRscComponents().length - 1; i ++){
+//				int r = Globals.getRscComponents()[i];
+//				if(sharedC.contains(r)){
+//					int nextR = Globals.getRscComponents()[i + 1];
+//					String[] rscConfig = new String[nextR - r];
+//					for(int j = 0; j < nextR; j ++){
+//
+//					}
+//				}
+//			}
+//		}
+//		syncResources();
+//		shareRes();
 	}
 
 
@@ -301,6 +288,8 @@ public class Firm implements Comparable<Firm> {
 
 	// ====
 	public void makeResDecision(){
+
+
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		int optionSize = Globals.getSharedResourcesSize();
 		String[] maxConf = resourceConfig;
@@ -405,6 +394,8 @@ public class Firm implements Comparable<Firm> {
 				// 	}
 				// }
 				// first consider if threshold has been met	by either add or drop
+
+
 				if ((addResourceUtility - currentFitness - resourceThreshold > 0) || (dropResourceUtility - currentFitness - resourceThreshold > 0)) {
 					if (addResourceUtility > dropResourceUtility) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
@@ -412,12 +403,14 @@ public class Firm implements Comparable<Firm> {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					}
 				} else { // now consider if dropResourceUtility is performance enhancing
+					// [question] why cost is not included here?
 					if (dropResourceUtility - currentFitness > 0) {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					}
 				}
 
 			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
+				// [question]: should the cost be 'random' or should it be a portion of 'the current fitness level'?
 				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - resourceThreshold > (dropResourceUtility/(numCurrentResources - 1)) + resourceThreshold) {
 					// add is better 
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
@@ -433,8 +426,72 @@ public class Firm implements Comparable<Firm> {
 					} // else  do nothing
 				}
 			}
-			syncResources(); // resets bool resources[] 
+			syncResources(); // resets bool resources[]
+
+			borrowOrSwitch();
 		}
+	}
+
+	private boolean haveComponent(List<Integer> component, Firm f){
+		Boolean[] rsc = f.getResources();
+		for(int i: component){
+			if(!rsc[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean canBorrowComponent(List<Integer> component){
+		for(int i: component){
+			if(resources[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// [fixme]
+	private void borrowOrSwitch(){
+		// decide on which component to borrow
+		List<List<Integer>> components = Globals.getRscComponents();
+		List<Integer> indexOfComponentToBorrow = new ArrayList<Integer>();
+		for(int i = 0; i < components.size(); i ++){
+			if(canBorrowComponent(components.get(i))) indexOfComponentToBorrow.add(i);
+		}
+		MersenneTwisterFast rnd = new MersenneTwisterFast();
+		int rIndex = Math.abs(rnd.nextInt())%indexOfComponentToBorrow.size();
+		rIndex = indexOfComponentToBorrow.get(rIndex);
+
+		List<Integer> componentToBorrow = components.get(rIndex);
+
+		// decide on which firm to borrow
+		List<Firm> firmCanLend = new ArrayList<>();
+		for(Firm f: Globals.getFirms()){
+			if(haveComponent(componentToBorrow, f)) firmCanLend.add(f);
+		}
+		int fIndex = Math.abs(rnd.nextInt())%firmCanLend.size();
+
+		// decide whether to perform the borrowing or not
+		borrowFromFirm(firmCanLend.get(fIndex), components.get(rIndex));
+
+		syncResources();
+	}
+
+	// [fixme]
+	private void borrowFromFirm(Firm f, List<Integer> rscIndex){
+
+		borrowOrSwitchingThreshold
+
+		borrowedRsc.add(new Pair<Firm, List<Integer>>(f, rscIndex));
+	}
+
+	public Boolean[] getResources() {
+		return resources;
+	}
+
+	public void setResources(Boolean[] resources) {
+		this.resources = resources;
 	}
 
 	private void addResource() {
@@ -496,7 +553,9 @@ public class Firm implements Comparable<Firm> {
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
 		}
-		syncResources(); // resets bool resources[] 
+		syncResources(); // resets bool resources[]
+
+		// // [fixme] check previous firms if they are borrowing my dropped resources: if yes, they need to drop their component as well
 	}
 
 	private String[] considerAddResource() {

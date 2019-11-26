@@ -42,7 +42,7 @@ public class Globals {
 	private static int[] searchScope; // = 1;
 
 //	// [EDITED] manage shared resources from all firms
-	private static int[] rscComponents;
+	private static List<List<Integer>> rscComponents;
 	private static int numRscComponent;
 	private static Firm[] firms;
 
@@ -50,44 +50,70 @@ public class Globals {
 	private static void generateNumRscComponent(){
 //		initResources = new int[]{1,2,12,1,1,1,2,1,1,1};
 		MersenneTwisterFast rnd = new MersenneTwisterFast();
-		numRscComponent = Math.abs(rnd.nextInt()) % (initResources.length/2); // [QUESTION] should I set min - max? randomize or user input?
+		numRscComponent = 4; // [EDITED] configurable by user
 	}
 
 	public static void generateRscComponents(){
+//		initResources = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 		generateNumRscComponent();
 		if(numRscComponent == 0) return;
 		System.out.println("##### Number of Components: " + numRscComponent);
-		rscComponents = new int[numRscComponent + 1];
-		rscComponents[0] = 0;
+		rscComponents = new ArrayList<List<Integer>>();
 		MersenneTwisterFast rnd = new MersenneTwisterFast();
-		int left = initResources.length;
-		for(int i = 1; i < rscComponents.length - 1; i ++){
-			int t = Math.abs(rnd.nextInt());
-			t  = t % (left - (numRscComponent + 1 - i)) + 1;
-			left -= t;
-			rscComponents[i] = t;
+		MersenneTwisterFast rnd2 = new MersenneTwisterFast();
+		int leftSize = initResources.length;
+		boolean[] visited = new boolean[initResources.length];
+		for(int i = 0; i < numRscComponent; i ++){
+			int num;
+			if (i == numRscComponent - 1) num = leftSize;
+			else{
+				num =  Math.abs(rnd.nextInt()) % leftSize;
+				while(num == 0 || leftSize - num < numRscComponent - i - 1){
+					num =  Math.abs(rnd.nextInt()) % leftSize;
+				}
+			}
+			ArrayList<Integer> list = new ArrayList<>();
+			for(int j = 0; j < num; j ++){
+				int put = Math.abs(rnd2.nextInt()) % leftSize;
+				while(visited[put]){
+					put ++;
+					if(put > visited.length) put %= visited.length;
+				}
+				visited[put] = true;
+				list.add(put);
+			}
+			leftSize -= num;
+			rscComponents.add(list);
 		}
-		rscComponents[rscComponents.length - 1] = left;
-		// calculate the cumulative sum
-		for(int i = 1; i < rscComponents.length; i ++){
-			rscComponents[i] += rscComponents[i - 1];
-		}
-		printRscComponent();
+//		printRscComponent();
 	}
 
 	private static void printRscComponent(){
-		for(int c: rscComponents){
-			System.out.print(c+", ");
+		int sum = 0;
+		for(List<Integer> l: rscComponents){
+			for(Integer i: l){
+				System.out.print(i+", ");
+				sum ++;
+			}
+			System.out.println();
 		}
-		System.out.println();
+		System.out.println("total: "+sum);
 	}
 
-	public static int[] getRscComponents() {
+	public static List<List<Integer>> getRscComponents() {
 		return rscComponents;
 	}
 
-	public static void setRscComponents(int[] rscComponents) {
+	public static void setRscComponents(List<List<Integer>> rscComponents) {
 		Globals.rscComponents = rscComponents;
+	}
+
+	public static int getNumRscComponent() {
+		return numRscComponent;
+	}
+
+	public static void setNumRscComponent(int numRscComponent) {
+		Globals.numRscComponent = numRscComponent;
 	}
 
 	public static Firm[] getFirms() {
