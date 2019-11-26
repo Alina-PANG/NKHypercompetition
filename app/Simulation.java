@@ -10,39 +10,21 @@ import util.*;
 public class Simulation {
 	private static Vector<Firm> firms;
 	private static Firm[] allFirms;
-//	private static Vector<Consumer> consumers; 
 	public static Landscape landscape;
 	private static String[] commonResourceConfig;
-	
+
 	public static void main(String[] args) {
+		// Landscape initialization
 		String filename = "conf/test1.conf";
 		FileIO.loadParameters(filename);
-		// Globals.setInfMatFile(args[0]);
-		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
-		// Globals.printParameters();
 		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
+		printLandscape();
 
-		// output fitness landscape
-		// for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
-		// 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
-		// }
-		int firmID = 0; 
-		// INITIALIZE FIRMS 
-		firms = new Vector<Firm>();	
-		// for (int i = 0; i < Globals.getNumFirms(); i++) {
-		// 	firms.add(new Firm(i));
-		// }
-
-
-		System.out.println(">>>>>>>>> Firm Lists:");
-
-		//EDITED Initialize Dummy Data
-//		int[] sharedResIndexToUse = null;
-//		int[][] sharedOwnResIndex = null;
-//		boolean isSharingOwnRes = true;
+		// Firm initialization
+		int firmID = 0;
+		firms = new Vector<Firm>();
 		allFirms = new Firm[Globals.getNumFirms()];
-
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {
 //				Firm f = new Firm(i, firmID, Globals.getInitResourcesForType(i),
@@ -162,5 +144,9 @@ public class Simulation {
 		return retString;
 	}
 	
-	
+	private static void printLandscape(){
+		for (int i = 0; i < (int)(Math.pow(2, Globals.getN())); i++) {
+			System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
+		}
+	}
 }

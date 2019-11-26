@@ -28,11 +28,8 @@ public class Globals {
 	private static int numConsumers = 10;
 
 	/** FIRM PARAMETERS */
-	// private static int initResources = 3;
 	private static int[] numFirms; 
 	private static int[] initResources;
-	// private static int numFirms = 1;
-	//public static String adaptation = "resources";
 	private static double[] innovation; // = 0.0d;
 	private static int[] resourcesIncrement; // = 1;
 	private static String[] search; // = "experiential";
