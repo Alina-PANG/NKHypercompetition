@@ -66,6 +66,7 @@ public class Firm implements Comparable<Firm> {
 		componentSwitchingThreshold = acomponentSwitchingThreshold;
 		componentLendingInnovation = acomponentLendingInnovation;
 		componentLendingThreshold = acomponentLendingThreshold;
+		dependentFirms = new HashMap<>();
 
 		setResources(initResources);
 		setResourceConfig();
@@ -137,9 +138,6 @@ public class Firm implements Comparable<Firm> {
 	public void makeDecision() { // with innovation
 		searchExperiential();
 		addOrDrop();
-		componentOperations(componentBorrowingInnovation, componentBorrowingThreshold, 0);
-		componentOperations(componentSwitchingInnovation, componentSwitchingThreshold, 1);
-		componentOperations(componentLendingInnovation, componentLendingThreshold, 2);
 	}
 
 	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold) {
@@ -155,7 +153,22 @@ public class Firm implements Comparable<Firm> {
 		syncResources(); // resets bool resources[]
 	}
 
-	private void componentOperations(double innovation, double threshold, int type){
+	public void componentOperations(int type){
+		double innovation, threshold;
+		switch (type){
+			case 0:
+				innovation = componentBorrowingInnovation;
+				threshold = componentBorrowingThreshold;
+				break;
+			case 1:
+				innovation = componentSwitchingInnovation;
+				threshold = componentSwitchingThreshold;
+				break;
+			default:
+				innovation = componentLendingInnovation;
+				threshold = componentLendingThreshold;
+		}
+
 		if(innovation > Globals.rand.nextDouble()) {
 			String[] newConfig = new String[Globals.getN()];
 			switch (type){
@@ -166,7 +179,9 @@ public class Firm implements Comparable<Firm> {
 					System.arraycopy(considerSwitching(), 0, newConfig, 0, newConfig.length);
 					break;
 				default:
-					System.arraycopy(considerLending(), 0, newConfig, 0, newConfig.length);
+					considerLending();
+//					System.arraycopy(considerLending(), 0, newConfig, 0, newConfig.length);
+					return;
 			}
 			int numCurrentResources = 0;
 			for (int i = 0; i < resources.length; i++) {
@@ -319,20 +334,84 @@ public class Firm implements Comparable<Firm> {
 	}
 
 	private String[] considerBorrowing() {
+		String[] newConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
+
 		// decide the component indexes that I can borrow
 		List<List<Integer>> components = Globals.getComponents();
+		List<Integer> componentCanBeBorrowed = new ArrayList<Integer>();
 		for(int i = 0; i < components.size(); i ++) {
-
+			boolean have = false;
+			for(int j = 0; j < components.get(i).size(); j ++) {
+				if(resources[components.get(i).get(j)]) {
+					have = true; break;
+				}
+			}
+			if(!have) componentCanBeBorrowed.add(i);
 		}
-		return null;
+
+		if(componentCanBeBorrowed.size() >= 1) {
+			Random rnd = new Random();
+			int tempIndexToBorrow = rnd.nextInt() % componentCanBeBorrowed.size();
+			int cIndexToBorrow = componentCanBeBorrowed.get(tempIndexToBorrow);
+			List<Firm> firms = Globals.getSharingFirmsForComponent(cIndexToBorrow);
+			int fIndexToBorrow = rnd.nextInt() % firms.size();
+			Firm f = firms.get(fIndexToBorrow);
+			for(int index: components.get(cIndexToBorrow)){
+				newConfig[index] = f.resourceConfig[index];
+			}
+		}
+		return newConfig;
 	}
 
 	private String[] considerSwitching() {
-		return null;
+		String[] newConfig = new String[Globals.getN()];
+		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
+
+		// decide the component indexes that I can switch to (if I have all resources in this component)
+		List<List<Integer>> components = Globals.getComponents();
+		List<Integer> componentCanBeSwitched = new ArrayList<Integer>();
+		for(int i = 0; i < components.size(); i ++) {
+			boolean have = true;
+			for(int j = 0; j < components.get(i).size(); j ++) {
+				if(!resources[components.get(i).get(j)]) {
+					have = false; break;
+				}
+			}
+			if(have) componentCanBeSwitched.add(i);
+		}
+
+		if(componentCanBeSwitched.size() >= 1) {
+			Random rnd = new Random();
+			int tempIndexToBorrow = rnd.nextInt() % componentCanBeSwitched.size();
+			int cIndexToBorrow = componentCanBeSwitched.get(tempIndexToBorrow);
+			List<Firm> firms = Globals.getSharingFirmsForComponent(cIndexToBorrow);
+			int fIndexToBorrow = rnd.nextInt() % firms.size();
+			Firm f = firms.get(fIndexToBorrow);
+			for(int index: components.get(cIndexToBorrow)){
+				newConfig[index] = f.resourceConfig[index];
+			}
+		}
+		return newConfig;
 	}
 
-	private String[] considerLending() {
-		return null;
+	private void considerLending() {
+//		String[] newConfig = new String[Globals.getN()];
+//		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
+
+		// decide the component indexes that I can switch to (if I have all resources in this component)
+		List<List<Integer>> components = Globals.getComponents();
+//		List<Integer> componentCanBeLent = new ArrayList<Integer>();
+		for(int i = 0; i < components.size(); i ++) {
+			boolean have = true;
+			for(int j = 0; j < components.get(i).size(); j ++) {
+				if(!resources[components.get(i).get(j)]) {
+					have = false; break;
+				}
+			}
+			if(have) Globals.addSharingFirms(i, this);
+//				componentCanBeLent.add(i);
+		}
 	}
 
 	private String[] considerAddResource() {

@@ -55,9 +55,24 @@ public class Simulation {
 		 *  RUN ITERATIONS
 		 */
 		for (int t = 0; t < Globals.getIterations(); t++) {
+			Globals.refreshLendingFirms(); // edited: clean up the lending firm list -> maintaining cost & benefit for each period - NPV & PV issue?
+			// changing/adding/droping resources
 			for (Firm f : firms) {
 				f.makeDecision();
 			}
+			// lending
+			for (Firm f : firms) {
+				f.componentOperations(2);
+			}
+			// switching
+			for (Firm f : firms) {
+				f.componentOperations(1);
+			}
+			// borrowing
+			for (Firm f : firms) {
+				f.componentOperations(0);
+			}
+
 			summarizeCommonResourceConfig();
 
 			Collections.sort(firms);

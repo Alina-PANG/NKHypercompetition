@@ -1,5 +1,7 @@
 package util;
 
+import objects.Firm;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -24,6 +26,7 @@ public class Globals {
 	/** COMPONENT PARAMETERS */
 	private static int M = 4;
 	private static List<List<Integer>> components;
+	private static Map<Integer, List<Firm>> sharingFirms;
 
 	// not used
 	private static int numNeeds = 10;
@@ -115,6 +118,24 @@ public class Globals {
 	public static void setM (int num){ M = num;}
 
 	public static int getM (){return M;}
+
+	public static void refreshLendingFirms(){
+		sharingFirms = new HashMap<>();
+	}
+
+	public static void addSharingFirms(int componentIndex, Firm f) {
+		if(sharingFirms.containsKey(componentIndex)){
+			sharingFirms.get(componentIndex).add(f);
+		} else{
+			List<Firm> list = new ArrayList<>();
+			list.add(f);
+			sharingFirms.put(componentIndex, list);
+		}
+	}
+
+	public static List<Firm> getSharingFirmsForComponent(int i) {
+		return sharingFirms.get(i);
+	}
 
 	/** FIRM PARAMETERS */
 

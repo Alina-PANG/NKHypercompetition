@@ -22,8 +22,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Simulation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="66" column="33" selection-start-line="66" selection-start-column="19" selection-end-line="66" selection-end-column="33" />
+            <state relative-caret-position="238">
+              <caret line="64" column="38" lean-forward="true" selection-start-line="64" selection-start-column="38" selection-end-line="64" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -31,20 +31,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/objects/Firm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="324" column="12" selection-start-line="324" selection-start-column="12" selection-end-line="324" selection-end-column="12" />
+            <state relative-caret-position="103">
+              <caret line="396" column="21" lean-forward="true" selection-start-line="396" selection-start-column="21" selection-end-line="396" selection-end-column="21" />
               <folding>
-                <element signature="e#5569#8869#0" />
                 <element signature="e#8872#11374#0" />
-                <element signature="e#11886#11887#0" expanded="true" />
-                <element signature="e#11904#11905#0" expanded="true" />
-                <element signature="e#11943#11944#0" expanded="true" />
-                <element signature="e#11961#11962#0" expanded="true" />
-                <element signature="e#23336#23337#0" expanded="true" />
-                <element signature="e#24350#24351#0" expanded="true" />
-                <element signature="e#24434#24435#0" expanded="true" />
-                <element signature="e#24488#24489#0" expanded="true" />
-                <element signature="e#24531#24532#0" expanded="true" />
+                <element signature="e#12237#12246#0" expanded="true" />
+                <element signature="e#13619#13628#0" expanded="true" />
+                <element signature="e#26110#26111#0" expanded="true" />
+                <element signature="e#27124#27125#0" expanded="true" />
+                <element signature="e#27208#27209#0" expanded="true" />
+                <element signature="e#27262#27263#0" expanded="true" />
+                <element signature="e#27305#27306#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -53,9 +50,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/Globals.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="330" column="5" lean-forward="true" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
+            <state relative-caret-position="139">
+              <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
               <folding>
+                <element signature="e#3625#3626#0" expanded="true" />
+                <element signature="e#3662#3663#0" expanded="true" />
+                <element signature="e#3844#3845#0" expanded="true" />
+                <element signature="e#3870#3871#0" expanded="true" />
                 <element signature="e#7690#7691#0" expanded="true" />
                 <element signature="e#7713#7714#0" expanded="true" />
                 <element signature="e#9661#9662#0" expanded="true" />
@@ -87,12 +88,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="65" selection-start-line="13" selection-start-column="65" selection-end-line="13" selection-end-column="65" />
+            <state relative-caret-position="120">
+              <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#123#124#0" expanded="true" />
-                <element signature="e#158#159#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,10 +113,13 @@
       <find>gerresourc</find>
       <find>search</find>
       <find>consider</find>
-      <find>getsearch</find>
       <find>consideradd</find>
       <find>considerBorrowing</find>
       <find>compar</find>
+      <find>getsearch</find>
+      <find>Globals</find>
+      <find>components</find>
+      <find>gets</find>
       <find>makedecision</find>
     </findStrings>
   </component>
@@ -129,8 +131,8 @@
       <list>
         <option value="$PROJECT_DIR$/util/Bag.java" />
         <option value="$PROJECT_DIR$/app/Test.java" />
-        <option value="$PROJECT_DIR$/util/Globals.java" />
         <option value="$PROJECT_DIR$/app/Simulation.java" />
+        <option value="$PROJECT_DIR$/util/Globals.java" />
         <option value="$PROJECT_DIR$/objects/Firm.java" />
       </list>
     </option>
@@ -190,7 +192,20 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Simulation">
+    <configuration name="Simulation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Simulation" />
+      <module name="NKHypercompetition" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Test" />
       <module name="NKHypercompetition" />
@@ -206,6 +221,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Simulation" />
         <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
@@ -249,11 +265,11 @@
       <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32891566" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32891566" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32891566" />
       <window_info anchor="right" id="Palette" />
       <window_info anchor="right" id="Google Cloud Storage" show_stripe_button="false" />
       <window_info anchor="right" id="Theme Preview" />
@@ -294,12 +310,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="65" selection-start-line="13" selection-start-column="65" selection-end-line="13" selection-end-column="65" />
+        <state relative-caret-position="120">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#123#124#0" expanded="true" />
-            <element signature="e#158#159#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -313,9 +327,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/Globals.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="330" column="5" lean-forward="true" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
+        <state relative-caret-position="139">
+          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
           <folding>
+            <element signature="e#3625#3626#0" expanded="true" />
+            <element signature="e#3662#3663#0" expanded="true" />
+            <element signature="e#3844#3845#0" expanded="true" />
+            <element signature="e#3870#3871#0" expanded="true" />
             <element signature="e#7690#7691#0" expanded="true" />
             <element signature="e#7713#7714#0" expanded="true" />
             <element signature="e#9661#9662#0" expanded="true" />
@@ -336,27 +354,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Simulation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="66" column="33" selection-start-line="66" selection-start-column="19" selection-end-line="66" selection-end-column="33" />
+        <state relative-caret-position="238">
+          <caret line="64" column="38" lean-forward="true" selection-start-line="64" selection-start-column="38" selection-end-line="64" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/objects/Firm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="324" column="12" selection-start-line="324" selection-start-column="12" selection-end-line="324" selection-end-column="12" />
+        <state relative-caret-position="103">
+          <caret line="396" column="21" lean-forward="true" selection-start-line="396" selection-start-column="21" selection-end-line="396" selection-end-column="21" />
           <folding>
-            <element signature="e#5569#8869#0" />
             <element signature="e#8872#11374#0" />
-            <element signature="e#11886#11887#0" expanded="true" />
-            <element signature="e#11904#11905#0" expanded="true" />
-            <element signature="e#11943#11944#0" expanded="true" />
-            <element signature="e#11961#11962#0" expanded="true" />
-            <element signature="e#23336#23337#0" expanded="true" />
-            <element signature="e#24350#24351#0" expanded="true" />
-            <element signature="e#24434#24435#0" expanded="true" />
-            <element signature="e#24488#24489#0" expanded="true" />
-            <element signature="e#24531#24532#0" expanded="true" />
+            <element signature="e#12237#12246#0" expanded="true" />
+            <element signature="e#13619#13628#0" expanded="true" />
+            <element signature="e#26110#26111#0" expanded="true" />
+            <element signature="e#27124#27125#0" expanded="true" />
+            <element signature="e#27208#27209#0" expanded="true" />
+            <element signature="e#27262#27263#0" expanded="true" />
+            <element signature="e#27305#27306#0" expanded="true" />
           </folding>
         </state>
       </provider>
