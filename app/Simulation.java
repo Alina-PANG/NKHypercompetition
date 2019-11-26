@@ -5,29 +5,29 @@ import objects.*;
 import util.*;
 
 public class Simulation {
-	private static Vector<Firm> firms; 
-//	private static Vector<Consumer> consumers; 
+	private static Vector<Firm> firms;
 	public static Landscape landscape;
 	private static String[] commonResourceConfig;
+
+	private static void printLandsacpe(){
+		 for (int i = 0; i < (int)(Math.pow(2, Globals.getN())); i++) {
+		 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
+		 }
+	}
 	
 	public static void main(String[] args) {
+		// LANDSCAPE INITIALIZATION
 		FileIO.loadParameters(args[0]);
-		// Globals.setInfMatFile(args[0]);
-		// System.out.println("InfMatFile:" + Globals.influenceMatrixFile);
-		// Globals.printParameters();
 		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
+		printLandsacpe();
 
-		// output fitness landscape
-		// for (int i = 0; i < (int)(Math.pow(2, Globals.N)); i++) {
-		// 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
-		// }
-		int firmID = 0; 
-		// INITIALIZE FIRMS 
-		firms = new Vector<Firm>();	
-		// for (int i = 0; i < Globals.getNumFirms(); i++) {
-		// 	firms.add(new Firm(i));
-		// }
+		// COMPONENT INITIALIZATION
+		Globals.setComponents();
+
+		// FIRM INITIALIZATION
+		int firmID = 0;
+		firms = new Vector<Firm>();
 
 		for (int i = 0; i < Globals.getNumFirmTypes(); i++) {
 			for (int j = 0; j < Globals.getNumFirmsForType(i); j++) {

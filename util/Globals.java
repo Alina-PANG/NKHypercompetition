@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Globals {
 	/*
@@ -20,6 +20,10 @@ public class Globals {
 	private static String influenceMatrixFile = "inf/matrix16-3.txt";
 	private static int iterations = 3;
 	private static int numFirmTypes;
+
+	/** COMPONENT PARAMETERS */
+	private static int M = 4;
+	private static List<List<Integer>> components;
 
 	// not used
 	private static int numNeeds = 10;
@@ -68,6 +72,44 @@ public class Globals {
 		}
 
 	}
+
+	/** COMPONENT PARAMETERS */
+	public static List<List<Integer>> setComponents() {
+		int[] arr = new int[M];
+		Random rnd = new Random();
+		int sum = 0;
+		for(int i = 0; i < M - 1; i ++) {
+			int generated = rnd.nextInt(N - 1) + 1;
+			int left = N - (M - 1 - i) - sum;
+			while(generated > left) generated = rnd.nextInt(N - 1) + 1;
+			arr[i] = generated;
+			sum += generated;
+		}
+		arr[M - 1] = N - sum;
+
+		List<Integer> list = new ArrayList<>();
+		for(int i = 0; i < N; i ++) list.add(i);
+
+		components = new ArrayList<List<Integer>>();
+		Bag bag = new Bag(list); // save the indexes of the component. 1,3,5 -> resources at index 1,3,5 belongs to this component
+		for(int a: arr){
+			System.out.println("\n\nComponent size = "+a+":");
+			List<Integer> component = new ArrayList<>();
+			for(int i = 0; i < a; i ++){
+				int adding = (Integer) bag.randomPop();
+				System.out.print(adding+" ");
+				component.add(adding);
+			}
+			components.add(component);
+		}
+		return components;
+	}
+
+	public static List<List<Integer>> getComponents(){ return components; }
+
+	public static void setM (int num){ M = num;}
+
+	public static int getM (){return M;}
 
 	/** FIRM PARAMETERS */
 
