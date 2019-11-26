@@ -42,6 +42,12 @@ public class Globals {
 	private static double[] resourceThreshold; // = 0.05d;
 	private static double[] searchThreshold; // = 0.02d;
 	private static int[] searchScope; // = 1;
+	private static double[] componentBorrowingInnovation;
+	private static double[] componentBorrowingThreshold;
+	private static double[] componentSwitchingInnovation;
+	private static double[] componentSwitchingThreshold;
+	private static double[] componentLendingInnovation;
+	private static double[] componentLendingThreshold;
 
 	/* setters */
 	/** SIMULATION PARAMETERS */
@@ -74,7 +80,7 @@ public class Globals {
 	}
 
 	/** COMPONENT PARAMETERS */
-	public static List<List<Integer>> setComponents() {
+	public static void setComponents() {
 		int[] arr = new int[M];
 		Random rnd = new Random();
 		int sum = 0;
@@ -102,7 +108,6 @@ public class Globals {
 			}
 			components.add(component);
 		}
-		return components;
 	}
 
 	public static List<List<Integer>> getComponents(){ return components; }
@@ -307,6 +312,30 @@ public class Globals {
 
 	public static double getSearchThresholdForType(int i) {
 		return searchThreshold[i];
+	}
+
+	public static double getComponentBorrowingInnovationForType(int i) {
+		return componentBorrowingInnovation[i];
+	}
+
+	public static double getComponentBorrowingThresholdForType(int i) {
+		return componentBorrowingThreshold[i];
+	}
+
+	public static double getComponentSwitchingInnovationForType(int i) {
+		return componentSwitchingInnovation[i];
+	}
+
+	public static double getComponentSwitchingThresholdForType(int i) {
+		return componentSwitchingThreshold[i];
+	}
+
+	public static double getComponentLendingInnovationForType(int i) {
+		return componentLendingInnovation[i];
+	}
+
+	public static double getComponentLendingThresholdForType(int i) {
+		return componentLendingThreshold[i];
 	}
 
 	/* END getters */

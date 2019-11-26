@@ -35,33 +35,32 @@ public class Simulation {
 					Globals.getInnovationForType(i), Globals.getResourcesIncrementForType(i), 
 					Globals.getSearchScopeForType(i), Globals.getSearchThresholdForType(i), 
 					Globals.getSearchForType(i), Globals.getResourceDecisionForType(i), 
-					Globals.getResourceThresholdForType(i)));
+					Globals.getResourceThresholdForType(i),
+
+					Globals.getComponentBorrowingInnovationForType(i),
+					Globals.getComponentBorrowingThresholdForType(i),
+
+					Globals.getComponentSwitchingInnovationForType(i),
+					Globals.getComponentSwitchingThresholdForType(i),
+
+					Globals.getComponentLendingInnovationForType(i),
+					Globals.getComponentLendingThresholdForType(i)));
 				firmID++;
 			}
 		}
 
 		summarizeCommonResourceConfig();
 
-		// System.out.println("COMMON RES CONFIG:\t" + landscape.commonConfigToString());
-		// System.out.println(commonConfigToString());
-		// for (Firm f : firms) {
-		// 	System.out.println(f.toString());
-		// }
-
 		/**
 		 *  RUN ITERATIONS
 		 */
 		for (int t = 0; t < Globals.getIterations(); t++) {
-			// System.out.print("ITERATION:\t" + t);
-			
 			for (Firm f : firms) {
 				f.makeDecision();
-				// System.out.println(f.toStringWithFitness(landscape));
 			}
 			summarizeCommonResourceConfig();
 
 			Collections.sort(firms);
-
 
 			// assign rankings
 			int currentRank = 1;
@@ -69,7 +68,6 @@ public class Simulation {
 			for (int i = 0; i < firms.size(); i++) {
 				Firm f = (Firm)firms.get(i);
 				double focalFitness = f.getFitness();
-				// System.out.println(focalFitness);
 				if (currentFitness == focalFitness) {
 					f.setRank(currentRank);
 				} else {

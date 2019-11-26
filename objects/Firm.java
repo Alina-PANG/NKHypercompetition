@@ -20,6 +20,16 @@ public class Firm implements Comparable<Firm> {
 	private String resourceDecision;
 	private double resourceThreshold;
 
+	private double componentBorrowingInnovation;
+	private double componentBorrowingThreshold;
+	private double componentSwitchingInnovation;
+	private double componentSwitchingThreshold;
+	private double componentLendingInnovation;
+	private double componentLendingThreshold;
+
+	// [TODO] 1st: for firms dependent on this, when removing the resources need to update those firm resource config
+	private Map<Integer, List<Firm>> dependentFirms; // key: component index, value: lists of firm that are using this component
+
 	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
 	private boolean[] resources; 
 	private String[] resourceConfig; // array of "0", "1" or " "
@@ -36,7 +46,10 @@ public class Firm implements Comparable<Firm> {
 	
 	public Firm(int aType, int id, int anInitResources, double anInnovation, 
 		int anResourcesIncrement, int aSearchScope, double aSearchThreshold, 
-		String aSearch, String aResourceDecision, double aResourceThreshold) {
+		String aSearch, String aResourceDecision, double aResourceThreshold,
+		double acomponentBorrowingInnovation, double acomponentBorrowingThreshold,
+		double acomponentSwitchingInnovation, double acomponentSwitchingThreshold,
+		double acomponentLendingInnovation, double acomponentLendingThreshold) {
 		firmType = aType;
 		firmID = id;
 		initResources = anInitResources;
@@ -47,6 +60,12 @@ public class Firm implements Comparable<Firm> {
 		search = aSearch;
 		resourceDecision = aResourceDecision;
 		resourceThreshold = aResourceThreshold;
+		componentBorrowingInnovation = acomponentBorrowingInnovation;
+		componentBorrowingThreshold = acomponentBorrowingThreshold;
+		componentSwitchingInnovation = acomponentSwitchingInnovation;
+		componentSwitchingThreshold = acomponentSwitchingThreshold;
+		componentLendingInnovation = acomponentLendingInnovation;
+		componentLendingThreshold = acomponentLendingThreshold;
 
 		setResources(initResources);
 		setResourceConfig();
@@ -116,28 +135,57 @@ public class Firm implements Comparable<Firm> {
 
 
 	public void makeDecision() { // with innovation
-		// addResource with prob then search -- i.e., search always happens 
-		// how about drop resources?  -- for now, use the same probability (but independently drawn) to also drop
-
-		/* Jan 17 2019: searchExhaustive no longer implemented */
-		/*
-		if (Globals.getSearch().equals("experiential")) {
-			searchExperiential();
-		} else {
-			searchExhaustive();
-		}
-		*/
-
-		// [TODO] search first then consider add OR drop depending on which is better
 		searchExperiential();
+		addOrDrop();
+		componentOperations(componentBorrowingInnovation, componentBorrowingThreshold, 0);
+		componentOperations(componentSwitchingInnovation, componentSwitchingThreshold, 1);
+		componentOperations(componentLendingInnovation, componentLendingThreshold, 2);
+	}
 
-		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
-		// 	dropResource();
-		// } 
-		// if (Globals.getInnovation() >= Globals.rand.nextDouble()) {
-		// 	addResource();
-		// } 
+	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold) {
+		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
+		double newUtility = Simulation.landscape.getFitness(newConfig);
 
+		boolean absoluteDecision = resourceDecision.equals("absolute") && newUtility - currentFitness > threshold;
+		boolean relativeDecision = resourceDecision.equals("relative") && newUtility / incrementalResource > threshold / incrementalResource;
+
+		if (absoluteDecision || relativeDecision)
+			System.arraycopy(newConfig, 0, resourceConfig, 0, newConfig.length);
+
+		syncResources(); // resets bool resources[]
+	}
+
+	private void componentOperations(double innovation, double threshold, int type){
+		if(innovation > Globals.rand.nextDouble()) {
+			String[] newConfig = new String[Globals.getN()];
+			switch (type){
+				case 0:
+					System.arraycopy(considerBorrowing(), 0, newConfig, 0, newConfig.length);
+					break;
+				case 1:
+					System.arraycopy(considerSwitching(), 0, newConfig, 0, newConfig.length);
+					break;
+				default:
+					System.arraycopy(considerLending(), 0, newConfig, 0, newConfig.length);
+			}
+			int numCurrentResources = 0;
+			for (int i = 0; i < resources.length; i++) {
+				if (resources[i]) {
+					numCurrentResources++;
+				}
+			}
+			int numNewResources = 0;
+			for (int i = 0; i < newConfig.length; i++) {
+				if (!newConfig[i].equals(" ")) {
+					numNewResources++;
+				}
+			}
+
+			absoluteOrNormalizedDecision(newConfig, Math.abs(numCurrentResources - numNewResources), threshold);
+		}
+	}
+
+	private void addOrDrop(){
 		if (innovation >= Globals.rand.nextDouble()) {
 			String[] addResourceConfig = new String[Globals.getN()];
 			System.arraycopy(considerAddResource(), 0, addResourceConfig, 0, addResourceConfig.length);
@@ -150,23 +198,23 @@ public class Firm implements Comparable<Firm> {
 
 			int numCurrentResources = 0;
 			for (int i = 0; i < resources.length; i++) {
-				if (resources[i]) { 
-					numCurrentResources++; 
+				if (resources[i]) {
+					numCurrentResources++;
 				}
 			}
 
-			int numResourcesToAdd = 0; 
+			int numResourcesToAdd = 0;
 			for (int i = 0; i < addResourceConfig.length; i++) {
-				if (!addResourceConfig[i].equals(" ")) { 
-					numResourcesToAdd++; 
+				if (!addResourceConfig[i].equals(" ")) {
+					numResourcesToAdd++;
 				}
 			}
 			numResourcesToAdd = numResourcesToAdd - numCurrentResources;
 
-			int numResourcesToDrop = 0; 
+			int numResourcesToDrop = 0;
 			for (int i = 0; i < dropResourceConfig.length; i++) {
-				if (!dropResourceConfig[i].equals(" ")) { 
-					numResourcesToDrop++; 
+				if (!dropResourceConfig[i].equals(" ")) {
+					numResourcesToDrop++;
 				}
 			}
 			numResourcesToDrop = numCurrentResources - numResourcesToDrop;
@@ -175,19 +223,6 @@ public class Firm implements Comparable<Firm> {
 
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
 			if (resourceDecision.equals("absolute")) {
-				// if (addResourceUtility > dropResourceUtility) {
-				// 	// add is better
-				// 	if (addResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
-				// 		// AND it's a good move
-				// 		System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
-				// 	}
-				// } else {
-				// 	// drop is better
-				// 	if (dropResourceUtility - currentFitness - Globals.getResourceThreshold() > 0) {
-				// 		// AND it's a good move
-				// 		System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
-				// 	}
-				// }
 				// first consider if threshold has been met	by either add or drop
 				if ((addResourceUtility - currentFitness - resourceThreshold > 0) || (dropResourceUtility - currentFitness - resourceThreshold > 0)) {
 					if (addResourceUtility > dropResourceUtility) {
@@ -197,16 +232,16 @@ public class Firm implements Comparable<Firm> {
 					}
 				} else { // now consider if dropResourceUtility is performance enhancing
 					if (dropResourceUtility - currentFitness > 0) {
-						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);	
+						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
 					}
 				}
-				
+
 			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
 				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - resourceThreshold > (dropResourceUtility/(numCurrentResources - 1)) + resourceThreshold) {
-					// add is better 
+					// add is better
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 					// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
-					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + resourceThreshold) {	
+					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + resourceThreshold) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 					} // else  do nothing
 				} else {
@@ -217,8 +252,8 @@ public class Firm implements Comparable<Firm> {
 					} // else  do nothing
 				}
 			}
-			syncResources(); // resets bool resources[] 
-		} 
+			syncResources(); // resets bool resources[]
+		}
 	}
 
 	private void addResource() {
@@ -283,11 +318,24 @@ public class Firm implements Comparable<Firm> {
 		syncResources(); // resets bool resources[] 
 	}
 
+	private String[] considerBorrowing() {
+		// decide the component indexes that I can borrow
+		List<List<Integer>> components = Globals.getComponents();
+		for(int i = 0; i < components.size(); i ++) {
+
+		}
+		return null;
+	}
+
+	private String[] considerSwitching() {
+		return null;
+	}
+
+	private String[] considerLending() {
+		return null;
+	}
+
 	private String[] considerAddResource() {
-		//double addResourceUtility = 0.0d;
-		// double currentFitness = Simulation.landscape.getFitness(resourceConfig);
-		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
-		
 		// get current number of resources available to the firm
 		int numCurrentResources = 0;
 		for (int i = 0; i < resources.length; i++) {
@@ -330,7 +378,6 @@ public class Firm implements Comparable<Firm> {
 		return addResourceConfig;
 	}
 
-	/* TODO */
 	private void dropResource() {
 		// FOR NOW WE'LL ONLY CONSIDER DROPPING 1 RESOURCE AT A TIME AND ONLY WHEN numCurrentResources > 2
 		//double addResourceUtility = 0.0d;
@@ -473,14 +520,7 @@ public class Firm implements Comparable<Firm> {
 
 		}
 
-		//System.out.println("SearchConfig: \n" + Globals.arrayToString(searchConfig));
 		double searchUtility = Simulation.landscape.getFitness(searchConfig);
-
-		// if (searchUtility > currentFitness) {
-		// 		System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-		// }  else {
-		// 	// do nothing
-		// }
 
 		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
 		// [TODO] but how do we make it more costly for long jumps???
@@ -500,7 +540,7 @@ public class Firm implements Comparable<Firm> {
 
 	}
 
-	/* TODO
+	/*
 		- implement searchScope so that long jumps are possible.  
 		- For now, we'll implement searchScope = 1 or 2 but if we need >3 then we'll likely need a more general approach with recursion
 		- Jan 17, 2019: We'll not implement searchExhaustive --> unrealistic
