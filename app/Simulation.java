@@ -1,6 +1,9 @@
 package app;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import objects.*;
 import util.*;
 
@@ -10,17 +13,20 @@ public class Simulation {
 	private static String[] commonResourceConfig;
 
 	private static void printLandsacpe(){
+		System.out.println("\n***** Simulation.java: Landscape ******");
 		 for (int i = 0; i < (int)(Math.pow(2, Globals.getN())); i++) {
-		 	System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
+			 System.out.println(Location.getLocationStringFromInt(i) + "\t" + landscape.getFitness(Location.getLocationFromInt(i)));
 		 }
 	}
 	
 	public static void main(String[] args) {
 		// LANDSCAPE INITIALIZATION
-		FileIO.loadParameters(args[0]);
+		String filename = "conf/test1.conf";
+//		FileIO.loadParameters(args[0]);
+		FileIO.loadParameters(filename);
 		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
-		printLandsacpe();
+//		printLandsacpe();
 
 		// COMPONENT INITIALIZATION
 		Globals.setComponents();
@@ -56,19 +62,20 @@ public class Simulation {
 		 */
 		for (int t = 0; t < Globals.getIterations(); t++) {
 			Globals.refreshLendingFirms(); // edited: clean up the lending firm list -> maintaining cost & benefit for each period - NPV & PV issue?
-			// changing/adding/droping resources
+			System.out.println("====== Changing/Adding/Dropping Resources");
 			for (Firm f : firms) {
 				f.makeDecision();
 			}
-			// lending
+			System.out.println("====== Lending");
 			for (Firm f : firms) {
 				f.componentOperations(2);
 			}
-			// switching
+			Globals.printSharingFirms();
+			System.out.println("====== Switching");
 			for (Firm f : firms) {
 				f.componentOperations(1);
 			}
-			// borrowing
+			System.out.println("====== Borrowing");
 			for (Firm f : firms) {
 				f.componentOperations(0);
 			}
@@ -137,7 +144,7 @@ public class Simulation {
 			}
 			landscape.setCommonResourceConfig(i, commonResourceConfig[i]);
 		}
-		// System.out.println("SUMMARIZING COMMON RESOURCE CONFIG:\t" + landscape.commonConfigToString());
+		System.out.println("\n***** Simulation.java: SUMMARIZING COMMON RESOURCE CONFIG:\t" + landscape.commonConfigToString());
 	}
 	
 	private static String commonConfigToString() {

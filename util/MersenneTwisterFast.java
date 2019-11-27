@@ -391,8 +391,6 @@ public class MersenneTwisterFast implements Serializable, Cloneable
     		}
     		if (!found) {
     			returnInts[j] = r;
-//    	    	if (Globals.debug) { System.out.println("adding r: " + r);  }
-
     			j++;
     		}
 //    		k++;

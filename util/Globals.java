@@ -7,8 +7,10 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Globals {
+	private static final Logger logger = Logger.getLogger( Globals.class.getName());
 	/*
 	 * Default values 
 	 */
@@ -67,7 +69,7 @@ public class Globals {
 	}
 
 	public static void setOutfile(String file) {
-		outfilename = "out/" + file;
+		outfilename = file;
 		try {
 			if (outfilename.equals("")) {
 				// System.out.println("setting STDOUT");
@@ -84,13 +86,14 @@ public class Globals {
 
 	/** COMPONENT PARAMETERS */
 	public static void setComponents() {
+		System.out.println("\n**** Globals.java *****");
 		int[] arr = new int[M];
 		Random rnd = new Random();
-		int sum = 0;
+		int sum = 0, left = N - 1;
 		for(int i = 0; i < M - 1; i ++) {
-			int generated = rnd.nextInt(N - 1) + 1;
-			int left = N - (M - 1 - i) - sum;
-			while(generated > left) generated = rnd.nextInt(N - 1) + 1;
+			int generated = rnd.nextInt(left) + 1;
+			left = N - (M - 1 - i) - sum;
+			while(generated > left) generated = rnd.nextInt(left) + 1;
 			arr[i] = generated;
 			sum += generated;
 		}
@@ -102,7 +105,7 @@ public class Globals {
 		components = new ArrayList<List<Integer>>();
 		Bag bag = new Bag(list); // save the indexes of the component. 1,3,5 -> resources at index 1,3,5 belongs to this component
 		for(int a: arr){
-			System.out.println("\n\nComponent size = "+a+":");
+			System.out.println("Component size = "+a+":");
 			List<Integer> component = new ArrayList<>();
 			for(int i = 0; i < a; i ++){
 				int adding = (Integer) bag.randomPop();
@@ -110,6 +113,7 @@ public class Globals {
 				component.add(adding);
 			}
 			components.add(component);
+			System.out.println();
 		}
 	}
 
@@ -137,9 +141,22 @@ public class Globals {
 		return sharingFirms.get(i);
 	}
 
+	public static void printSharingFirms(){
+		System.out.println("**** Globals.java - All sharing Firms ****");
+		for(Map.Entry<Integer, List<Firm>> entry: sharingFirms.entrySet()){
+			System.out.println("Component Index:" + entry.getKey());
+			List<Firm> firms = entry.getValue();
+			for(Firm f: firms) {
+				System.out.print(f.getFirmID()+" ");
+			}
+			System.out.println();
+		}
+		if(sharingFirms.entrySet().size() == 0) System.out.println("null\n");
+	}
+
 	/** FIRM PARAMETERS */
 
-	public static void setParameters(String fullParameterString) {
+	public static void setParameters(String fullParameterString, int checkNum) {
 		//#firms=50,5,1,1,1,0,abs,0.2;50,15,1,1,1,0,abs,0.2
 		//#firms=numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold
 		// 1.  Parse by type (delimiter = ;)
@@ -155,12 +172,18 @@ public class Globals {
 		search = new String[numFirmTypes]; // = "experiential";
 		resourceDecision = new String[numFirmTypes]; // = "absolute";
 		resourceThreshold = new double[numFirmTypes]; // = 0.05d;
+		componentBorrowingInnovation = new double[numFirmTypes];
+		componentBorrowingThreshold = new double[numFirmTypes];
+		componentSwitchingInnovation = new double[numFirmTypes];
+		componentSwitchingThreshold = new double[numFirmTypes];
+		componentLendingInnovation = new double[numFirmTypes];
+		componentLendingThreshold = new double[numFirmTypes];
 
 		int firmTypeNum = 0;
 		while (typeTokenizer.hasMoreTokens()) {
 			// 2. Parse by parameter (delimiter = ,)
 			StringTokenizer firmParameterTokenizer = new StringTokenizer(typeTokenizer.nextToken().trim(), ",");
-			if (firmParameterTokenizer.countTokens() == 8) { // HARD CODED 8 parameters numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold; #9 is search (fixed at "experiential")
+			if (firmParameterTokenizer.countTokens() == checkNum) { // HARD CODED 8 parameters numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold; #9 is search (fixed at "experiential")
 				numFirms[firmTypeNum] = Integer.parseInt(firmParameterTokenizer.nextToken().trim());
 				initResources[firmTypeNum] = Integer.parseInt(firmParameterTokenizer.nextToken().trim());
 				innovation[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
@@ -170,7 +193,12 @@ public class Globals {
 				search[firmTypeNum] = "experiential";
 				resourceDecision[firmTypeNum] = firmParameterTokenizer.nextToken().trim();
 				resourceThreshold[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
-
+				componentBorrowingInnovation[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
+				componentBorrowingThreshold[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
+				componentSwitchingInnovation[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
+				componentSwitchingThreshold[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
+				componentLendingInnovation[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
+				componentLendingThreshold[firmTypeNum] = Double.parseDouble(firmParameterTokenizer.nextToken().trim());
 		    } else {
 		    	System.err.println("INCORRECT PARAMETER COUNT ERROR: each firm type must have 8 comma-delimited parameters (numFirms,initResources,innovation,resourcesIncrement,searchScope,searchThreshold,resourceDecision,resourceThreshold)");
 		    	System.exit(0);
@@ -178,84 +206,6 @@ public class Globals {
 			firmTypeNum++;
 		}
 	}
-	
-
-	/** OLD: no heterogeneity of firm types 
-	public static void setInitResources(int n) {
-		initResources = n;
-	}
-
-	public static void setNumFirms(int n) {
-		numFirms = n;
-	}
-	public static void setNumNeeds(int n) {
-		numNeeds = n;
-	}
-
-	public static void setNumConsumers(int n) {
-		numConsumers = n;
-	}
-
-	// public static void setAdaptation(String adapt) {
-	// 	adaptation = adapt;
-	// }
-
-	public static void setResourceDecision(String decision) {
-	    if (decision.equals("abs") || decision.equals("absolute") ) {
-	    	resourceDecision = "absolute";
-	    } else if (decision.equals("rel") || decision.equals("relative") ) {
-	    	resourceDecision = "relative";
-	    } else {
-	    	System.err.println("INCORRECT PARAMETER ERROR: resourceDecision (" + decision + ")must either be \"abs\" (absolute) or \"rel\" (relative)");
-	    	System.exit(0);
-	    } 
-	}
-
-	public static void setInnovation(double d) {
-		if ((d < 0.0d) || (d > 1.0d)) {
-	    	System.err.println("INCORRECT PARAMETER ERROR: innovation (" + d + ") must either be between 0 and 1 (inclusive)");
-	    	System.exit(0);
-	} else {
-			innovation = d;
-		}
-	}
-
-	public static void setResourceThreshold(double d) {
-		if ((d < 0.0d) || (d > 1.0d)) {
-	    	System.err.println("INCORRECT PARAMETER ERROR: resourceThreshold (" + d + ") must either be between 0 and 1 (inclusive)");
-	    	System.exit(0);
-	} else {
-			resourceThreshold = d;
-		}
-	}
-
-	public static void setSearchThreshold(double d) {
-		if ((d < 0.0d) || (d > 1.0d)) {
-	    	System.err.println("INCORRECT PARAMETER ERROR: searchThreshold (" + d + ") must either be between 0 and 1 (inclusive)");
-	    	System.exit(0);
-	} else {
-			searchThreshold = d;
-		}
-	}
-
-	public static void setResourcesIncrement(int n) {
-		resourcesIncrement = n;
-	}
-
-	public static void setSearch(String s) {
-	    if (s.equals("experiential") || s.equals("exhaustive") ) {
-	    	search = s;
-	    } else {
-	    	System.err.println("INCORRECT PARAMETER ERROR: search must either be \"experiential\" or \"rel\" (relative)");
-	    	System.exit(0);
-	    } 
-	}
-
-	public static void setSearchScope(int n) {
-		searchScope = n;
-	}
-	*/
-	/* END setters */
 
 	/* getters */
 	public static int getN() {

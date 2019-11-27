@@ -1,12 +1,17 @@
 package util;
 
+import app.Simulation;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileIO {
+
 	public static void loadParameters(String configFile) {
 		/*
 		 *	int N = 20;
@@ -19,6 +24,7 @@ public class FileIO {
 		*/
 		if (!configFile.equals("")) {
 			Properties p = new Properties();
+			int checkNum = 14;
 			try {
 				p.load(new FileInputStream(configFile));
 				// simulation parameters
@@ -27,6 +33,8 @@ public class FileIO {
 					else { Globals.setOutfile(""); }
 				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
 				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
+				if (p.getProperty("numConfig") != null) checkNum = Integer.parseInt(p.getProperty("numConfig"));
+				if (p.getProperty("numComponents") != null) { Globals.setM(Integer.parseInt(p.getProperty("numComponents"))); }
 
 				// FORMAT 1: firm parameters -- ecosystem == "homo" or "homogeneous"
 				// initResources is now an array of initial resources by firm type
@@ -42,8 +50,8 @@ public class FileIO {
 				// if (p.getProperty("searchThreshold") != null) { Globals.setSearchThreshold(Double.parseDouble(p.getProperty("searchThreshold"))); }
 				
 				// FORMAT 2: firm parameters by type -- ecosystem == "heterogeneous" or "hetero"
-				if (p.getProperty("firms") != null) { Globals.setParameters(p.getProperty("firms")); } 
-					else { Globals.setParameters("1,3,0.0,1,1,0.1,abs,0.5"); } // defalut values for test
+				if (p.getProperty("firms") != null) { Globals.setParameters(p.getProperty("firms"), checkNum); }
+					else { Globals.setParameters("1,3,0.0,1,1,0.1,abs,0.5,1.2,2.2,3.3,2.2,1.2,1.3", checkNum); } // defalut values for test
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 				e.printStackTrace();
@@ -52,19 +60,11 @@ public class FileIO {
 	}
 	
 	public static void printParameters() {
-		System.out.println("N: " + Globals.getN());
+		System.out.println("\n***** FileIO.java *****");
+		System.out.println( "N: " + Globals.getN());
 		System.out.println("iterations: " + Globals.getIterations());
-		System.out.println("outfile: " + Globals.getOutfilename());
+		System.out.println( "outfile: " + Globals.getOutfilename());
 		System.out.println("influenceMatrixFile: " + Globals.getInfluenceMatrix());
-		
-		// System.out.println("numFirms: " + Globals.getNumFirms());
-		// System.out.println("initResources: " + Globals.getInitResources());
-		// System.out.println("innovation: " + Globals.getInnovation());
-		// System.out.println("resourcesIncrement: " + Globals.getResourcesIncrement());
-		// System.out.println("searchScope: " + Globals.getSearchScope());
-		// // System.out.println("adaptation: " + Globals.getAdaptation());
-		// System.out.println("resourceDecision: " + Globals.getResourceDecision());
-		// System.out.println("resourceThreshold: " + Globals.getResourceThreshold());
 	}
 
 	public static void main(String[] args) {

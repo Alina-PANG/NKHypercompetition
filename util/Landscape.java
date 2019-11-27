@@ -163,8 +163,6 @@ public class Landscape {
 			} 
 		}
 		fitness = fitness / Globals.getN();
-		System.out.println(fitness);
-
 
 		// return fitness;
 		// Return Normalized fitness (fitness - landscapeMinFitness) / (landscapeMaxFitness - landscapeMinFitness)
