@@ -26,7 +26,8 @@ public class Globals {
 	private static int numFirmTypes;
 
 	/** COMPONENT PARAMETERS */
-	private static int M = 4;
+	private static int maxCSize = 5;
+	private static int minCSize = 3;
 	private static List<List<Integer>> components;
 	private static Map<Integer, List<Firm>> sharingFirms;
 
@@ -84,30 +85,49 @@ public class Globals {
 
 	}
 
+	public static int getMaxCSize() {
+		return maxCSize;
+	}
+
+	public static void setMaxCSize(int maxCSize) {
+		Globals.maxCSize = maxCSize;
+	}
+
+	public static int getMinCSize() {
+		return minCSize;
+	}
+
+	public static void setMinCSize(int minCSize) {
+		Globals.minCSize = minCSize;
+	}
+
 	/** COMPONENT PARAMETERS */
+
+
 	public static void setComponents() {
 		System.out.println("\n**** Globals.java *****");
-		int[] arr = new int[M];
 		Random rnd = new Random();
-		int sum = 0, left = N - 1;
-		for(int i = 0; i < M - 1; i ++) {
-			int generated = rnd.nextInt(left) + 1;
-			left = N - (M - 1 - i) - sum;
-			while(generated > left) generated = rnd.nextInt(left) + 1;
-			arr[i] = generated;
-			sum += generated;
-		}
-		arr[M - 1] = N - sum;
+//		int sum = 0, left = N - 1;
+		// maxSize , numComponent (minSize = 2). fully covered
+//		for(int i = 0; i < M - 1; i ++) {
+//			int generated = rnd.nextInt(left) + 1;
+//			left = N - (M - 1 - i) - sum;
+//			while(generated > left) generated = rnd.nextInt(left) + 1;
+//			arr[i] = generated;
+//			sum += generated;
+//		}
+//		arr[M - 1] = N - sum;
 
 		List<Integer> list = new ArrayList<>();
 		for(int i = 0; i < N; i ++) list.add(i);
 
 		components = new ArrayList<List<Integer>>();
 		Bag bag = new Bag(list); // save the indexes of the component. 1,3,5 -> resources at index 1,3,5 belongs to this component
-		for(int a: arr){
-			System.out.println("Component size = "+a+":");
+		while(!bag.isEmpty()){
+			int size = rnd.nextInt(maxCSize - minCSize) + minCSize;
+			System.out.println("Component size = "+size+":");
 			List<Integer> component = new ArrayList<>();
-			for(int i = 0; i < a; i ++){
+			for(int i = 0; i < size && !bag.isEmpty(); i ++){
 				int adding = (Integer) bag.randomPop();
 				System.out.print(adding+" ");
 				component.add(adding);
@@ -118,10 +138,6 @@ public class Globals {
 	}
 
 	public static List<List<Integer>> getComponents(){ return components; }
-
-	public static void setM (int num){ M = num;}
-
-	public static int getM (){return M;}
 
 	public static void refreshLendingFirms(){
 		sharingFirms = new HashMap<>();

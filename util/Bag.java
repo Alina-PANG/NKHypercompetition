@@ -37,4 +37,8 @@ public class Bag <T> {
     public void setBag(ArrayList<T> bag) {
         this.bag = bag;
     }
+
+    public boolean isEmpty(){
+        return bag.isEmpty();
+    }
 }

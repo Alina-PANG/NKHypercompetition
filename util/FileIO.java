@@ -34,7 +34,8 @@ public class FileIO {
 				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
 				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
 				if (p.getProperty("numConfig") != null) checkNum = Integer.parseInt(p.getProperty("numConfig"));
-				if (p.getProperty("numComponents") != null) { Globals.setM(Integer.parseInt(p.getProperty("numComponents"))); }
+				if (p.getProperty("minComponentSize") != null) { Globals.setMinCSize(Integer.parseInt(p.getProperty("minComponentSize"))); }
+				if (p.getProperty("maxComponentSize") != null) { Globals.setMaxCSize(Integer.parseInt(p.getProperty("maxComponentSize"))); }
 
 				// FORMAT 1: firm parameters -- ecosystem == "homo" or "homogeneous"
 				// initResources is now an array of initial resources by firm type

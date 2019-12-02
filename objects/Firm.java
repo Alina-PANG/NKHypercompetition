@@ -140,6 +140,7 @@ public class Firm implements Comparable<Firm> {
 	public void makeDecision() { // with innovation
 		searchExperiential();
 		addOrDrop();
+
 	}
 
 	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold) {
@@ -397,6 +398,8 @@ public class Firm implements Comparable<Firm> {
 		return newConfig;
 	}
 
+
+
 	private String[] considerSwitching() {
 		String[] newConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
@@ -466,6 +469,7 @@ public class Firm implements Comparable<Firm> {
 
 	private void considerLending() {
 		// decide the component indexes that I can switch to (if I have all resources in this component)
+		// TODO: include benefits (later)
 		List<List<Integer>> components = Globals.getComponents();
 
 		for(int i = 0; i < components.size(); i ++) {
