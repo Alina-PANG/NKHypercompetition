@@ -4,8 +4,6 @@
     <list default="true" id="0e1d7ff2-aacd-4b74-a2ed-60ffa393d621" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/objects/Firm.java" beforeDir="false" afterPath="$PROJECT_DIR$/objects/Firm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/Bag.java" beforeDir="false" afterPath="$PROJECT_DIR$/util/Bag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/util/FileIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/util/Globals.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,8 +21,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Simulation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
+            <state relative-caret-position="223">
+              <caret line="147" column="5" lean-forward="true" selection-start-line="147" selection-start-column="5" selection-end-line="147" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -41,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/FileIO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="39" column="84" lean-forward="true" selection-start-line="39" selection-start-column="84" selection-end-line="39" selection-end-column="84" />
+            <state relative-caret-position="205">
+              <caret line="53" column="67" lean-forward="true" selection-start-line="53" selection-start-column="67" selection-end-line="53" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -50,26 +48,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/conf/test1.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="16" selection-start-line="20" selection-end-line="20" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/objects/Firm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
-              <caret line="181" column="26" lean-forward="true" selection-start-line="181" selection-start-column="26" selection-end-line="181" selection-end-column="26" />
+            <state relative-caret-position="270">
+              <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/objects/Firm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="149">
+              <caret line="419" column="55" selection-start-line="419" selection-start-column="55" selection-end-line="419" selection-end-column="55" />
+              <folding>
+                <element signature="e#15128#15137#0" expanded="true" />
+                <element signature="e#28910#28911#0" expanded="true" />
+                <element signature="e#29879#29880#0" expanded="true" />
+                <element signature="e#29971#29972#0" expanded="true" />
+                <element signature="e#30055#30056#0" expanded="true" />
+                <element signature="e#30109#30110#0" expanded="true" />
+                <element signature="e#30152#30153#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/Globals.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="131" column="45" lean-forward="true" selection-start-line="131" selection-start-column="45" selection-end-line="131" selection-end-column="45" />
+            <state relative-caret-position="176">
+              <caret line="217" column="68" lean-forward="true" selection-start-line="217" selection-start-column="68" selection-end-line="217" selection-end-column="68" />
               <folding>
                 <element signature="e#2660#2661#0" expanded="true" />
                 <element signature="e#2682#2683#0" expanded="true" />
@@ -111,36 +118,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>components</find>
-      <find>gets</find>
-      <find>makedecision</find>
-      <find>setM</find>
-      <find>componentoperation</find>
-      <find>System.out.p</find>
-      <find>system</find>
-      <find>printparameters</find>
-      <find>system.out.</find>
-      <find>system.out.p</find>
-      <find>***</find>
-      <find>simulation</find>
-      <find>new random</find>
-      <find>globals</find>
-      <find>index:</find>
-      <find>index</find>
-      <find>all sharing</find>
-      <find>initresour</find>
-      <find>component index</find>
-      <find>lending</find>
       <find>printres</find>
-      <find>borrowing</find>
-      <find>considerborrowing</find>
       <find>componentopera</find>
       <find>nextint</find>
       <find>print</find>
       <find>considerLending</find>
       <find>absoluteor</find>
       <find>considerlending</find>
+      <find>TODO</find>
+      <find>syncResources</find>
+      <find>getfitness</find>
+      <find>resourceConfig</find>
+      <find>firm</find>
+      <find>operation</find>
+      <find>=======</find>
+      <find>================</find>
+      <find>makedecision</find>
+      <find>switchi</find>
+      <find>===================&quot;</find>
+      <find>considerborrowing</find>
+      <find>borrowin</find>
+      <find>new config</find>
+      <find>borr</find>
       <find>set</find>
+      <find>borrowing</find>
+      <find>borrowing from</find>
+      <find>b</find>
+      <find>borrowing from firm</find>
+      <find>innovation</find>
+      <find>switch</find>
+      <find>switching</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -154,13 +161,13 @@
       <list>
         <option value="$PROJECT_DIR$/app/Test.java" />
         <option value="$PROJECT_DIR$/util/MersenneTwisterFast.java" />
-        <option value="$PROJECT_DIR$/util/Landscape.java" />
         <option value="$PROJECT_DIR$/app/Simulation.java" />
-        <option value="$PROJECT_DIR$/objects/Firm.java" />
-        <option value="$PROJECT_DIR$/conf/test1.conf" />
         <option value="$PROJECT_DIR$/util/FileIO.java" />
         <option value="$PROJECT_DIR$/util/Bag.java" />
+        <option value="$PROJECT_DIR$/util/Landscape.java" />
         <option value="$PROJECT_DIR$/util/Globals.java" />
+        <option value="$PROJECT_DIR$/conf/test1.conf" />
+        <option value="$PROJECT_DIR$/objects/Firm.java" />
       </list>
     </option>
   </component>
@@ -266,7 +273,7 @@
     </task>
     <servers />
   </component>
-  <component name="TodoView" selected-index="1">
+  <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -309,13 +316,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/util/Landscape.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="154" column="11" lean-forward="true" selection-start-line="154" selection-start-column="11" selection-end-line="154" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/conf/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -340,38 +340,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Simulation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/Random.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
           <caret line="387" column="18" selection-start-line="387" selection-start-column="18" selection-end-line="387" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/objects/Firm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="181" column="26" lean-forward="true" selection-start-line="181" selection-start-column="26" selection-end-line="181" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf/test1.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="16" selection-start-line="20" selection-end-line="20" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/FileIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="39" column="84" lean-forward="true" selection-start-line="39" selection-start-column="84" selection-end-line="39" selection-end-column="84" />
         </state>
       </provider>
     </entry>
@@ -389,10 +361,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/util/Landscape.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="128" column="4" lean-forward="true" selection-start-line="128" selection-start-column="4" selection-end-line="128" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/FileIO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="53" column="67" lean-forward="true" selection-start-line="53" selection-start-column="67" selection-end-line="53" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/util/Globals.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="131" column="45" lean-forward="true" selection-start-line="131" selection-start-column="45" selection-end-line="131" selection-end-column="45" />
+        <state relative-caret-position="176">
+          <caret line="217" column="68" lean-forward="true" selection-start-line="217" selection-start-column="68" selection-end-line="217" selection-end-column="68" />
           <folding>
             <element signature="e#2660#2661#0" expanded="true" />
             <element signature="e#2682#2683#0" expanded="true" />
@@ -402,6 +388,36 @@
             <element signature="e#2823#2824#0" expanded="true" />
             <element signature="e#2872#2873#0" expanded="true" />
             <element signature="e#2906#2907#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/test1.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Simulation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="147" column="5" lean-forward="true" selection-start-line="147" selection-start-column="5" selection-end-line="147" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/objects/Firm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="419" column="55" selection-start-line="419" selection-start-column="55" selection-end-line="419" selection-end-column="55" />
+          <folding>
+            <element signature="e#15128#15137#0" expanded="true" />
+            <element signature="e#28910#28911#0" expanded="true" />
+            <element signature="e#29879#29880#0" expanded="true" />
+            <element signature="e#29971#29972#0" expanded="true" />
+            <element signature="e#30055#30056#0" expanded="true" />
+            <element signature="e#30109#30110#0" expanded="true" />
+            <element signature="e#30152#30153#0" expanded="true" />
           </folding>
         </state>
       </provider>

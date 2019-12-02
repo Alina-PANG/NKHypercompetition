@@ -33,7 +33,7 @@ public class Firm implements Comparable<Firm> {
 	private Map<Integer, List<Firm>> dependentFirms; // key: component index, value: lists of firm that are using this component
 
 	//private ArrayList<Product> products; // can we have overlapping resources for different products?  I think NO 
-	private boolean[] resources; 
+	private boolean[] resources;
 	private String[] resourceConfig; // array of "0", "1" or " "
 	// private double fitness;
 	private int rank;
@@ -124,7 +124,7 @@ public class Firm implements Comparable<Firm> {
 		resourceConfig = new String[Globals.getN()];
 		for (int i = 0; i < resourceConfig.length; i++) {
 			if (resources[i]) {
-				resourceConfig[i] = Integer.toString(Globals.rand.nextInt(2));
+				resourceConfig[i] = String.valueOf(Globals.rand.nextInt(2));
 			} else {
 				resourceConfig[i] = " ";
 			}
@@ -147,8 +147,9 @@ public class Firm implements Comparable<Firm> {
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		double newUtility = Simulation.landscape.getFitness(newConfig);
 
-		boolean absoluteDecision = resourceDecision.equals("absolute") && newUtility - currentFitness > threshold;
-		boolean relativeDecision = resourceDecision.equals("relative") && newUtility / incrementalResource > threshold / incrementalResource;
+		System.out.println("Resource Decision: "+resourceDecision+" New Utility = "+newUtility+", curFit = "+currentFitness+", threshold = "+threshold);
+		boolean absoluteDecision = resourceDecision.equals("abs") && (newUtility - currentFitness > threshold);
+		boolean relativeDecision = resourceDecision.equals("rel") && newUtility / incrementalResource > threshold / incrementalResource;
 
 		if (absoluteDecision || relativeDecision){
 //			System.out.println("Execute the new config: "+newConfig+" (old config: "+resourceConfig+")");
@@ -188,6 +189,10 @@ public class Firm implements Comparable<Firm> {
 //					System.arraycopy(considerLending(), 0, newConfig, 0, newConfig.length);
 					return;
 			}
+
+			System.out.print("New config: ");
+			System.out.println(printResConfig(newConfig));
+
 			int numCurrentResources = 0;
 			for (int i = 0; i < resources.length; i++) {
 				if (resources[i]) {
@@ -203,6 +208,7 @@ public class Firm implements Comparable<Firm> {
 
 			absoluteOrNormalizedDecision(newConfig, Math.abs(numCurrentResources - numNewResources), threshold);
 
+			System.out.print("After Decision: ");
 			printRes();
 		}
 	}
@@ -342,16 +348,18 @@ public class Firm implements Comparable<Firm> {
 
 	private void printRes(){
 		System.out.println("Firm: " + this.firmID);
-		for(boolean res: resources) {
-			if(res) System.out.print(1);
-			else System.out.print(0);
+		for(String str: resourceConfig) {
+			if(str.equals(" ")) System.out.print(".");
+			else System.out.print(str);
 		}
 		System.out.println();
+		System.out.println("========================");
 	}
 
 	private String[] considerBorrowing() {
 		String[] newConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
+		System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
 
 		// decide the component indexes that I can borrow
 		List<List<Integer>> components = Globals.getComponents();
@@ -359,7 +367,7 @@ public class Firm implements Comparable<Firm> {
 		for(int i = 0; i < components.size(); i ++) {
 			boolean have = false;
 			for(int j = 0; j < components.get(i).size(); j ++) {
-				if(resources[components.get(i).get(j)]) {
+				if(!resourceConfig[components.get(i).get(j)].equals(" ")) {
 					have = true; break;
 				}
 			}
@@ -376,7 +384,6 @@ public class Firm implements Comparable<Firm> {
 			Random rnd = new Random();
 			int tempIndexToBorrow = rnd.nextInt(componentCanBeBorrowed.size());
 			int cIndexToBorrow = componentCanBeBorrowed.get(tempIndexToBorrow);
-			System.out.println("index: "+ tempIndexToBorrow+" "+cIndexToBorrow);
 			List<Firm> firms = Globals.getSharingFirmsForComponent(cIndexToBorrow);
 			if(firms == null || firms.size() == 0) {
 //				System.out.println("**** Firm.java - FirmID = "+this.firmID+" Borrowing: No firm lending!");
@@ -385,16 +392,16 @@ public class Firm implements Comparable<Firm> {
 //			System.out.println("**** Firm.java - FirmID = "+this.firmID+" Borrowing: " + firms.size() + " firm lending");
 			int fIndexToBorrow = rnd.nextInt(firms.size());
 			Firm f = firms.get(fIndexToBorrow);
-			System.out.println("===================");
 			System.out.println("**** Component Index: " + cIndexToBorrow);
 			System.out.println("**** Borrowing from firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig));
-			System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
+
+			System.out.println(cIndexToBorrow);
+			System.out.println(components.get(cIndexToBorrow));
 			for(int index: components.get(cIndexToBorrow)){
 				newConfig[index] = f.resourceConfig[index];
 			}
 		}
-		System.out.println("new config: "+printResConfig(newConfig));
-		System.out.println("===================||");
+		else System.out.println("Firm "+this.firmID+" decides not to borrow.");
 		return newConfig;
 	}
 
@@ -428,33 +435,26 @@ public class Firm implements Comparable<Firm> {
 			int tempIndexToBorrow = rnd.nextInt(componentCanBeSwitched.size());
 			int cIndexToBorrow = componentCanBeSwitched.get(tempIndexToBorrow);
 			List<Firm> firms = Globals.getSharingFirmsForComponent(cIndexToBorrow);
-			if(firms == null || firms.size() == 0) {
-//				System.out.println("**** Firm.java - FirmID = "+this.firmID+" Switching: No firm lending!");
+			if(firms == null || firms.size() < 2) {
+				System.out.println("Firm with ID "+this.firmID + " decides not to switch");
 				return newConfig;
 			}
-//			System.out.println("**** Firm.java - FirmID = "+this.firmID+" Switching: " + firms.size() + " firm lending");
-			int fIndexToBorrow = rnd.nextInt(firms.size());
 
-			// check if it is switching to its own configuration (the same, can be ignored)
-//			if(fIndexToBorrow == 1) return newConfig;
-//			else{ // cannot be itself
-//				Firm f = firms.get(fIndexToBorrow);
-//				while(f.firmID == this.firmID) {
-//					fIndexToBorrow = rnd.nextInt(firms.size());
-//					firms.get(fIndexToBorrow);
-//				}
-//			}
+			int fIndexToBorrow = rnd.nextInt(firms.size());
 			Firm f = firms.get(fIndexToBorrow);
-			System.out.println("===================");
+			// to prevent the firm from swtiching to its own configuration => need?
+//			while(f.firmID == this.firmID) {
+//				fIndexToBorrow = rnd.nextInt(firms.size());
+//				f = firms.get(fIndexToBorrow);
+//			}
 			System.out.println("**** Component Index: " + cIndexToBorrow);
-			System.out.println("**** Switching from firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig));
+			System.out.println("**** Switching to firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig));
 			System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
 			for(int index: components.get(cIndexToBorrow)){
 				newConfig[index] = f.resourceConfig[index];
 			}
+			System.out.println();
 		}
-		System.out.println("new config: "+printResConfig(newConfig));
-		System.out.println("===================||");
 		return newConfig;
 	}
 

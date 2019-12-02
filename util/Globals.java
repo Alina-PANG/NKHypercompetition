@@ -123,9 +123,10 @@ public class Globals {
 
 		components = new ArrayList<List<Integer>>();
 		Bag bag = new Bag(list); // save the indexes of the component. 1,3,5 -> resources at index 1,3,5 belongs to this component
+		int j = 0;
 		while(!bag.isEmpty()){
-			int size = rnd.nextInt(maxCSize - minCSize) + minCSize;
-			System.out.println("Component size = "+size+":");
+			int size = rnd.nextInt(maxCSize - minCSize + 1) + minCSize;
+			System.out.println(j+" Component size = "+size+":");
 			List<Integer> component = new ArrayList<>();
 			for(int i = 0; i < size && !bag.isEmpty(); i ++){
 				int adding = (Integer) bag.randomPop();
@@ -134,6 +135,7 @@ public class Globals {
 			}
 			components.add(component);
 			System.out.println();
+			j ++;
 		}
 	}
 
