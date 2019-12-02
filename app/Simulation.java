@@ -62,20 +62,20 @@ public class Simulation {
 		 */
 		for (int t = 0; t < Globals.getIterations(); t++) {
 			Globals.refreshLendingFirms(); // edited: clean up the lending firm list -> maintaining cost & benefit for each period - NPV & PV issue?
-			System.out.println("====== Changing/Adding/Dropping Resources");
+//			System.out.println("====== Changing/Adding/Dropping Resources");
 			for (Firm f : firms) {
 				f.makeDecision();
 			}
-			System.out.println("====== Lending");
+//			System.out.println("====== Lending");
 			for (Firm f : firms) {
 				f.componentOperations(2);
 			}
 			Globals.printSharingFirms();
-			System.out.println("====== Switching");
+//			System.out.println("====== Switching");
 			for (Firm f : firms) {
 				f.componentOperations(1);
 			}
-			System.out.println("====== Borrowing");
+//			System.out.println("====== Borrowing");
 			for (Firm f : firms) {
 				f.componentOperations(0);
 			}
