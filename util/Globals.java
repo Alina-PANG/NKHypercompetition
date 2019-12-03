@@ -105,19 +105,8 @@ public class Globals {
 
 
 	public static void setComponents() {
-		System.out.println("\n**** Globals.java *****");
+		System.out.println("\n**** Components *****"); // output
 		Random rnd = new Random();
-//		int sum = 0, left = N - 1;
-		// maxSize , numComponent (minSize = 2). fully covered
-//		for(int i = 0; i < M - 1; i ++) {
-//			int generated = rnd.nextInt(left) + 1;
-//			left = N - (M - 1 - i) - sum;
-//			while(generated > left) generated = rnd.nextInt(left) + 1;
-//			arr[i] = generated;
-//			sum += generated;
-//		}
-//		arr[M - 1] = N - sum;
-
 		List<Integer> list = new ArrayList<>();
 		for(int i = 0; i < N; i ++) list.add(i);
 
@@ -126,15 +115,15 @@ public class Globals {
 		int j = 0;
 		while(!bag.isEmpty()){
 			int size = rnd.nextInt(maxCSize - minCSize + 1) + minCSize;
-			System.out.println(j+" Component size = "+size+":");
+			System.out.println(j+" Component size = "+size+":"); // output
 			List<Integer> component = new ArrayList<>();
 			for(int i = 0; i < size && !bag.isEmpty(); i ++){
 				int adding = (Integer) bag.randomPop();
-				System.out.print(adding+" ");
+				System.out.print(adding+" "); // output
 				component.add(adding);
 			}
 			components.add(component);
-			System.out.println();
+			System.out.println(); // output
 			j ++;
 		}
 	}
@@ -239,7 +228,7 @@ public class Globals {
 	}
 
 	public static String getOutfilename() {
-		return "out/" + outfilename;
+		return outfilename;
 	}
 
 

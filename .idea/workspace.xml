@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e1d7ff2-aacd-4b74-a2ed-60ffa393d621" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/Simulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/in/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/objects/Firm.java" beforeDir="false" afterPath="$PROJECT_DIR$/objects/Firm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/util/FileIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/util/Globals.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +26,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Simulation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="129" column="30" lean-forward="true" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="30" />
+            <state relative-caret-position="232">
+              <caret line="81" column="41" lean-forward="true" selection-start-line="81" selection-start-column="41" selection-end-line="81" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/META-INF/MANIFEST.MF">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="26" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -38,17 +56,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/FileIO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="53" column="67" lean-forward="true" selection-start-line="53" selection-start-column="67" selection-end-line="53" selection-end-column="67" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/conf/test1.conf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+            <state relative-caret-position="285">
+              <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,15 +68,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/objects/Firm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="213" column="54" lean-forward="true" selection-start-line="213" selection-start-column="54" selection-end-line="213" selection-end-column="54" />
+            <state relative-caret-position="14">
+              <caret line="196" column="68" selection-start-line="196" selection-start-column="68" selection-end-line="196" selection-end-column="68" />
               <folding>
-                <element signature="e#15128#15137#0" expanded="true" />
+                <element signature="e#28078#28079#0" expanded="true" />
                 <element signature="e#28111#28112#0" expanded="true" />
+                <element signature="e#29060#29061#0" expanded="true" />
                 <element signature="e#29080#29081#0" expanded="true" />
+                <element signature="e#29111#29112#0" expanded="true" />
                 <element signature="e#29172#29173#0" expanded="true" />
+                <element signature="e#29214#29215#0" expanded="true" />
                 <element signature="e#29256#29257#0" expanded="true" />
+                <element signature="e#29291#29292#0" expanded="true" />
                 <element signature="e#29310#29311#0" expanded="true" />
+                <element signature="e#29335#29336#0" expanded="true" />
                 <element signature="e#29353#29354#0" expanded="true" />
               </folding>
             </state>
@@ -74,8 +91,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/util/Globals.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="171" column="35" selection-start-line="171" selection-start-column="35" selection-end-line="171" selection-end-column="35" />
+            <state relative-caret-position="95">
+              <caret line="107" column="45" selection-start-line="107" selection-start-column="45" selection-end-line="107" selection-end-column="45" />
               <folding>
                 <element signature="e#2660#2661#0" expanded="true" />
                 <element signature="e#2682#2683#0" expanded="true" />
@@ -91,17 +108,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/util/Bag.java">
+        <entry file="file://$PROJECT_DIR$/in/test1.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#328#329#0" expanded="true" />
-                <element signature="e#353#354#0" expanded="true" />
-                <element signature="e#733#734#0" expanded="true" />
-                <element signature="e#768#769#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="270">
+              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -117,36 +127,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>componentopera</find>
-      <find>nextint</find>
-      <find>print</find>
-      <find>considerLending</find>
-      <find>absoluteor</find>
-      <find>considerlending</find>
-      <find>TODO</find>
-      <find>syncResources</find>
-      <find>getfitness</find>
-      <find>resourceConfig</find>
-      <find>firm</find>
-      <find>operation</find>
-      <find>=======</find>
-      <find>================</find>
-      <find>makedecision</find>
       <find>switchi</find>
       <find>===================&quot;</find>
       <find>considerborrowing</find>
       <find>borrowin</find>
       <find>borr</find>
-      <find>borrowing</find>
       <find>borrowing from</find>
       <find>b</find>
       <find>borrowing from firm</find>
       <find>switch</find>
       <find>switching</find>
-      <find>new config</find>
       <find>resource decision</find>
       <find>set</find>
       <find>innovation</find>
+      <find>considerdro</find>
+      <find>dropresource</find>
+      <find>considerd</find>
+      <find>out</find>
+      <find>outfilename</find>
+      <find>getOutfilename</find>
+      <find>toStringFull</find>
+      <find>iterations</find>
+      <find>static void</find>
+      <find>static</find>
+      <find>static void</find>
+      <find>main</find>
+      <find>considerswitchi</find>
+      <find>new config</find>
+      <find>index</find>
+      <find>borrowing</find>
+      <find>output</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -160,17 +170,19 @@
       <list>
         <option value="$PROJECT_DIR$/app/Test.java" />
         <option value="$PROJECT_DIR$/util/MersenneTwisterFast.java" />
-        <option value="$PROJECT_DIR$/util/FileIO.java" />
         <option value="$PROJECT_DIR$/util/Bag.java" />
         <option value="$PROJECT_DIR$/util/Landscape.java" />
         <option value="$PROJECT_DIR$/conf/test1.conf" />
+        <option value="$PROJECT_DIR$/util/FileIO.java" />
+        <option value="$PROJECT_DIR$/META-INF.MF" />
+        <option value="$PROJECT_DIR$/in/test1.conf" />
         <option value="$PROJECT_DIR$/objects/Firm.java" />
         <option value="$PROJECT_DIR$/app/Simulation.java" />
         <option value="$PROJECT_DIR$/util/Globals.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="width" value="1440" />
     <option name="height" value="900" />
   </component>
@@ -194,7 +206,7 @@
             <path>
               <item name="NKHypercompetition" type="b2602c69:ProjectViewProjectNode" />
               <item name="NKHypercompetition" type="462c0819:PsiDirectoryNode" />
-              <item name="conf" type="462c0819:PsiDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="NKHypercompetition" type="b2602c69:ProjectViewProjectNode" />
@@ -212,6 +224,11 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/META-INF" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -285,7 +302,7 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2746781" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27825466" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -293,8 +310,8 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41445783" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.41445783" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -315,7 +332,7 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/conf/README.md">
+    <entry file="file://$PROJECT_DIR$/in/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="12" column="239" selection-start-line="12" selection-start-column="124" selection-end-line="12" selection-end-column="239" />
@@ -339,27 +356,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/Random.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="387" column="18" selection-start-line="387" selection-start-column="18" selection-end-line="387" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/Bag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#328#329#0" expanded="true" />
-            <element signature="e#353#354#0" expanded="true" />
-            <element signature="e#733#734#0" expanded="true" />
-            <element signature="e#768#769#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/Landscape.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
@@ -367,31 +363,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/FileIO.java">
+    <entry file="file://$PROJECT_DIR$/util/Bag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="53" column="67" lean-forward="true" selection-start-line="53" selection-start-column="67" selection-end-line="53" selection-end-column="67" />
+        <state relative-caret-position="420">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#328#329#0" expanded="true" />
+            <element signature="e#353#354#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/test1.conf">
+    <entry file="file://$PROJECT_DIR$/NKHypercompetition.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="26" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/FileIO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/Random.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="387" column="18" selection-start-line="387" selection-start-column="18" selection-end-line="387" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/in/test1.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/objects/Firm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="213" column="54" lean-forward="true" selection-start-line="213" selection-start-column="54" selection-end-line="213" selection-end-column="54" />
+        <state relative-caret-position="14">
+          <caret line="196" column="68" selection-start-line="196" selection-start-column="68" selection-end-line="196" selection-end-column="68" />
           <folding>
-            <element signature="e#15128#15137#0" expanded="true" />
+            <element signature="e#28078#28079#0" expanded="true" />
             <element signature="e#28111#28112#0" expanded="true" />
+            <element signature="e#29060#29061#0" expanded="true" />
             <element signature="e#29080#29081#0" expanded="true" />
+            <element signature="e#29111#29112#0" expanded="true" />
             <element signature="e#29172#29173#0" expanded="true" />
+            <element signature="e#29214#29215#0" expanded="true" />
             <element signature="e#29256#29257#0" expanded="true" />
+            <element signature="e#29291#29292#0" expanded="true" />
             <element signature="e#29310#29311#0" expanded="true" />
+            <element signature="e#29335#29336#0" expanded="true" />
             <element signature="e#29353#29354#0" expanded="true" />
           </folding>
         </state>
@@ -399,15 +436,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Simulation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="129" column="30" lean-forward="true" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="30" />
+        <state relative-caret-position="232">
+          <caret line="81" column="41" lean-forward="true" selection-start-line="81" selection-start-column="41" selection-end-line="81" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/util/Globals.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="171" column="35" selection-start-line="171" selection-start-column="35" selection-end-line="171" selection-end-column="35" />
+        <state relative-caret-position="95">
+          <caret line="107" column="45" selection-start-line="107" selection-start-column="45" selection-end-line="107" selection-end-column="45" />
           <folding>
             <element signature="e#2660#2661#0" expanded="true" />
             <element signature="e#2682#2683#0" expanded="true" />

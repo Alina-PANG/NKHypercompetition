@@ -21,12 +21,18 @@ public class Simulation {
 	
 	public static void main(String[] args) {
 		// LANDSCAPE INITIALIZATION
-		String filename = "conf/test1.conf";
-//		FileIO.loadParameters(args[0]);
-		FileIO.loadParameters(filename);
+		String infilename, outfilename;
+		int iterations;
+		if(args.length == 0) infilename = "in/in1.conf";
+		else infilename = args[0];
+		if(args.length == 0) outfilename = "out/out1.txt";
+		else outfilename = args[1];
+		if(args.length == 0) iterations = 5;
+		else iterations = Integer.parseInt(args[2]);
+
+		FileIO.loadParameters(infilename, outfilename, iterations);
 		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
-//		printLandsacpe();
 
 		// COMPONENT INITIALIZATION
 		Globals.setComponents();
@@ -62,20 +68,20 @@ public class Simulation {
 		 */
 		for (int t = 0; t < Globals.getIterations(); t++) {
 			Globals.refreshLendingFirms(); // edited: clean up the lending firm list -> maintaining cost & benefit for each period - NPV & PV issue?
-//			System.out.println("====== Changing/Adding/Dropping Resources");
+			System.out.println("\nPeriod: "+t+" ====== Changing/Adding/Dropping Resources"); // output
 			for (Firm f : firms) {
 				f.makeDecision();
 			}
-//			System.out.println("====== Lending");
+			System.out.println("\nPeriod: "+t+" ====== Lending"); // output
 			for (Firm f : firms) {
 				f.componentOperations(2);
 			}
-			Globals.printSharingFirms();
-//			System.out.println("====== Switching");
+			Globals.printSharingFirms(); // output
+			System.out.println("\nPeriod: "+t+" ====== Switching"); // output
 			for (Firm f : firms) {
 				f.componentOperations(1);
 			}
-//			System.out.println("====== Borrowing");
+			System.out.println("\nPeriod: "+t+" ====== Borrowing"); // output
 			for (Firm f : firms) {
 				f.componentOperations(0);
 			}
@@ -102,7 +108,7 @@ public class Simulation {
 			// output results
 			for (Firm f : firms) {
 				// Globals.out.println(t + "\t" + f.toStringWithFitness(landscape));
-				Globals.out.println(t + "\t" + f.toStringFull(landscape));
+				Globals.out.println(t + "\t" + f.getFirmID() + "\t" + f.toStringFull(landscape));
 			}
 		}
 		

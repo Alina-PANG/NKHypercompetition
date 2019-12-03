@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class FileIO {
 
-	public static void loadParameters(String configFile) {
+	public static void loadParameters(String configFile, String outFile, int iterations) {
 		/*
 		 *	int N = 20;
 		 *	int numResources = 4;
@@ -27,12 +27,12 @@ public class FileIO {
 			int checkNum = 14;
 			try {
 				p.load(new FileInputStream(configFile));
+				Globals.setOutfile(outFile);
+				Globals.setIterations(iterations);
 				// simulation parameters
 				if (p.getProperty("N") != null) { Globals.setN(Integer.parseInt(p.getProperty("N"))); }
-				if (p.getProperty("outfile") != null) { Globals.setOutfile(p.getProperty("outfile")); }
-					else { Globals.setOutfile(""); }
 				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
-				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
+//				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
 				if (p.getProperty("numConfig") != null) checkNum = Integer.parseInt(p.getProperty("numConfig"));
 				if (p.getProperty("minComponentSize") != null) { Globals.setMinCSize(Integer.parseInt(p.getProperty("minComponentSize"))); }
 				if (p.getProperty("maxComponentSize") != null) { Globals.setMaxCSize(Integer.parseInt(p.getProperty("maxComponentSize"))); }
@@ -68,10 +68,10 @@ public class FileIO {
 		System.out.println("influenceMatrixFile: " + Globals.getInfluenceMatrix());
 	}
 
-	public static void main(String[] args) {
-		// for test only
-		loadParameters(args[0]);
-		printParameters();
-	}
+//	public static void main(String[] args) {
+//		// for test only
+//		loadParameters(args[0]);
+//		printParameters();
+//	}
 
 }

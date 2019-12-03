@@ -147,19 +147,22 @@ public class Firm implements Comparable<Firm> {
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		double newUtility = Simulation.landscape.getFitness(newConfig);
 
-//		System.out.println("Resource Decision: "+resourceDecision+" New Utility = "+newUtility+", curFit = "+currentFitness+", threshold = "+threshold);
+		System.out.println("Resource Decision: "+resourceDecision+" New Utility = "+newUtility+", curFit = "+currentFitness+", threshold = "+threshold);
 		boolean absoluteDecision = resourceDecision.equals("abs") && (newUtility - currentFitness > threshold);
 		boolean relativeDecision = resourceDecision.equals("rel") && newUtility / incrementalResource > threshold / incrementalResource;
 
 		if (absoluteDecision || relativeDecision){
-//			System.out.println("Execute the new config: "+newConfig+" (old config: "+resourceConfig+")");
+			System.out.println("Decision: Execute the new config: "+printResConfig(newConfig)+" (old config: "+printResConfig(resourceConfig)+")");
 			System.arraycopy(newConfig, 0, resourceConfig, 0, newConfig.length);
+		} else {
+			System.out.println("Decision: Stay the same config.");
 		}
 
 		syncResources(); // resets bool resources[]
 	}
 
 	public void componentOperations(int type){
+		System.out.println("*************** Firm "+this.firmID+" *******************"); // output
 		double innovation, threshold;
 		switch (type){
 			case 0:
@@ -190,8 +193,8 @@ public class Firm implements Comparable<Firm> {
 					return;
 			}
 //
-//			System.out.print("New config: ");
-//			System.out.println(printResConfig(newConfig));
+			System.out.print("> New config: "); // output
+			System.out.println(printResConfig(newConfig)); // output
 
 			int numCurrentResources = 0;
 			for (int i = 0; i < resources.length; i++) {
@@ -350,13 +353,12 @@ public class Firm implements Comparable<Firm> {
 			else System.out.print(str);
 		}
 		System.out.println();
-		System.out.println("========================");
 	}
 
 	private String[] considerBorrowing() {
 		String[] newConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, newConfig, 0, resourceConfig.length);
-//		System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
+		System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
 
 		// decide the component indexes that I can borrow
 		List<List<Integer>> components = Globals.getComponents();
@@ -381,15 +383,13 @@ public class Firm implements Comparable<Firm> {
 			}
 			int fIndexToBorrow = rnd.nextInt(firms.size());
 			Firm f = firms.get(fIndexToBorrow);
-//			System.out.println("**** Component Index: " + cIndexToBorrow);
-//			System.out.println("**** Borrowing from firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig));
-//			System.out.println(cIndexToBorrow);
-//			System.out.println(components.get(cIndexToBorrow));
+			System.out.println("> Component Index: " + cIndexToBorrow); // output
+			System.out.println("> Borrowing from firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig)); // output
 			for(int index: components.get(cIndexToBorrow)){
 				newConfig[index] = f.resourceConfig[index];
 			}
 		}
-//		else System.out.println("Firm "+this.firmID+" decides not to borrow.");
+		else System.out.println("Firm "+this.firmID+" has no available firms to borrow.");
 		return newConfig;
 	}
 
@@ -429,14 +429,14 @@ public class Firm implements Comparable<Firm> {
 //				fIndexToBorrow = rnd.nextInt(firms.size());
 //				f = firms.get(fIndexToBorrow);
 //			}
-//			System.out.println("**** Component Index: " + cIndexToBorrow);
-//			System.out.println("**** Switching to firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig));
-//			System.out.println("**** Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig));
+			System.out.println("> Component Index: " + cIndexToBorrow); // output
+			System.out.println("> Switching to firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig)); // output
+			System.out.println("> Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig)); // output
 			for(int index: components.get(cIndexToBorrow)){
 				newConfig[index] = f.resourceConfig[index];
 			}
-//			System.out.println();
 		}
+		else System.out.println("Firm "+this.firmID+" has no available switches.");
 		return newConfig;
 	}
 

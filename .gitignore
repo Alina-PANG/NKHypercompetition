@@ -27,6 +27,6 @@ hs_err_pid*
 # temp files
 landscape/*
 out/*
-conf.old/
+in.old/
 *.sh
-conf/*
+in/*
