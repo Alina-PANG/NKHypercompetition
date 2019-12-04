@@ -2,10 +2,7 @@ package util;
 
 import app.Simulation;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +25,7 @@ public class FileIO {
 			try {
 				p.load(new FileInputStream(configFile));
 				Globals.setOutfile(outFile);
+				File f = new File(outFile);
 				Globals.setIterations(iterations);
 				// simulation parameters
 				if (p.getProperty("N") != null) { Globals.setN(Integer.parseInt(p.getProperty("N"))); }

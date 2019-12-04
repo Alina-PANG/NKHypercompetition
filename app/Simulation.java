@@ -22,20 +22,28 @@ public class Simulation {
 	public static void main(String[] args) {
 		// LANDSCAPE INITIALIZATION
 		String infilename, outfilename;
-		int iterations;
+		int iterations, time;
 		if(args.length == 0) infilename = "in/in1.conf";
 		else infilename = args[0];
 		if(args.length == 0) outfilename = "out/out1.txt";
 		else outfilename = args[1];
 		if(args.length == 0) iterations = 5;
 		else iterations = Integer.parseInt(args[2]);
+		if(args.length == 0) time = 0;
+		else time = Integer.parseInt(args[3]);
 
 		FileIO.loadParameters(infilename, outfilename, iterations);
 		commonResourceConfig = new String[Globals.getN()];
 		landscape  = new Landscape(0, new InfluenceMatrix(Globals.getInfluenceMatrix()));
 
 		// COMPONENT INITIALIZATION
+		Globals.out.println("T\t"+time);
 		Globals.setComponents();
+		Globals.out.print("C\t"+Globals.getComponents().size()+"\t");
+		for(List<Integer> c: Globals.getComponents()){
+			Globals.out.print(c.size() + "\t");
+		}
+		Globals.out.println();
 
 		// FIRM INITIALIZATION
 		int firmID = 0;
@@ -105,13 +113,17 @@ public class Simulation {
 				}
 			}
 
+			Globals.out.println("L\t"+landscape.commonConfigToString());
 			// output results
 			for (Firm f : firms) {
 				// Globals.out.println(t + "\t" + f.toStringWithFitness(landscape));
-				Globals.out.println(t + "\t" + f.getFirmID() + "\t" + f.toStringFull(landscape));
+				Globals.out.println(t + "\t" + f.toStringFull(landscape));
 			}
 		}
-		
+		for (Firm f : firms) {
+			// Globals.out.println(t + "\t" + f.toStringWithFitness(landscape));
+			Globals.out.println("N\t"+f.getFirmID()+"\t"+f.printCounts());
+		}
 	}
 	
 	private static void run(int t) {

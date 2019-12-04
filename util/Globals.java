@@ -130,6 +130,8 @@ public class Globals {
 
 	public static List<List<Integer>> getComponents(){ return components; }
 
+	public static List<Integer> getComponentByIndex(int i) {return components.get(i);};
+
 	public static void refreshLendingFirms(){
 		sharingFirms = new HashMap<>();
 	}
@@ -149,7 +151,7 @@ public class Globals {
 	}
 
 	public static void printSharingFirms(){
-		System.out.println("**** Globals.java - All sharing Firms ****");
+		System.out.println("**** All sharing Firms ****");
 		for(Map.Entry<Integer, List<Firm>> entry: sharingFirms.entrySet()){
 			System.out.println("Component Index:" + entry.getKey());
 			List<Firm> firms = entry.getValue();

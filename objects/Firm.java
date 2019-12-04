@@ -3,6 +3,7 @@ package objects;
 import java.util.*;
 import java.util.logging.Logger;
 
+import util.Bag;
 import util.Globals;
 import util.Landscape;
 import app.*;
@@ -28,6 +29,13 @@ public class Firm implements Comparable<Firm> {
 	private double componentSwitchingThreshold;
 	private double componentLendingInnovation;
 	private double componentLendingThreshold;
+	private Set<Integer> borrowedComponents;
+
+	private int countExp;
+	private int countAdd;
+	private int countDrop;
+	private int countBorrow;
+	private int countSwitch;
 
 	// [TODO] 1st: for firms dependent on this, when removing the resources need to update those firm resource config
 	private Map<Integer, List<Firm>> dependentFirms; // key: component index, value: lists of firm that are using this component
@@ -69,6 +77,7 @@ public class Firm implements Comparable<Firm> {
 		componentLendingInnovation = acomponentLendingInnovation;
 		componentLendingThreshold = acomponentLendingThreshold;
 		dependentFirms = new HashMap<>();
+		borrowedComponents = new HashSet<>();
 
 		setResources(initResources);
 		setResourceConfig();
@@ -104,7 +113,7 @@ public class Firm implements Comparable<Firm> {
 	private void setResources(int size) {
 		resources = new boolean[Globals.getN()];
 		int resourcesSet = 0;
-		while (resourcesSet <= size) {
+		while (resourcesSet < size) {
 			int r = Globals.rand.nextInt(Globals.getN());
 			if (!resources[r]) {
 				resourcesSet++;
@@ -112,7 +121,10 @@ public class Firm implements Comparable<Firm> {
 			}
 		}
 	}
-	
+
+	public String printCounts(){
+		return countExp + "\t" + countAdd + "\t" + countDrop + "\t" + countBorrow + "\t" + countSwitch;
+	}
 	// NO NEED; FITNESS IS ALWAYS CALCULATED ON THE FLY
 	// public void initFitness() {
 	// 	fitness = Simulation.landscape.getFitness(resourceConfig);
@@ -138,22 +150,38 @@ public class Firm implements Comparable<Firm> {
 
 
 	public void makeDecision() { // with innovation
+		System.out.println("*************** Firm "+this.firmID+" *******************");
+		System.out.println("Before: "+printResConfig(resourceConfig));
 		searchExperiential();
 		addOrDrop();
-
+		System.out.println("After: "+printResConfig(resourceConfig));
 	}
 
-	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold) {
+	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold, int type) {
 		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
 		double newUtility = Simulation.landscape.getFitness(newConfig);
 
-		System.out.println("Resource Decision: "+resourceDecision+" New Utility = "+newUtility+", curFit = "+currentFitness+", threshold = "+threshold);
+		System.out.println("Resource Decision: "+resourceDecision+" New Utility = "+newUtility+", curFit = "+currentFitness+", threshold = "+threshold+" Num Diff Res = "+incrementalResource);
 		boolean absoluteDecision = resourceDecision.equals("abs") && (newUtility - currentFitness > threshold);
-		boolean relativeDecision = resourceDecision.equals("rel") && newUtility / incrementalResource > threshold / incrementalResource;
+		boolean relativeDecision = resourceDecision.equals("rel") && (newUtility - currentFitness) / incrementalResource > threshold;
 
 		if (absoluteDecision || relativeDecision){
 			System.out.println("Decision: Execute the new config: "+printResConfig(newConfig)+" (old config: "+printResConfig(resourceConfig)+")");
 			System.arraycopy(newConfig, 0, resourceConfig, 0, newConfig.length);
+			switch(type){
+				case 0:
+					countBorrow ++;
+					break;
+				case 1:
+					countSwitch ++;
+					break;
+				case 2: break; // lend
+				case 3:
+					countExp ++;
+					break;
+				default:
+					break;
+			}
 		} else {
 			System.out.println("Decision: Stay the same config.");
 		}
@@ -162,7 +190,6 @@ public class Firm implements Comparable<Firm> {
 	}
 
 	public void componentOperations(int type){
-		System.out.println("*************** Firm "+this.firmID+" *******************"); // output
 		double innovation, threshold;
 		switch (type){
 			case 0:
@@ -178,38 +205,35 @@ public class Firm implements Comparable<Firm> {
 				threshold = componentLendingThreshold;
 		}
 
-		if(innovation > Globals.rand.nextDouble()) {
+		if(innovation >= Globals.rand.nextDouble()) {
 			String[] newConfig = new String[Globals.getN()];
 			switch (type){
 				case 0:
+					System.out.println("*************** Firm "+this.firmID+" *******************"); // output
 					System.arraycopy(considerBorrowing(), 0, newConfig, 0, newConfig.length);
 					break;
 				case 1:
+					System.out.println("*************** Firm "+this.firmID+" *******************"); // output
 					System.arraycopy(considerSwitching(), 0, newConfig, 0, newConfig.length);
 					break;
 				default:
 					considerLending();
-//					System.arraycopy(considerLending(), 0, newConfig, 0, newConfig.length);
 					return;
 			}
-//
+
 			System.out.print("> New config: "); // output
 			System.out.println(printResConfig(newConfig)); // output
 
-			int numCurrentResources = 0;
-			for (int i = 0; i < resources.length; i++) {
-				if (resources[i]) {
-					numCurrentResources++;
-				}
-			}
-			int numNewResources = 0;
+			int numDiffResources = 0;
 			for (int i = 0; i < newConfig.length; i++) {
-				if (!newConfig[i].equals(" ")) {
-					numNewResources++;
+				if (!newConfig[i].equals(resourceConfig[i])) {
+					numDiffResources++;
 				}
 			}
 
-			absoluteOrNormalizedDecision(newConfig, Math.abs(numCurrentResources - numNewResources), threshold);
+			absoluteOrNormalizedDecision(newConfig, numDiffResources, threshold, type);
+		} else{
+			System.out.println("Firm with ID "+this.firmID+" innovation too low!");
 		}
 	}
 
@@ -225,8 +249,8 @@ public class Firm implements Comparable<Firm> {
 			double dropResourceUtility = Simulation.landscape.getFitness(dropResourceConfig);
 
 			int numCurrentResources = 0;
-			for (int i = 0; i < resources.length; i++) {
-				if (resources[i]) {
+			for (int i = 0; i < resourceConfig.length; i++) {
+				if (!resourceConfig[i].equals(" ")) {
 					numCurrentResources++;
 				}
 			}
@@ -247,36 +271,44 @@ public class Firm implements Comparable<Firm> {
 			}
 			numResourcesToDrop = numCurrentResources - numResourcesToDrop;
 
-
-
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
-			if (resourceDecision.equals("absolute")) {
+			if (resourceDecision.equals("abs")) {
 				// first consider if threshold has been met	by either add or drop
 				if ((addResourceUtility - currentFitness - resourceThreshold > 0) || (dropResourceUtility - currentFitness - resourceThreshold > 0)) {
 					if (addResourceUtility > dropResourceUtility) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+						countAdd ++;
+						System.out.println("Decision: Execute the new config: "+printResConfig(addResourceConfig)+" (old config: "+printResConfig(resourceConfig)+")");
 					} else {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+						countDrop ++;
+						System.out.println("Decision: Execute the new config: "+printResConfig(dropResourceConfig)+" (old config: "+printResConfig(resourceConfig)+")");
 					}
 				} else { // now consider if dropResourceUtility is performance enhancing
 					if (dropResourceUtility - currentFitness > 0) {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+						countDrop ++;
+						System.out.println("Decision: Execute the new config: "+printResConfig(dropResourceConfig)+" (old config: "+printResConfig(resourceConfig)+")");
 					}
+					System.out.println("Decision: Stay the same config.");
 				}
 
 			} else { // getResourceDecision() == "relative" **** ACTUALLY WE'RE NOT RUNNING THIS FOR NOW.  SO THIS PART HASN'T BEEN FULLY TESTED
-				if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) - resourceThreshold > (dropResourceUtility/(numCurrentResources - 1)) + resourceThreshold) {
+				// TODO ????
+				if ((addResourceUtility/numResourcesToAdd) - resourceThreshold > (dropResourceUtility/(numCurrentResources - 1)) + resourceThreshold) {
 					// add is better
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 					// if ((addResourceUtility/(numCurrentResources + 1)) > (currentFitness/numCurrentResources) + Globals.getResourceThreshold()) {
 					if ((addResourceUtility/(numCurrentResources + numResourcesToAdd)) > (currentFitness/numCurrentResources) + resourceThreshold) {
 						System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
+						countAdd ++;
 					} // else  do nothing
 				} else {
 					// drop is better
 					// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
 					if ((dropResourceUtility/(numCurrentResources - 1)) > (currentFitness/numCurrentResources) - resourceThreshold) {
 						System.arraycopy(dropResourceConfig, 0, resourceConfig, 0, dropResourceConfig.length);
+						countDrop ++;
 					} // else  do nothing
 				}
 			}
@@ -343,7 +375,7 @@ public class Firm implements Comparable<Firm> {
 				System.arraycopy(addResourceConfig, 0, resourceConfig, 0, addResourceConfig.length);
 			} // else  do nothing
 		}
-		syncResources(); // resets bool resources[] 
+		syncResources(); // resets bool resources[]
 	}
 
 	private void printRes(){
@@ -383,6 +415,7 @@ public class Firm implements Comparable<Firm> {
 			}
 			int fIndexToBorrow = rnd.nextInt(firms.size());
 			Firm f = firms.get(fIndexToBorrow);
+			borrowedComponents.add(cIndexToBorrow);
 			System.out.println("> Component Index: " + cIndexToBorrow); // output
 			System.out.println("> Borrowing from firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig)); // output
 			for(int index: components.get(cIndexToBorrow)){
@@ -409,7 +442,8 @@ public class Firm implements Comparable<Firm> {
 					have = false; break;
 				}
 			}
-			if(have) componentCanBeSwitched.add(i);
+			boolean flag = Globals.getSharingFirmsForComponent(i) != null && Globals.getSharingFirmsForComponent(i).size() > 1;
+			if(have && flag) componentCanBeSwitched.add(i);
 		}
 
 		if(componentCanBeSwitched.size() >= 1) {
@@ -424,11 +458,12 @@ public class Firm implements Comparable<Firm> {
 
 			int fIndexToBorrow = rnd.nextInt(firms.size());
 			Firm f = firms.get(fIndexToBorrow);
-			// to prevent the firm from swtiching to its own configuration => need?
-//			while(f.firmID == this.firmID) {
-//				fIndexToBorrow = rnd.nextInt(firms.size());
-//				f = firms.get(fIndexToBorrow);
-//			}
+			// to prevent the firm from swtiching to its own configuration
+			while(f.firmID == this.firmID) {
+				fIndexToBorrow = rnd.nextInt(firms.size());
+				f = firms.get(fIndexToBorrow);
+			}
+			borrowedComponents.add(cIndexToBorrow);
 			System.out.println("> Component Index: " + cIndexToBorrow); // output
 			System.out.println("> Switching to firm: "+f.firmID+" with config "+printResConfig(f.resourceConfig)); // output
 			System.out.println("> Current Firm: "+this.firmID+" with config "+printResConfig(this.resourceConfig)); // output
@@ -461,19 +496,22 @@ public class Firm implements Comparable<Firm> {
 					have = false; break;
 				}
 			}
-			if(have) {
+			if(have && !borrowedComponents.contains(i)) {
+				System.out.println("Firm with ID "+this.getFirmID()+" decides to lend component "+i+" "+Globals.getComponentByIndex(i)+" with config "+printResConfig(resourceConfig));
 				Globals.addSharingFirms(i, this);
 			}
 		}
+		if(borrowedComponents.size() != 0) System.out.println("Firm with ID "+this.getFirmID()+" has borrowed components: "+borrowedComponents);//output
 	}
 
 	private String[] considerAddResource() {
 		// get current number of resources available to the firm
 		int numCurrentResources = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) { 
+		Bag bag = new Bag();
+		for (int i = 0; i < resourceConfig.length; i++) {
+			if (!resourceConfig[i].equals(" ")) {
 				numCurrentResources++; 
-			}
+			} else bag.add(i);
 		}
 
 		// add resource config: create copy of current resourceConfig
@@ -482,31 +520,14 @@ public class Firm implements Comparable<Firm> {
 
 		// need to pick 
 		int numResourcesToAdd = Globals.rand.nextInt(Math.min(Globals.getN() - numCurrentResources + 1, resourcesIncrement)) + 1;
-
-		// create copy of resources so that we can update 
-		boolean[] resourcesCopy = new boolean[Globals.getN()];
-		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
+		System.out.println("Add：Number of resources to add: "+numResourcesToAdd);
 
 		for (int j = 0; j < numResourcesToAdd; j++) {
-			try {
-				int resourceToAdd = Globals.rand.nextInt(Globals.getN() - numCurrentResources - j);
-				int count = 0;
-				for (int i = 0; i < resourcesCopy.length; i++) {
-					if (!resourcesCopy[i]) {
-						if (count == resourceToAdd) {
-							// ADD RESOURCE WITH RANDOM SETTING 
-							// !! change to setting with higher utility?
-							addResourceConfig[i] = Integer.toString(Globals.rand.nextInt(2)); 
-							resourcesCopy[i] = true;
-							break;
-						}
-						count++;
-					}
-				}
-			} catch (java.lang.IllegalArgumentException ex) {
-				// do nothing
-			}
+			int indexToAdd = (Integer)bag.randomPop();
+			addResourceConfig[indexToAdd] = Integer.toString(Globals.rand.nextInt(2));
 		}
+
+		System.out.println("Add config: "+printResConfig(addResourceConfig));
 		return addResourceConfig;
 	}
 
@@ -566,41 +587,28 @@ public class Firm implements Comparable<Firm> {
 	}
 
 	private String[] considerDropResource() {
-		// FOR NOW WE'LL ONLY CONSIDER DROPPING 1 RESOURCE AT A TIME AND ONLY WHEN numCurrentResources > 2
-		//double addResourceUtility = 0.0d;
-		double currentFitness = Simulation.landscape.getFitness(resourceConfig);
-		// System.out.println(firmID + "\t" + getResourceConfigString() + "\t" + currentFitness + "\tmaking decision");
-		
 		// get current number of resources available to the firm
 		int numCurrentResources = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) { 
+		Bag bag = new Bag();
+		for (int i = 0; i < resourceConfig.length; i++) {
+			if (!resourceConfig[i].equals(" ")) {
 				numCurrentResources++; 
-			}
+			} else bag.add(i);
 		}
+		int numResourcesToDrop = Globals.rand.nextInt(numCurrentResources > resourcesIncrement ? resourcesIncrement: numCurrentResources - 1) + 1;
+		System.out.println("Drop：Number of resources to add: "+numResourcesToDrop);
+
 		// drop resource config: copy of current resourceConfig
 		String[] dropResourceConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
 
-		// System.out.println("numCurrentResources:" + numCurrentResources);
 		// if a firm has only 1 (last) resource, it cannot drop it.  
 		if (numCurrentResources > 1) {
 
-			// [TODO] CURRENTLY ONLY DROPPING 1 RESOURCE AT A TIME -- CHANGE TO UP TO ResourceThreshold?
-			int resourceToDrop = Globals.rand.nextInt(numCurrentResources);
-			int count = 0;
-			for (int i = 0; i < resources.length; i++) {
-				if (resources[i]) {
-					if (count == resourceToDrop) {
-						// ADD RESOURCE WITH RANDOM SETTING 
-						// !! change to setting with higher utility?
-						dropResourceConfig[i] = " ";
-						break;
-					}
-					count++;
-				}
-			}			
+			int indexToDrop = (Integer) bag.randomPop();
+			dropResourceConfig[indexToDrop] = " ";
 		}
+		System.out.println("Drop config: "+printResConfig(dropResourceConfig));
 		return dropResourceConfig;
 	}
 
@@ -611,65 +619,29 @@ public class Firm implements Comparable<Firm> {
 		
 		// get current number of resources available to the firm
 		int numResources = 0;
-		for (int i = 0; i < resources.length; i++) {
-			if (resources[i]) { numResources++; }
+		Bag bag = new Bag();
+		for (int i = 0; i < resourceConfig.length; i++) {
+			if (!resourceConfig[i].equals(" ")) {
+				numResources++;
+				bag.add(i);
+			}
 		}
-		//System.out.println("ResourceConfig: \n" + Globals.arrayToString(resourceConfig));
 		
 		// search config
 		String[] searchConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, searchConfig, 0, resourceConfig.length);
-		
-		// create copy of resources so that we can update 
-		boolean[] resourcesCopy = new boolean[Globals.getN()];
-		System.arraycopy(resources, 0, resourcesCopy, 0, resources.length);
 
 		// determine how many resrouces to change.
-		int numResourcesToChange = Globals.rand.nextInt(searchScope) + 1;
-		// shouldn't always be long jumps, so can consider UP TO searchScope changes
-		// int numResourcesToChange = Globals.getSearchScope() + 1;
-		
-		// numResources could be smaller than numResourcesToChange so we need to cap it at numResources
-		for (int j = 0; j < Math.min(numResourcesToChange, numResources); j++) {
-			int resourceToChange = Globals.rand.nextInt(numResources); 
-			int count = 0;
-			for (int i = 0; i < resources.length; i++) {
-				if (resourcesCopy[i]) {
-					if (count == resourceToChange) {
-						resourcesCopy[i] = false; // this way we know the current resource has been changed and won't be changed again
-						numResources--;
-						if (resourceConfig[i].equals("0")) { 
-							searchConfig[i] = "1";
-							break;
-						} else {
-							searchConfig[i] = "0";
-							break;
-						}
-					}
-					count++;
-				}
-			}
+		int numResourcesToChange = Math.min(Globals.rand.nextInt(searchScope) + 1, numResources);
+		System.out.println("Search：Number of resources to change: "+numResourcesToChange);
 
+		for(int i = 0; i < numResourcesToChange; i ++){
+			int indexToChange = (Integer) bag.randomPop();
+			if(searchConfig[indexToChange].equals("1")) searchConfig[indexToChange] = "0";
+			else searchConfig[indexToChange] = "1";
 		}
-
-		double searchUtility = Simulation.landscape.getFitness(searchConfig);
-
-		// ABSOLUTE VS. NORMALIZED DECISION MAKING --> here it doesn't make a difference as the number of resources is the same
-		// [TODO] but how do we make it more costly for long jumps???
-		if (resourceDecision.equals("absolute")) {
-			if (searchUtility > currentFitness + searchThreshold) {
-				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-			} // else do nothing
-		} else {
-			// currentFitness is out of numResources whereas addResourceUtility is out of (numResources + 1)
-			// [NOTE] this is the same as ABSOLUTE except for multiplying of numResourcesToChange but the cost scale is a bit off
-			if ((searchUtility/(numResources)) > (currentFitness/numResources) + numResourcesToChange*searchThreshold) {
-				System.arraycopy(searchConfig, 0, resourceConfig, 0, searchConfig.length);
-			} // else  do nothing
-		}
-		// syncResources(); // resets bool resources[] -- NO NEED FOR SEARCH AS RESOURCECONFIG DOES NOT CHANGE
-
-
+		System.out.println("Search config: "+printResConfig(searchConfig));
+		absoluteOrNormalizedDecision(searchConfig, numResourcesToChange, searchThreshold, 3);
 	}
 
 	/*
@@ -784,27 +756,27 @@ public class Firm implements Comparable<Firm> {
 		
 	}
 
-	private String getResourceConfigTabDelimited() {
-		String retString = "";
-		for (int i = 0; i < resourceConfig.length; i++) {
-			if (resourceConfig[i].equals(" ")) {
-				if (i == 0) {
-					retString += "-";					
-				} else {
-					retString += "\t-";
-				}
-
-			} else {
-				if (i == 0) {
-					retString += resourceConfig[i];
-				} else {
-					retString += "\t" + resourceConfig[i];
-				}
-			}
-		}		
-		return retString;
+//	private String getResourceConfigTabDelimited() {
+//		String retString = "";
+//		for (int i = 0; i < resourceConfig.length; i++) {
+//			if (resourceConfig[i].equals(" ")) {
+////				if (i == 0) {
+//					retString += ".";
+////				} else {
+////					retString += "\t-";
+////				}
+//
+//			} else {
+////				if (i == 0) {
+//					retString += resourceConfig[i];
+////				} else {
+////					retString += "\t" + resourceConfig[i];
+////				}
+//			}
+//		}
+//		return retString;
 		
-	}
+//	}
 
 	public int getFirmID() {
 		return firmID;
@@ -869,14 +841,7 @@ public class Firm implements Comparable<Firm> {
 
 	public String toStringFull(Landscape l) {
 		//System.out.println(getResourceConfigString());
-		String retString = Globals.getOutfilename() + "\t" + firmID + "\t" + rank + "\t" + getResourceConfigTabDelimited() + "\t" + l.getFitness(resourceConfig);
+		String retString = firmID + "\t" + rank + "\t" + printResConfig(resourceConfig) + "\t" + l.getFitness(resourceConfig);
 		return retString;
-	}
-
-	/* for testing only */
-	public static void main(String[] args) {
-		// Firm f = new Firm();
-		// System.out.println(f.toString());
-		//f.makeDecision();
 	}
 }
