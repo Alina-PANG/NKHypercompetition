@@ -1,7 +1,7 @@
-package util;
+package app.util;
 
 import java.io.*;
-import java.util.*;
+import java.util.Random;
 
 /** 
  * <h3>MersenneTwister and MersenneTwisterFast</h3>
@@ -13,11 +13,11 @@ import java.util.*;
  * By Sean Luke, October 2004.
  * 
  * <p><b>MersenneTwister</b> is a drop-in subclass replacement
- * for java.util.Random.  It is properly synchronized and
+ * for java.java.util.Random.  It is properly synchronized and
  * can be used in a multithreaded environment.  On modern VMs such
- * as HotSpot, it is approximately 1/3 slower than java.util.Random.
+ * as HotSpot, it is approximately 1/3 slower than java.java.util.Random.
  *
- * <p><b>MersenneTwisterFast</b> is not a subclass of java.util.Random.  It has
+ * <p><b>MersenneTwisterFast</b> is not a subclass of java.java.util.Random.  It has
  * the same public methods as Random does, however, and it is
  * algorithmically identical to MersenneTwister.  MersenneTwisterFast
  * has hard-code inlined all of its methods directly, and made all of them
@@ -25,7 +25,7 @@ import java.util.*;
  * methods are <i>not</i> synchronized, so the same MersenneTwisterFast
  * instance cannot be shared by multiple threads.  But all this helps
  * MersenneTwisterFast achieve well over twice the speed of MersenneTwister.
- * java.util.Random is about 1/3 slower than MersenneTwisterFast.
+ * java.java.util.Random is about 1/3 slower than MersenneTwisterFast.
  *
  * <h3>About the Mersenne Twister</h3>
  * <p>This is a Java version of the C-program for MT19937: Integer version.
@@ -67,19 +67,19 @@ import java.util.*;
  * <p><b>Changes Since V7:</b> A documentation error in MersenneTwisterFast
  * (but not MersenneTwister) stated that nextDouble selects uniformly from
  * the full-open interval [0,1].  It does not.  nextDouble's contract is
- * identical across MersenneTwisterFast, MersenneTwister, and java.util.Random,
+ * identical across MersenneTwisterFast, MersenneTwister, and java.java.util.Random,
  * namely, selection in the half-open interval [0,1).  That is, 1.0 should
  * not be returned.  A similar contract exists in nextFloat.
  *
  * <p><b>Changes Since V6:</b> License has changed from LGPL to BSD.
  * New timing information to compare against
- * java.util.Random.  Recent versions of HotSpot have helped Random increase
+ * java.java.util.Random.  Recent versions of HotSpot have helped Random increase
  * in speed to the point where it is faster than MersenneTwister but slower
  * than MersenneTwisterFast (which should be the case, as it's a less complex
  * algorithm but is synchronized).
  * 
  * <p><b>Changes Since V5:</b> New empty constructor made to work the same
- * as java.util.Random -- namely, it seeds based on the current time in
+ * as java.java.util.Random -- namely, it seeds based on the current time in
  * milliseconds.
  *
  * <p><b>Changes Since V4:</b> New initialization algorithms.  See
@@ -98,20 +98,20 @@ import java.util.*;
  * in Java 1.2's version of Random, which means it can be used with
  * earlier versions of Java.  See 
  * <a href="http://www.javasoft.com/products/jdk/1.2/docs/api/java/util/Random.html">
- * the JDK 1.2 java.util.Random documentation</a> for further documentation
+ * the JDK 1.2 java.java.util.Random documentation</a> for further documentation
  * on the random-number generation contracts made.  Additionally, there's
- * an undocumented bug in the JDK java.util.Random.nextBytes() method,
+ * an undocumented bug in the JDK java.java.util.Random.nextBytes() method,
  * which this code fixes.
  *
- * <p> Just like java.util.Random, this
- * generator accepts a long seed but doesn't use all of it.  java.util.Random
+ * <p> Just like java.java.util.Random, this
+ * generator accepts a long seed but doesn't use all of it.  java.java.util.Random
  * uses 48 bits.  The Mersenne Twister instead uses 32 bits (int size).
  * So it's best if your seed does not exceed the int range.
  *
  * <p>MersenneTwister can be used reliably 
  * on JDK version 1.1.5 or above.  Earlier Java versions have serious bugs in
- * java.util.Random; only MersenneTwisterFast (and not MersenneTwister nor
- * java.util.Random) should be used with them.
+ * java.java.util.Random; only MersenneTwisterFast (and not MersenneTwister nor
+ * java.java.util.Random) should be used with them.
  *
  * <h3>License</h3>
  *
@@ -270,7 +270,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
     synchronized public void setSeed(final long seed)
         {
-        // Due to a bug in java.util.Random clear up to 1.2, we're
+        // Due to a bug in java.java.util.Random clear up to 1.2, we're
         // doing our own Gaussian variable.
         __haveNextNextGaussian = false;
 
@@ -1223,7 +1223,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
         ms = System.currentTimeMillis();
         for (j = 0; j < 100000000; j++)
             xx += rr.nextInt();
-        System.out.println("java.util.Random: " + (System.currentTimeMillis()-ms) + "          Ignore this: " + xx);
+        System.out.println("java.java.util.Random: " + (System.currentTimeMillis()-ms) + "          Ignore this: " + xx);
         
         r = new MersenneTwisterFast(SEED);
         ms = System.currentTimeMillis();

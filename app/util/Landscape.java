@@ -1,8 +1,6 @@
-package util;
+package app.util;
 
 import java.util.ArrayList;
-import util.Globals;
-import util.MersenneTwisterFast;
 
 public class Landscape {
 	private InfluenceMatrix im; 
@@ -44,6 +42,8 @@ public class Landscape {
 	public String getCommonResourceConfig(int idx) {
 		return commonResourceConfig[idx];
 	}
+
+
 
 	public String commonConfigToString() {
 		String retString = "";
@@ -109,6 +109,10 @@ public class Landscape {
 			config[i] = String.valueOf(locArray[i]);
 		}
 		return config;
+	}
+
+	public double getLandscapeFitness() {
+		return this.getFitness(commonResourceConfig);
 	}
 
 	/**
@@ -217,7 +221,7 @@ public class Landscape {
 	private double getFitnessContribution(String locationString, int place) {
 		// since locationString may contain a " ", we need to fill those spaces with 1s and 0s
 		// i.e., if space exists, remove entry and replace with combinations of 0/1 replacing the space
-		ArrayList<String> list = new ArrayList<String>(); 
+		ArrayList<String> list = new ArrayList<String>();
 		list.add(locationString);
 		
 		boolean done = false;

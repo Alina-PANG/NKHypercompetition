@@ -10,7 +10,7 @@ This package implements a hypercompetition model using the NK Fitness Landscapes
 ## Usage
 - Download / clone repository
 - create folder "out" for output files
-- run "java app.Simulation [config file]"
+- run "java java.app.Simulation [config file]"
 
 ## ToDo
 - Incorporate ease of innovation

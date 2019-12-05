@@ -1,4 +1,4 @@
-package objects;
+package app.objects;
 
 /*  
  * Market defines a product type

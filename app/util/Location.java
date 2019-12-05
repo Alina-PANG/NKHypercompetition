@@ -1,4 +1,4 @@
-package util;
+package app.util;
 
 public class Location {
 	String[] location; // N bit location with either ' ', '0' or '1'; ' ' (empty space) means that this resource is not a part of the firm or consumer

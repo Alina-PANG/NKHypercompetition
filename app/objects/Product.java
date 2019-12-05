@@ -1,9 +1,9 @@
-package objects;
+package app.objects;
 
-import util.Globals;
+import app.util.Globals;
 
 /*
- * A Product (e.g., app) is a bundle of resources
+ * A Product (e.g., java.app) is a bundle of resources
  * represented as indices of resources (within N) 
  */
 

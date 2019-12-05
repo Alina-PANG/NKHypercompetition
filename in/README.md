@@ -1,7 +1,7 @@
 # **in** folder
 
 - Configuration files (experimental setup) should be stored here.  
-- Run by invoking ">> java app.Simuation in/testing.in"
+- Run by invoking ">> java java.app.Simuation in/testing.in"
 
 
 # File Format

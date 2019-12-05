@@ -1,0 +1,455 @@
+
+**** Components *****
+0 Component size = 3:
+12 6 13 
+1 Component size = 5:
+1 0 18 19 8 
+2 Component size = 3:
+17 7 3 
+3 Component size = 4:
+4 2 14 10 
+4 Component size = 4:
+16 9 5 15 
+5 Component size = 3:
+11 
+
+***** Simulation.java: SUMMARIZING COMMON RESOURCE CONFIG:	11110111000010101100
+
+Period: 0 ====== Changing/Adding/Dropping Resources
+*************** Firm 0 *******************
+Current: 10.1.1..01.0..000.11
+Search：Number of resources to change: 1
+Search config: 10.1.1..01.0..100.11
+Resource Decision: abs New Utility = 0.44345006778044666, curFit = 0.45073524744785487, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 10.1.1.001.0..000.11
+Drop：Number of resources to drop: 1
+Drop config: 10.1.1..01.0..000.11
+Resource Decision: abs Add Utility = 0.4555633835777305, Drop Utility = 0.45073524744785487, curFit = 0.45073524744785487, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Stay the same config.
+*************** Firm 1 *******************
+Current: 1.1.0.11.0101.01...0
+Search：Number of resources to change: 1
+Search config: 1.1.0.11.0001.01...0
+Resource Decision: abs New Utility = 0.5733374643035376, curFit = 0.5611400505161721, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 1.1.0.11.0001.01...0 (old config: 1.1.0.11.0101.01...0)
+Add：Number of resources to add: 1
+Add config: 101.0.11.0001.01...0
+Drop：Number of resources to drop: 1
+Drop config: 1.1.0.11.0001.01...0
+Resource Decision: abs Add Utility = 0.6143057223330965, Drop Utility = 0.5733374643035376, curFit = 0.5733374643035376, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 101.0.11.0001.01...0 (old config: 101.0.11.0001.01...0)
+*************** Firm 2 *******************
+Current: 0.0.11100....0111..0
+Search：Number of resources to change: 1
+Search config: 0.0.11100....0110..0
+Resource Decision: abs New Utility = 0.3829149357380394, curFit = 0.39054656083090183, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 0.0.11100....0111.10
+Drop：Number of resources to drop: 1
+Drop config: 0.0.11100....0111..0
+Resource Decision: abs Add Utility = 0.4324779583232205, Drop Utility = 0.39054656083090183, curFit = 0.39054656083090183, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 0.0.11100....0111.10 (old config: 0.0.11100....0111.10)
+*************** Firm 3 *******************
+Current: .111.0100.0..1..110.
+Search：Number of resources to change: 1
+Search config: .111.0101.0..1..110.
+Resource Decision: abs New Utility = 0.5726239794140865, curFit = 0.5174071674813955, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: .111.0101.0..1..110. (old config: .111.0100.0..1..110.)
+Add：Number of resources to add: 1
+Add config: .111.0101.0.01..110.
+Drop：Number of resources to drop: 1
+Drop config: .111.0101.0..1..110.
+Resource Decision: abs Add Utility = 0.5806627846206238, Drop Utility = 0.5726239794140865, curFit = 0.5726239794140865, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+Current: 1100.0.1.00.1.101...
+Search：Number of resources to change: 1
+Search config: 1100.0.1.00.1.111...
+Resource Decision: abs New Utility = 0.48625198276646947, curFit = 0.45161048982774155, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 1100.0.1.00.1.111... (old config: 1100.0.1.00.1.101...)
+Add：Number of resources to add: 1
+Add config: 1100.0.1.00.1.111.1.
+Drop：Number of resources to drop: 1
+Drop config: 1100.0.1.00.1.111...
+Resource Decision: abs Add Utility = 0.5281833802587881, Drop Utility = 0.48625198276646947, curFit = 0.48625198276646947, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 1100.0.1.00.1.111.1. (old config: 1100.0.1.00.1.111.1.)
+
+Period: 0 ====== Lending
+Firm with ID 0 decides to lend component 1 [1, 0, 18, 19, 8] with config 10.1.1..01.0..000.11
+Firm with ID 0 decides to lend component 4 [16, 9, 5, 15] with config 10.1.1..01.0..000.11
+Firm with ID 0 decides to lend component 5 [11] with config 10.1.1..01.0..000.11
+Firm with ID 1 decides to lend component 3 [4, 2, 14, 10] with config 101.0.11.0001.01...0
+Firm with ID 1 decides to lend component 5 [11] with config 101.0.11.0001.01...0
+Firm with ID 3 decides to lend component 2 [17, 7, 3] with config .111.0101.0..1..110.
+Firm with ID 4 decides to lend component 4 [16, 9, 5, 15] with config 1100.0.1.00.1.111.1.
+**** All sharing Firms ****
+Component Index:1
+0 
+Component Index:2
+3 
+Component Index:3
+1 
+Component Index:4
+0 4 
+Component Index:5
+0 1 
+
+Period: 0 ====== Switching
+*************** Firm 0 *******************
+> Component Index: 5
+> Switching to firm: 1 with config 101.0.11.0001.01...0
+> Current Firm: 0 with config 10.1.1..01.0..000.11
+> New config: 10.1.1..01.0..000.11
+Resource Decision: abs New Utility = 0.45073524744785487, curFit = 0.45073524744785487, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 1 *******************
+> Component Index: 5
+> Switching to firm: 0 with config 10.1.1..01.0..000.11
+> Current Firm: 1 with config 101.0.11.0001.01...0
+> New config: 101.0.11.0001.01...0
+Resource Decision: abs New Utility = 0.6143057223330965, curFit = 0.6143057223330965, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+Firm 2 has no available switches.
+> New config: 0.0.11100....0111.10
+Resource Decision: abs New Utility = 0.4324779583232205, curFit = 0.4324779583232205, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 3 *******************
+Firm 3 has no available switches.
+> New config: .111.0101.0..1..110.
+Resource Decision: abs New Utility = 0.5726239794140865, curFit = 0.5726239794140865, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+> Component Index: 4
+> Switching to firm: 0 with config 10.1.1..01.0..000.11
+> Current Firm: 4 with config 1100.0.1.00.1.111.1.
+> New config: 1100.1.1.10.1.100.1.
+Resource Decision: abs New Utility = 0.47428955621717295, curFit = 0.5281833802587881, threshold = 0.01 Num Diff Res = 4
+Decision: Stay the same config.
+
+Period: 0 ====== Borrowing
+*************** Firm 0 *******************
+**** Current Firm: 0 with config 10.1.1..01.0..000.11
+> New config: 10.1.1..01.0..000.11
+Resource Decision: abs New Utility = 0.45073524744785487, curFit = 0.45073524744785487, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 1 *******************
+**** Current Firm: 1 with config 101.0.11.0001.01...0
+Firm 1 has no available firms to borrow.
+> New config: 101.0.11.0001.01...0
+Resource Decision: abs New Utility = 0.6143057223330965, curFit = 0.6143057223330965, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+**** Current Firm: 2 with config 0.0.11100....0111.10
+> Component Index: 5
+> Borrowing from firm: 1 with config 101.0.11.0001.01...0
+> New config: 0.0.11100..0.0111.10
+Resource Decision: abs New Utility = 0.46384350903807425, curFit = 0.4324779583232205, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 0.0.11100..0.0111.10 (old config: 0.0.11100....0111.10)
+*************** Firm 3 *******************
+**** Current Firm: 3 with config .111.0101.0..1..110.
+> Component Index: 5
+> Borrowing from firm: 1 with config 101.0.11.0001.01...0
+> New config: .111.0101.00.1..110.
+Resource Decision: abs New Utility = 0.6039895301289401, curFit = 0.5726239794140865, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: .111.0101.00.1..110. (old config: .111.0101.0..1..110.)
+*************** Firm 4 *******************
+**** Current Firm: 4 with config 1100.0.1.00.1.111.1.
+> Component Index: 5
+> Borrowing from firm: 1 with config 101.0.11.0001.01...0
+> New config: 1100.0.1.0001.111.1.
+Resource Decision: abs New Utility = 0.5595489309736419, curFit = 0.5281833802587881, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 1100.0.1.0001.111.1. (old config: 1100.0.1.00.1.111.1.)
+
+***** Simulation.java: SUMMARIZING COMMON RESOURCE CONFIG:	11011110000011011110
+
+Period: 1 ====== Changing/Adding/Dropping Resources
+*************** Firm 1 *******************
+Current: 101.0.11.0001.01...0
+Search：Number of resources to change: 1
+Search config: 101.0.11.0001.11...0
+Resource Decision: abs New Utility = 0.6070205426656883, curFit = 0.6143057223330965, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 101.0111.0001.01...0
+Drop：Number of resources to drop: 1
+Drop config: 101.0.11.0001.01...0
+Resource Decision: abs Add Utility = 0.6502533334850841, Drop Utility = 0.6143057223330965, curFit = 0.6143057223330965, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 101.0111.0001.01...0 (old config: 101.0111.0001.01...0)
+*************** Firm 3 *******************
+Current: .111.0101.00.1..110.
+Search：Number of resources to change: 1
+Search config: .111.0001.00.1..110.
+Resource Decision: abs New Utility = 0.5796876464811993, curFit = 0.6039895301289401, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: .111.0101.00.1..1100
+Drop：Number of resources to drop: 1
+Drop config: .111.0101.00.1..110.
+Resource Decision: abs Add Utility = 0.668133630775787, Drop Utility = 0.6039895301289401, curFit = 0.6039895301289401, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: .111.0101.00.1..1100 (old config: .111.0101.00.1..1100)
+*************** Firm 4 *******************
+Current: 1100.0.1.0001.111.1.
+Search：Number of resources to change: 1
+Search config: 1100.0.1.0001.110.1.
+Resource Decision: abs New Utility = 0.5519173058807794, curFit = 0.5595489309736419, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 1100.011.0001.111.1.
+Drop：Number of resources to drop: 1
+Drop config: 1100.0.1.0001.111.1.
+Resource Decision: abs Add Utility = 0.6224593249392312, Drop Utility = 0.5595489309736419, curFit = 0.5595489309736419, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 1100.011.0001.111.1. (old config: 1100.011.0001.111.1.)
+*************** Firm 2 *******************
+Current: 0.0.11100..0.0111.10
+Search：Number of resources to change: 1
+Search config: 0.0.11110..0.0111.10
+Resource Decision: abs New Utility = 0.46493732492751827, curFit = 0.46384350903807425, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 0.0.11100.10.0111.10
+Drop：Number of resources to drop: 1
+Drop config: 0.0.11100..0.0111.10
+Resource Decision: abs Add Utility = 0.5181602367331158, Drop Utility = 0.46384350903807425, curFit = 0.46384350903807425, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 0.0.11100.10.0111.10 (old config: 0.0.11100.10.0111.10)
+*************** Firm 0 *******************
+Current: 10.1.1..01.0..000.11
+Search：Number of resources to change: 1
+Search config: 10.1.0..01.0..000.11
+Resource Decision: abs New Utility = 0.46859912606937865, curFit = 0.45073524744785487, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 10.1.0..01.0..000.11 (old config: 10.1.1..01.0..000.11)
+Add：Number of resources to add: 1
+Add config: 10.1.0..01.0.1000.11
+Drop：Number of resources to drop: 1
+Drop config: 10.1.0..01.0..000.11
+Resource Decision: abs Add Utility = 0.5328058131350677, Drop Utility = 0.46859912606937865, curFit = 0.46859912606937865, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 10.1.0..01.0.1000.11 (old config: 10.1.0..01.0.1000.11)
+
+Period: 1 ====== Lending
+Firm with ID 1 decides to lend component 3 [4, 2, 14, 10] with config 101.0111.0001.01...0
+Firm with ID 1 has borrowed components: [5]
+Firm with ID 3 decides to lend component 2 [17, 7, 3] with config .111.0101.00.1..1100
+Firm with ID 3 has borrowed components: [5]
+Firm with ID 4 has borrowed components: [4, 5]
+Firm with ID 2 decides to lend component 3 [4, 2, 14, 10] with config 0.0.11100.10.0111.10
+Firm with ID 2 has borrowed components: [5]
+Firm with ID 0 decides to lend component 1 [1, 0, 18, 19, 8] with config 10.1.0..01.0.1000.11
+Firm with ID 0 decides to lend component 4 [16, 9, 5, 15] with config 10.1.0..01.0.1000.11
+Firm with ID 0 has borrowed components: [5]
+**** All sharing Firms ****
+Component Index:1
+0 
+Component Index:2
+3 
+Component Index:3
+1 2 
+Component Index:4
+0 
+
+Period: 1 ====== Switching
+*************** Firm 1 *******************
+> Component Index: 3
+> Switching to firm: 2 with config 0.0.11100.10.0111.10
+> Current Firm: 1 with config 101.0111.0001.01...0
+> New config: 100.1111.0101.11...0
+Resource Decision: abs New Utility = 0.576229584713996, curFit = 0.6502533334850841, threshold = 0.01 Num Diff Res = 4
+Decision: Stay the same config.
+*************** Firm 3 *******************
+Firm 3 has no available switches.
+> New config: .111.0101.00.1..1100
+Resource Decision: abs New Utility = 0.668133630775787, curFit = 0.668133630775787, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+Firm 4 has no available switches.
+> New config: 1100.011.0001.111.1.
+Resource Decision: abs New Utility = 0.6224593249392312, curFit = 0.6224593249392312, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+> Component Index: 3
+> Switching to firm: 1 with config 101.0111.0001.01...0
+> Current Firm: 2 with config 0.0.11100.10.0111.10
+> New config: 0.1.01100.00.0011.10
+Resource Decision: abs New Utility = 0.5921839855042038, curFit = 0.5181602367331158, threshold = 0.01 Num Diff Res = 4
+Decision: Execute the new config: 0.1.01100.00.0011.10 (old config: 0.0.11100.10.0111.10)
+*************** Firm 0 *******************
+Firm 0 has no available switches.
+> New config: 10.1.0..01.0.1000.11
+Resource Decision: abs New Utility = 0.5328058131350677, curFit = 0.5328058131350677, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+
+Period: 1 ====== Borrowing
+*************** Firm 1 *******************
+**** Current Firm: 1 with config 101.0111.0001.01...0
+Firm 1 has no available firms to borrow.
+> New config: 101.0111.0001.01...0
+Resource Decision: abs New Utility = 0.6502533334850841, curFit = 0.6502533334850841, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 3 *******************
+**** Current Firm: 3 with config .111.0101.00.1..1100
+Firm 3 has no available firms to borrow.
+> New config: .111.0101.00.1..1100
+Resource Decision: abs New Utility = 0.668133630775787, curFit = 0.668133630775787, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+**** Current Firm: 4 with config 1100.011.0001.111.1.
+Firm 4 has no available firms to borrow.
+> New config: 1100.011.0001.111.1.
+Resource Decision: abs New Utility = 0.6224593249392312, curFit = 0.6224593249392312, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+**** Current Firm: 2 with config 0.1.01100.00.0011.10
+Firm 2 has no available firms to borrow.
+> New config: 0.1.01100.00.0011.10
+Resource Decision: abs New Utility = 0.5921839855042038, curFit = 0.5921839855042038, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 0 *******************
+**** Current Firm: 0 with config 10.1.0..01.0.1000.11
+Firm 0 has no available firms to borrow.
+> New config: 10.1.0..01.0.1000.11
+Resource Decision: abs New Utility = 0.5328058131350677, curFit = 0.5328058131350677, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+
+***** Simulation.java: SUMMARIZING COMMON RESOURCE CONFIG:	10110011000011011110
+
+Period: 2 ====== Changing/Adding/Dropping Resources
+*************** Firm 3 *******************
+Current: .111.0101.00.1..1100
+Search：Number of resources to change: 1
+Search config: .111.0101.00.1..1110
+Resource Decision: abs New Utility = 0.668462475758358, curFit = 0.668133630775787, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: .111.0101100.1..1100
+Drop：Number of resources to drop: 1
+Drop config: .111.0101.00.1..1100
+Resource Decision: abs Add Utility = 0.7272660916643028, Drop Utility = 0.668133630775787, curFit = 0.668133630775787, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: .111.0101100.1..1100 (old config: .111.0101100.1..1100)
+*************** Firm 1 *******************
+Current: 101.0111.0001.01...0
+Search：Number of resources to change: 1
+Search config: 101.0101.0001.01...0
+Resource Decision: abs New Utility = 0.6259514498373433, curFit = 0.6502533334850841, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 101.0111.0001.01..00
+Drop：Number of resources to drop: 1
+Drop config: 101.0111.0001.01...0
+Resource Decision: abs Add Utility = 0.6918558859948318, Drop Utility = 0.6502533334850841, curFit = 0.6502533334850841, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 101.0111.0001.01..00 (old config: 101.0111.0001.01..00)
+*************** Firm 4 *******************
+Current: 1100.011.0001.111.1.
+Search：Number of resources to change: 1
+Search config: 1100.011.0000.111.1.
+Resource Decision: abs New Utility = 0.5870043643407852, curFit = 0.6224593249392312, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 1100.011.0001.111.10
+Drop：Number of resources to drop: 1
+Drop config: 1100.011.0001.111.1.
+Resource Decision: abs Add Utility = 0.6866034255860782, Drop Utility = 0.6224593249392312, curFit = 0.6224593249392312, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 1100.011.0001.111.10 (old config: 1100.011.0001.111.10)
+*************** Firm 2 *******************
+Current: 0.1.01100.00.0011.10
+Search：Number of resources to change: 1
+Search config: 0.1.00100.00.0011.10
+Resource Decision: abs New Utility = 0.6100478641257275, curFit = 0.5921839855042038, threshold = 0.01 Num Diff Res = 1
+Decision: Execute the new config: 0.1.00100.00.0011.10 (old config: 0.1.01100.00.0011.10)
+Add：Number of resources to add: 1
+Add config: 0.1.00100.00.0011010
+Drop：Number of resources to drop: 1
+Drop config: 0.1.00100.00.0011.10
+Resource Decision: abs Add Utility = 0.6113249581130794, Drop Utility = 0.6100478641257275, curFit = 0.6100478641257275, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Stay the same config.
+*************** Firm 0 *******************
+Current: 10.1.0..01.0.1000.11
+Search：Number of resources to change: 1
+Search config: 10.1.0..01.0.1001.11
+Resource Decision: abs New Utility = 0.5404374382279301, curFit = 0.5328058131350677, threshold = 0.01 Num Diff Res = 1
+Decision: Stay the same config.
+Add：Number of resources to add: 1
+Add config: 10.1.0..0100.1000.11
+Drop：Number of resources to drop: 1
+Drop config: 10.1.0..01.0.1000.11
+Resource Decision: abs Add Utility = 0.5993199546174747, Drop Utility = 0.5328058131350677, curFit = 0.5328058131350677, threshold = 0.01, Num Add Res = 1, Num Drop Res = 0
+Decision: Execute the new config: 10.1.0..0100.1000.11 (old config: 10.1.0..0100.1000.11)
+
+Period: 2 ====== Lending
+Firm with ID 3 decides to lend component 2 [17, 7, 3] with config .111.0101100.1..1100
+Firm with ID 3 has borrowed components: [5]
+Firm with ID 1 has borrowed components: [3, 5]
+Firm with ID 4 has borrowed components: [4, 5]
+Firm with ID 2 has borrowed components: [3, 5]
+Firm with ID 0 decides to lend component 1 [1, 0, 18, 19, 8] with config 10.1.0..0100.1000.11
+Firm with ID 0 decides to lend component 4 [16, 9, 5, 15] with config 10.1.0..0100.1000.11
+Firm with ID 0 has borrowed components: [5]
+**** All sharing Firms ****
+Component Index:1
+0 
+Component Index:2
+3 
+Component Index:4
+0 
+
+Period: 2 ====== Switching
+*************** Firm 3 *******************
+Firm 3 has no available switches.
+> New config: .111.0101100.1..1100
+Resource Decision: abs New Utility = 0.7272660916643028, curFit = 0.7272660916643028, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 1 *******************
+Firm 1 has no available switches.
+> New config: 101.0111.0001.01..00
+Resource Decision: abs New Utility = 0.6918558859948318, curFit = 0.6918558859948318, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+Firm 4 has no available switches.
+> New config: 1100.011.0001.111.10
+Resource Decision: abs New Utility = 0.6866034255860782, curFit = 0.6866034255860782, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+Firm 2 has no available switches.
+> New config: 0.1.00100.00.0011.10
+Resource Decision: abs New Utility = 0.6100478641257275, curFit = 0.6100478641257275, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 0 *******************
+Firm 0 has no available switches.
+> New config: 10.1.0..0100.1000.11
+Resource Decision: abs New Utility = 0.5993199546174747, curFit = 0.5993199546174747, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+
+Period: 2 ====== Borrowing
+*************** Firm 3 *******************
+**** Current Firm: 3 with config .111.0101100.1..1100
+Firm 3 has no available firms to borrow.
+> New config: .111.0101100.1..1100
+Resource Decision: abs New Utility = 0.7272660916643028, curFit = 0.7272660916643028, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 1 *******************
+**** Current Firm: 1 with config 101.0111.0001.01..00
+Firm 1 has no available firms to borrow.
+> New config: 101.0111.0001.01..00
+Resource Decision: abs New Utility = 0.6918558859948318, curFit = 0.6918558859948318, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 4 *******************
+**** Current Firm: 4 with config 1100.011.0001.111.10
+Firm 4 has no available firms to borrow.
+> New config: 1100.011.0001.111.10
+Resource Decision: abs New Utility = 0.6866034255860782, curFit = 0.6866034255860782, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 2 *******************
+**** Current Firm: 2 with config 0.1.00100.00.0011.10
+Firm 2 has no available firms to borrow.
+> New config: 0.1.00100.00.0011.10
+Resource Decision: abs New Utility = 0.6100478641257275, curFit = 0.6100478641257275, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+*************** Firm 0 *******************
+**** Current Firm: 0 with config 10.1.0..0100.1000.11
+Firm 0 has no available firms to borrow.
+> New config: 10.1.0..0100.1000.11
+Resource Decision: abs New Utility = 0.5993199546174747, curFit = 0.5993199546174747, threshold = 0.01 Num Diff Res = 0
+Decision: Stay the same config.
+
+***** Simulation.java: SUMMARIZING COMMON RESOURCE CONFIG:	10110011000011011110

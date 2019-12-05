@@ -1,7 +1,7 @@
-package objects;
+package app.objects;
 
 import java.util.*;
-import util.Globals;
+import app.util.Globals;
 
 public class Consumer {
 	private boolean[] needs; 

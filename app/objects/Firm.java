@@ -1,12 +1,14 @@
-package objects;
+package app.objects;
+
+import app.Simulation;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-import util.Bag;
-import util.Globals;
-import util.Landscape;
-import app.*;
+import app.util.Bag;
+import app.util.Globals;
+import app.util.Landscape;
+
 
 public class Firm implements Comparable<Firm> {
 	private static final Logger logger = Logger.getLogger( Firm.class.getName());
@@ -151,10 +153,9 @@ public class Firm implements Comparable<Firm> {
 
 	public void makeDecision() { // with innovation
 		System.out.println("*************** Firm "+this.firmID+" *******************");
-		System.out.println("Before: "+printResConfig(resourceConfig));
+		System.out.println("Current: "+printResConfig(resourceConfig));
 		searchExperiential();
 		addOrDrop();
-		System.out.println("After: "+printResConfig(resourceConfig));
 	}
 
 	private void absoluteOrNormalizedDecision(String[] newConfig, int incrementalResource, double threshold, int type) {
@@ -271,6 +272,7 @@ public class Firm implements Comparable<Firm> {
 			}
 			numResourcesToDrop = numCurrentResources - numResourcesToDrop;
 
+			System.out.println("Resource Decision: "+resourceDecision+" Add Utility = "+addResourceUtility+", Drop Utility = "+dropResourceUtility+", curFit = "+currentFitness+", threshold = "+resourceThreshold+", Num Add Res = "+numResourcesToAdd+", Num Drop Res = "+numResourcesToDrop);
 			// ABSOLUTE VS. NORMALIZED DECISION MAKING
 			if (resourceDecision.equals("abs")) {
 				// first consider if threshold has been met	by either add or drop
@@ -548,7 +550,6 @@ public class Firm implements Comparable<Firm> {
 		String[] dropResourceConfig = new String[Globals.getN()];
 		System.arraycopy(resourceConfig, 0, dropResourceConfig, 0, resourceConfig.length);
 
-		// System.out.println("numCurrentResources:" + numCurrentResources);
 		// if a firm has only 1 (last) resource, it cannot drop it.  
 		if (numCurrentResources > 1) {
 
@@ -596,7 +597,7 @@ public class Firm implements Comparable<Firm> {
 			} else bag.add(i);
 		}
 		int numResourcesToDrop = Globals.rand.nextInt(numCurrentResources > resourcesIncrement ? resourcesIncrement: numCurrentResources - 1) + 1;
-		System.out.println("Drop：Number of resources to add: "+numResourcesToDrop);
+		System.out.println("Drop：Number of resources to drop: "+numResourcesToDrop);
 
 		// drop resource config: copy of current resourceConfig
 		String[] dropResourceConfig = new String[Globals.getN()];
@@ -755,28 +756,6 @@ public class Firm implements Comparable<Firm> {
 		return retString;
 		
 	}
-
-//	private String getResourceConfigTabDelimited() {
-//		String retString = "";
-//		for (int i = 0; i < resourceConfig.length; i++) {
-//			if (resourceConfig[i].equals(" ")) {
-////				if (i == 0) {
-//					retString += ".";
-////				} else {
-////					retString += "\t-";
-////				}
-//
-//			} else {
-////				if (i == 0) {
-//					retString += resourceConfig[i];
-////				} else {
-////					retString += "\t" + resourceConfig[i];
-////				}
-//			}
-//		}
-//		return retString;
-		
-//	}
 
 	public int getFirmID() {
 		return firmID;

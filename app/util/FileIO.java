@@ -1,15 +1,11 @@
-package util;
-
-import app.Simulation;
+package app.util;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FileIO {
 
-	public static void loadParameters(String configFile, String outFile, int iterations) {
+	public static void loadParameters(String configFile, String outFile, int iterations, String inf) {
 		/*
 		 *	int N = 20;
 		 *	int numResources = 4;
@@ -27,9 +23,10 @@ public class FileIO {
 				Globals.setOutfile(outFile);
 				File f = new File(outFile);
 				Globals.setIterations(iterations);
+				Globals.setInfluenceMatrix(inf);
 				// simulation parameters
 				if (p.getProperty("N") != null) { Globals.setN(Integer.parseInt(p.getProperty("N"))); }
-				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
+//				if (p.getProperty("influenceMatrixFile") != null) { Globals.setInfluenceMatrix(p.getProperty("influenceMatrixFile")); }
 //				if (p.getProperty("iterations") != null) { Globals.setIterations(Integer.parseInt(p.getProperty("iterations"))); }
 				if (p.getProperty("numConfig") != null) checkNum = Integer.parseInt(p.getProperty("numConfig"));
 				if (p.getProperty("minComponentSize") != null) { Globals.setMinCSize(Integer.parseInt(p.getProperty("minComponentSize"))); }

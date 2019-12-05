@@ -1,8 +1,7 @@
-package util;
+package app.util;
 
-import objects.Firm;
+import app.objects.Firm;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
